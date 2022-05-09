@@ -61,7 +61,7 @@ namespace RejectDetailsService {
         public void OnTimer(object sender, ElapsedEventArgs args)
         {
             try {
-                new RejectDetails().Start();
+                RejectDetails.Instance.Start();
             } catch ( Exception e ) {
                 addLog(e.Message);
             }
@@ -70,8 +70,7 @@ namespace RejectDetailsService {
         public void OnTimerCopy(object sender, ElapsedEventArgs args)
         {
             try {
-                new RejectDetails().CopyFile();
-                //addLog("END COPY");
+                RejectDetails.Instance.CopyFile();
             } catch ( Exception e ) {
                 addLog(e.Message);
             }
