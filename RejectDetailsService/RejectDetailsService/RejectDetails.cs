@@ -17,11 +17,13 @@ namespace RejectDetailsService {
 
         private static List<int> listStations = new List<int>();
 
-        private static Dictionary<int, List<Tag>> dictTag = new Dictionary<int, List<Tag>>();
+        private static Dictionary<int, List<Tag>> dictStationTag = new Dictionary<int, List<Tag>>();
 
         private static Dictionary<string, clsTag> dictTagInfo = new Dictionary<string, clsTag>();
 
         //private List<(Tag, float)> listTag = new List<(Tag, float)>();
+
+        private List<clsController> listController = new List<clsController>();
 
         private RejectDetails() {
         }
@@ -46,34 +48,71 @@ namespace RejectDetailsService {
         }
 
         private void initialize() {
-            listStations = Database.GetStations();
+            this.listController = Database.GetController();
+
+            foreach( clsController clsCon in this.listController ) {
+                clsCon.GetStationList();
+
+                foreach( clsStation clsStat in clsCon.StationList) {
+                    clsStat.GetTagList();
+                }
+            }
+
+            foreach(clsController clsCon in listController) {
+                foreach(clsStation clsSta in clsCon.StationList) {
+                    List<Tag> tagList = new List<Tag>();
+
+                    foreach(clsTag tag in clsSta.TagList) {
+                        string tagName = tag.getTagPath();
+
+                        int dataType = DataType.INT;
+                        if(tag.TagType == "Bool") {
+                            dataType = DataType.SINT;
+                        } else if(tag.TagType == "Real") {
+                            dataType = DataType.REAL;
+                        } else if(tag.TagType == "String") {
+                            dataType = DataType.String;
+                        } else if(tag.TagType == "Int") {
+                            dataType = DataType.INT;
+                        }
+
+                        dictTagInfo.Add(tagName, tag);
+
+                        Tag newTag = new Tag(clsCon.IpAddress, "1,0", CpuType.LGX, tagName, dataType, 1);
+                        tagList.Add(newTag);
+                    }
+                    dictStationTag.Add(clsSta.Id, tagList);
+                }
+            }
+
+            //listStations = Database.GetStations();
 
             // get all tags for every station
-            foreach(int stationId in listStations) {
-                List<clsTag> clsTagList = Database.GetTagInformation(stationId);
-                List<Tag> tagList = new List<Tag>();
+            //foreach(int stationId in listStations) {
+            //List<clsTag> clsTagList = Database.GetTagInformation();
+            //List<Tag> tagList = new List<Tag>();
 
-                foreach(clsTag tag in clsTagList) {
-                    string tagName = tag.getTagPath();
+            //foreach(clsTag tag in clsTagList) {
+            //    string tagName = tag.getTagPath();
 
-                    int dataType = DataType.INT;
-                    if(tag.TagType == "Bool") {
-                        dataType = DataType.SINT;
-                    } else if(tag.TagType == "Real") {
-                        dataType = DataType.REAL;
-                    } else if(tag.TagType == "String") {
-                        dataType = DataType.String;
-                    } else if(tag.TagType == "Int") {
-                        dataType = DataType.INT;
-                    }
+            //    int dataType = DataType.INT;
+            //    if(tag.TagType == "Bool") {
+            //        dataType = DataType.SINT;
+            //    } else if(tag.TagType == "Real") {
+            //        dataType = DataType.REAL;
+            //    } else if(tag.TagType == "String") {
+            //        dataType = DataType.String;
+            //    } else if(tag.TagType == "Int") {
+            //        dataType = DataType.INT;
+            //    }
 
-                    dictTagInfo.Add(tagName, tag);
+            //    dictTagInfo.Add(tagName, tag);
 
-                    Tag newTag = new Tag(SystemKeys.IP_ADDRESS_THIS, "1,0", CpuType.LGX, tagName, dataType, 1);
-                    tagList.Add(newTag);
-                }
-                dictTag.Add(stationId, tagList);
-            }
+            //    Tag newTag = new Tag(SystemKeys.IP_ADDRESS_THIS, "1,0", CpuType.LGX, tagName, dataType, 1);
+            //    tagList.Add(newTag);
+            //}
+            //dictTag.Add(stationId, tagList);
+            //}
         }
 
         //Read String
@@ -114,10 +153,10 @@ namespace RejectDetailsService {
 
         public void Start() {
 
-            foreach(int iStation in dictTag.Keys) {
+            foreach(int iStation in dictStationTag.Keys) {
 
                 using(var client = new Libplctag()) {
-                    foreach(Tag tag in dictTag[iStation]) {
+                    foreach(Tag tag in dictStationTag[iStation]) {
                         client.AddTag(tag);
                     }
                     bool isOK = true;
@@ -125,7 +164,7 @@ namespace RejectDetailsService {
                     List<string> listReadValues = new List<string>();
                     Tag tagWrite = null;
 
-                    foreach(Tag tag in dictTag[iStation]) {
+                    foreach(Tag tag in dictStationTag[iStation]) {
                         while(client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING) {
                             Thread.Sleep(100);
                         }
