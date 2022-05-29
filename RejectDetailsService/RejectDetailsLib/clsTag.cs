@@ -1,5 +1,8 @@
 ﻿namespace RejectDetailsLib {
     public class clsTag {
+
+        public int StationTagId { get; set; }
+
         public int StationId { get; set; }
 
         public string StationName { get; set; }

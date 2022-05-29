@@ -3,12 +3,12 @@ using System.Data.SqlClient;
 
 namespace RejectDetailsLib {
     public class Database {
-        public static void SetContent(string psContent, string ipAddress) {
+        public static void SetContent(string psContent, int stationTagId) {
             
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, controller_ip) VALUES ('{psContent}', '{ipAddress}')";
+                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, stationtag_id) VALUES ('{psContent}', {stationTagId})";
                     com.ExecuteNonQuery();
                 }
             }
@@ -69,7 +69,7 @@ namespace RejectDetailsLib {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT a.id, a.tagName, a.tagType, a.Comment, a.ReadWrite FROM tbltags a, tblStationTag b WHERE a.id = b.TagId and b.StationId = {StationID} ";
+                    com.CommandText = $@"SELECT a.id, a.tagName, a.tagType, a.Comment, a.ReadWrite, b.Id as StationTagId FROM tbltags a, tblStationTag b WHERE a.id = b.TagId and b.StationId = {StationID} ";
                     SqlDataReader dr = com.ExecuteReader();
 
                     while(dr.Read()) {
@@ -81,6 +81,7 @@ namespace RejectDetailsLib {
                             TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
                             Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
                             ReadWrite = dr.IsDBNull(4) ? 0 : dr.GetInt16(4),
+                            StationTagId = dr.GetInt32(5),
                         };
                         listTags.Add(tag);
                     }

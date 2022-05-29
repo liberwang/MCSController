@@ -160,7 +160,7 @@ namespace RejectDetailsLib {
                     }
                     bool isOK = true;
                     bool DBRequest = false;
-                    List<string> listReadValues = new List<string>();
+                    List<(string, int)> listReadValues = new List<(string, int)>();
                     Tag tagWrite = null;
 
                     foreach(Tag tag in dictStationTag[iStation]) {
@@ -196,7 +196,7 @@ namespace RejectDetailsLib {
                             readValue = client.GetInt32Value(tag, 0 * tag.ElementSize);
                         }
 
-                        listReadValues.Add(readValue.ToString());
+                        listReadValues.Add((readValue.ToString(), dictTagInfo[tag.Name].StationTagId));
 
                         if(dictTagInfo[tag.Name].ReadWrite == 1) {
                             DBRequest = (bool)readValue;
@@ -209,8 +209,8 @@ namespace RejectDetailsLib {
                         break;
 
                     if(DBRequest) {
-                        foreach(string lsValue in listReadValues) {
-                            SaveToFile(lsValue);
+                        foreach( var tagValue in listReadValues) {
+                            SaveToFile(tagValue);
                         }
                     }
 
@@ -225,14 +225,14 @@ namespace RejectDetailsLib {
         }
 
 
-        public void SaveToFile(string tag, string Station = "30", bool saveToFile = false) {
+        public void SaveToFile((string, int) tagValue, string Station = "30", bool saveToFile = false) {
             //string lsFileName = getFileName();
             if(saveToFile) {
                 using(StreamWriter sw = File.AppendText(SystemKeys.getFullFileName())) {
-                    sw.WriteLine(tag);
+                    sw.WriteLine(tagValue.Item1);
                 }
             }
-            Database.SetContent(tag, SystemKeys.IP_ADDRESS_THIS);
+            Database.SetContent(tagValue.Item1, tagValue.Item2);
         }
 
         public void CopyFile() {
