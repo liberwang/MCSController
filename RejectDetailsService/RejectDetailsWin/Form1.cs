@@ -6,21 +6,37 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using RejectDetailsLib;
 
 namespace RejectDetailsWin {
     public partial class Form1 : Form {
+        private System.Timers.Timer timer = new System.Timers.Timer();
         public Form1() {
             InitializeComponent();
         }
 
         private void btnStart_Click(object sender, EventArgs e) {
             try {
-                RejectDetails.Instance.Start();
+                timer.Interval = 500 ; 
+                timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
+                timer.Start();
             } catch (Exception ex) {
                 clsLog.addLog(ex.ToString());
                 MessageBox.Show(ex.ToString(), "MCS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void OnTimer(object sender, ElapsedEventArgs args)
+        {
+            try
+            {
+                RejectDetails.Instance.Start();
+            }
+            catch (Exception e)
+            {
+                clsLog.addLog(e.Message);
             }
         }
     }

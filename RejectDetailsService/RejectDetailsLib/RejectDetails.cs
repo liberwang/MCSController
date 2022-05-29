@@ -77,7 +77,7 @@ namespace RejectDetailsLib {
 
                         dictTagInfo.Add(tagName, tag);
 
-                        Tag newTag = new Tag(clsCon.IpAddress, "1,0", CpuType.LGX, tagName, dataType, 1);
+                        Tag newTag = new Tag(clsCon.IpAddress, "1,0", CpuType.LGX, tagName, dataType, 1, 1);
                         tagList.Add(newTag);
                     }
                     dictStationTag.Add(clsSta.Id, tagList);
@@ -116,21 +116,29 @@ namespace RejectDetailsLib {
 
         //Read String
         private object GetStringValue(Tag Red_Msg, Libplctag client) {
+            try
+            {
+                int size = client.GetInt32Value(Red_Msg, 0);
+                int offset = DataType.Int32;
+                string output = string.Empty;
 
-            int size = client.GetInt32Value(Red_Msg, 0);
-            int offset = DataType.Int32;
-            string output = string.Empty;
+                for (int i = 0; i < Red_Msg.ElementCount; i++)
+                {
+                    var sb = new StringBuilder();
 
-            for(int i = 0; i < Red_Msg.ElementCount; i++) {
-                var sb = new StringBuilder();
+                    for (int j = 0; j < size; j++)
+                    {
+                        sb.Append((char)client.GetUint8Value(Red_Msg, (i * Red_Msg.ElementSize) + offset + j));
+                    }
 
-                for(int j = 0; j < size; j++) {
-                    sb.Append((char)client.GetUint8Value(Red_Msg, (i * Red_Msg.ElementSize) + offset + j));
+                    output = sb.ToString();
                 }
-
-                output = sb.ToString();
+                return output;
+            } catch (Exception ex )
+            {
+                clsLog.addLog(ex.ToString());
+                throw;
             }
-            return output;
         }
 
         //Write String
@@ -193,7 +201,7 @@ namespace RejectDetailsLib {
                         } else if(dataType == "Real") {
                             readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
                         } else { // int
-                            readValue = client.GetInt32Value(tag, 0 * tag.ElementSize);
+                            readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
                         }
 
                         listReadValues.Add((readValue.ToString(), dictTagInfo[tag.Name].StationTagId));
