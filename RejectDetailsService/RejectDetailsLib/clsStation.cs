@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RejectDetailsService {
+namespace RejectDetailsLib {
     public class clsStation {
         public int Id { get; set; }
         public string Name { get; set; }

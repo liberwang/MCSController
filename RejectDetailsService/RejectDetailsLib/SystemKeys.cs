@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace RejectDetailsService {
+namespace RejectDetailsLib {
     public class SystemKeys {
         public static readonly string FILE_FOLDER;
         public static readonly string FILE_NAME_PREFIX;

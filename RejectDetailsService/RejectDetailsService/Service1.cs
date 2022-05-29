@@ -2,6 +2,7 @@
 using System.IO;
 using System.ServiceProcess;
 using System.Timers;
+using RejectDetailsLib;
 
 namespace RejectDetailsService {
     public partial class Service1 : ServiceBase
@@ -15,7 +16,7 @@ namespace RejectDetailsService {
 
         protected override void OnStart(string[] args)
         {
-            addLog("Start...");
+            clsLog.addLog("Start...");
             try
             {
                 Timer timer = new Timer();
@@ -25,7 +26,7 @@ namespace RejectDetailsService {
             }
             catch (Exception e)
             {
-                addLog(e.Message);
+                clsLog.addLog(e.Message);
             }
             try
             {
@@ -37,7 +38,7 @@ namespace RejectDetailsService {
             }
             catch (Exception e)
             {
-                addLog(e.Message);
+                clsLog.addLog(e.Message);
             }
 
 
@@ -45,25 +46,25 @@ namespace RejectDetailsService {
 
         protected override void OnStop()
         {
-            addLog("Stop...");
+            clsLog.addLog("Stop...");
         }
 
-        public static void addLog(string slog)
-        {
-            string logFile = SystemKeys.getLogName();
+        //public static void addLog(string slog)
+        //{
+        //    string logFile = SystemKeys.getLogName();
 
-            using (StreamWriter sw = File.AppendText(logFile))
-            {
-                sw.WriteLine(SystemKeys.getCurrentDateTime() + " " + slog);
-            }
-        }
+        //    using (StreamWriter sw = File.AppendText(logFile))
+        //    {
+        //        sw.WriteLine(SystemKeys.getCurrentDateTime() + " " + slog);
+        //    }
+        //}
 
         public void OnTimer(object sender, ElapsedEventArgs args)
         {
             try {
                 RejectDetails.Instance.Start();
             } catch ( Exception e ) {
-                addLog(e.Message);
+                clsLog.addLog(e.Message);
             }
         }
 
@@ -72,7 +73,7 @@ namespace RejectDetailsService {
             try {
                 RejectDetails.Instance.CopyFile();
             } catch ( Exception e ) {
-                addLog(e.Message);
+                clsLog.addLog(e.Message);
             }
         }
 

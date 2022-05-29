@@ -23,3 +23,7 @@ D:\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetai
 D:\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.csproj.CopyComplete
 D:\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.exe
 D:\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.pdb
+D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsLib.dll
+D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\LibplctagWrapper.dll
+D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\libplctag.NativeImport.dll
+D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsLib.pdb

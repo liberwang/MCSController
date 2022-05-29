@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace RejectDetailsService {
+namespace RejectDetailsLib {
     public class RejectDetails {
         const int DataTimeout = 5000;
         //private static DateTime lastDT = DateTime.Now;
@@ -40,7 +40,6 @@ namespace RejectDetailsService {
                         }
                     }
                 } catch(Exception ex) {
-                    Service1.addLog(ex.ToString());
                     throw;
                 }
                 return instance;

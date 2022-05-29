@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RejectDetailsService {
+namespace RejectDetailsLib {
     public class Database {
         public static void SetContent(string psContent, string ipAddress) {
             
@@ -49,7 +45,7 @@ namespace RejectDetailsService {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, name, conrollerId FROM tblStation WHERE controller = {ControllerID}";
+                    com.CommandText = $@"SELECT id, name, controllerId FROM tblStation WHERE controllerId = {ControllerID}";
                     SqlDataReader dr = com.ExecuteReader();
 
                     while( dr.Read()) {
@@ -82,9 +78,9 @@ namespace RejectDetailsService {
                             StationName = StationName,
                             TagId = dr.GetInt32(0),
                             TagName = dr.GetString(1),
-                            TagType = dr.GetString(2),
-                            Comment = dr.GetString(3),
-                            ReadWrite = dr.GetInt16(4),
+                            TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
+                            Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
+                            ReadWrite = dr.IsDBNull(4) ? 0 : dr.GetInt16(4),
                         };
                         listTags.Add(tag);
                     }
@@ -93,6 +89,8 @@ namespace RejectDetailsService {
             }
             return listTags;
         }
+
+
 //        public static List<clsTag> GetTagInformation(int stationId ) {
 //            List<clsTag> listTags= new List<clsTag>();
 
