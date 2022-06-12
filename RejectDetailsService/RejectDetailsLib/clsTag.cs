@@ -1,4 +1,6 @@
-﻿namespace RejectDetailsLib {
+﻿using LibplctagWrapper;
+
+namespace RejectDetailsLib {
     public class clsTag {
 
         public int StationTagId { get; set; }
@@ -6,6 +8,7 @@
         public int StationId { get; set; }
 
         public string StationName { get; set; }
+
         public int TagId { get; set; }
         
         public string TagName { get; set; }
@@ -22,8 +25,29 @@
 
         //public string IpAddress { get; set; }
 
-        public string getTagPath() {
-            return $@"Station0{StationName}.{TagName}";
+        public Tag plcTag { get; set; }
+
+        public void GenerateTag(string IpAddress) {
+            //string tagName = getTagPath();
+
+            int dataType = DataType.INT;
+            if(TagType == "Bool") {
+                dataType = DataType.SINT;
+            } else if(TagType == "Real") {
+                dataType = DataType.REAL;
+            } else if(TagType == "String") {
+                dataType = DataType.String;
+            } else if(TagType == "Int") {
+                dataType = DataType.INT;
+            }
+
+            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagFullName, dataType, 1, 1);
+        }
+
+        public string TagFullName {
+            get {
+                return $@"Station0{StationName}.{TagName}";
+            }
         }
     }
 }

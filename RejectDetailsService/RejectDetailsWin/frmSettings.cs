@@ -11,9 +11,9 @@ using System.Windows.Forms;
 using RejectDetailsLib;
 
 namespace RejectDetailsWin {
-    public partial class Form1 : Form {
+    public partial class frmSettings : Form {
         private System.Timers.Timer timer = new System.Timers.Timer();
-        public Form1() {
+        public frmSettings() {
             InitializeComponent();
         }
 

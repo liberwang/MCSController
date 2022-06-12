@@ -69,7 +69,15 @@ namespace RejectDetailsLib {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT a.id, a.tagName, a.tagType, a.Comment, a.ReadWrite, b.Id as StationTagId FROM tbltags a, tblStationTag b WHERE a.id = b.TagId and b.StationId = {StationID} ";
+                    com.CommandText = $@"
+SELECT a.id, a.tagName, a.tagType, a.Comment, 
+case when rw1.id is not null then 1 when rw2.id is not null then -1 else 0 end AS ReadWrite,
+b.Id as StationTagId
+FROM tbltags a
+join tblStationTag b on a.id = b.TagId 
+left join tblTagReadWrite rw1 on a.id = rw1.readTagId
+left join tblTagReadWrite rw2 on a.id = rw2.writeTagId
+where b.StationId = {StationID} ";
                     SqlDataReader dr = com.ExecuteReader();
 
                     while(dr.Read()) {
@@ -80,7 +88,7 @@ namespace RejectDetailsLib {
                             TagName = dr.GetString(1),
                             TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
                             Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
-                            ReadWrite = dr.IsDBNull(4) ? 0 : dr.GetInt16(4),
+                            ReadWrite = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
                             StationTagId = dr.GetInt32(5),
                         };
                         listTags.Add(tag);
@@ -91,6 +99,25 @@ namespace RejectDetailsLib {
             return listTags;
         }
 
+        public static Dictionary<string, string> GetReadWriteTag() {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+
+            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
+                using(SqlCommand com = conn.CreateCommand()) {
+                    conn.Open();
+                    com.CommandText = $@"select tg1.tagName As ReadTagName, tg2.tagName As WriteTagName from tblTagReadWrite rw 
+  join tbltags tg1 on rw.readTagId = tg1.id 
+  join tblTags tg2 on rw.writeTagId = tg2.id ";
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while(dr.Read()) {
+                        dic.Add(dr.GetString(0), dr.GetString(1));
+                    }
+                    dr.Close();
+                }
+            }
+            return dic;
+        }
 
 //        public static List<clsTag> GetTagInformation(int stationId ) {
 //            List<clsTag> listTags= new List<clsTag>();
