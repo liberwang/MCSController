@@ -113,19 +113,6 @@ namespace RejectDetailsLib {
                 }
             }
 
-            //foreach(clsController clsCon in listController) {
-            //    foreach(clsStation clsSta in clsCon.StationList) {
-            //        List<Tag> tagList = new List<Tag>();
-
-            //        foreach(clsTag tag in clsSta.TagList) {
-            //            tag.GenerateTag(clsCon.IpAddress);
-            //            dictTagInfo.Add(tag.TagFullName, tag);
-            //            tagList.Add(tag.plcTag);
-            //        }
-            //        dictStationTag.Add(clsSta.Id, tagList);
-            //    }
-            //}
-
             dictReadWrite = Database.GetReadWriteTag();
         }
 
@@ -133,16 +120,13 @@ namespace RejectDetailsLib {
 
             foreach((clsStation, Libplctag) stationTag in ListStationLibplctag) {
 
-                //using(var client = new Libplctag()) {
-                //    foreach(Tag tag in dictStationTag[iStation]) {
-                //        client.AddTag(tag);
-                //    }
                 Libplctag client = stationTag.Item2;
 
                 bool isOK = true;
                 bool DBRequest = false;
                 List<(string, int)> listReadValues = new List<(string, int)>();
                 Tag tagWrite = null;
+                int tagSerialNoValue = 0;
 
                 foreach(clsTag tagClass in stationTag.Item1.TagList) {
                     Tag tag = tagClass.plcTag;
@@ -185,6 +169,10 @@ namespace RejectDetailsLib {
                     } else if(tagClass.ReadWrite == -1) {
                         tagWrite = tag;
                     } 
+
+                    if (tag.Name.EndsWith("SerialNumber")) {
+                        tagSerialNoValue = (int)readValue;
+                    }
                 }
 
                 if(!isOK)
@@ -192,7 +180,7 @@ namespace RejectDetailsLib {
 
                 if(DBRequest) {
                     foreach(var tagValue in listReadValues) {
-                        SaveToFile(tagValue);
+                        SaveToFile(tagValue, tagSerialNoValue);
                     }
                 }
 
@@ -205,14 +193,13 @@ namespace RejectDetailsLib {
         }
 
 
-        public void SaveToFile((string, int) tagValue, string Station = "30", bool saveToFile = false) {
-            //string lsFileName = getFileName();
+        public void SaveToFile((string, int) tagValue, int serialNumber, bool saveToFile = false) {
             if(saveToFile) {
                 using(StreamWriter sw = File.AppendText(SystemKeys.getFullFileName())) {
                     sw.WriteLine(tagValue.Item1);
                 }
             }
-            Database.SetContent(tagValue.Item1, tagValue.Item2);
+            Database.SetContent(tagValue.Item1, tagValue.Item2, serialNumber);
         }
 
         public void CopyFile() {

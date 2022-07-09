@@ -3,12 +3,12 @@ using System.Data.SqlClient;
 
 namespace RejectDetailsLib {
     public class Database {
-        public static void SetContent(string psContent, int stationTagId) {
+        public static void SetContent(string psContent, int stationTagId, int serialNumber) {
             
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, stationtag_id) VALUES ('{psContent}', {stationTagId})";
+                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, stationtag_id, serial_number) VALUES ('{psContent}', {stationTagId}, {serialNumber})";
                     com.ExecuteNonQuery();
                 }
             }
