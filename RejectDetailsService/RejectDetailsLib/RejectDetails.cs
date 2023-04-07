@@ -225,7 +225,7 @@ namespace RejectDetailsLib {
                                         client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
                                     }
 
-                                    SaveToFile(listReadValues, tagSerialNoValue, clsCon.Id);
+                                    SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
 
                                 }
                             }
