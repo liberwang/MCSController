@@ -30,6 +30,7 @@ namespace RejectDetailsWin {
             this.btnClose = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.btnSetting = new System.Windows.Forms.Button();
+            this.btnTags = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTest
@@ -66,12 +67,24 @@ namespace RejectDetailsWin {
             this.btnSetting.UseVisualStyleBackColor = true;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
+            // btnTags
+            // 
+            this.btnTags.Image = ((System.Drawing.Image)(resources.GetObject("btnTags.Image")));
+            this.btnTags.Location = new System.Drawing.Point(80, 120);
+            this.btnTags.Name = "btnTags";
+            this.btnTags.Size = new System.Drawing.Size(125, 125);
+            this.btnTags.TabIndex = 3;
+            this.toolTip.SetToolTip(this.btnTags, "Tag Settings");
+            this.btnTags.UseVisualStyleBackColor = true;
+            this.btnTags.Click += new System.EventHandler(this.btnTags_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnTags);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnClose);
@@ -91,5 +104,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button btnSetting;
+        private System.Windows.Forms.Button btnTags;
     }
 }

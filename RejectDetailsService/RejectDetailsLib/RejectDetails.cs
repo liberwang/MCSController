@@ -9,19 +9,21 @@ namespace RejectDetailsLib {
     public class RejectDetails {
         const int DataTimeout = 5000;
 
+        private static bool IsRunning = false;
+
         private static object lockobject = new object();
 
         private static RejectDetails instance = null;
 
-        //private static Dictionary<int, List<Tag>> dictStationTag = new Dictionary<int, List<Tag>>();
+        private DataSource ds = null;
 
-        private static Dictionary<string, clsTag> dictTagInfo = new Dictionary<string, clsTag>();
-
+        //private static Dictionary<string, clsTag> dictTagInfo = new Dictionary<string, clsTag>();
         private List<clsController> listController = new List<clsController>();
+        private Dictionary<int, List<clsTagGroup>> dicTagGroup = new Dictionary<int, List<clsTagGroup>>();
+        //private List<clsTagGroup> listTagGroup = new List<clsTagGroup>();
 
-        private static Dictionary<string, string> dictReadWrite = new Dictionary<string, string>();
-
-        private static List<(clsStation, Libplctag)> ListStationLibplctag = new List<(clsStation, Libplctag)>();
+        //private static Dictionary<string, string> dictReadWrite = new Dictionary<string, string>();
+        //private static List<(clsStation, Libplctag)> ListStationLibplctag = new List<(clsStation, Libplctag)>();
 
         private RejectDetails() {
         }
@@ -38,6 +40,7 @@ namespace RejectDetailsLib {
                         }
                     }
                 } catch(Exception ex) {
+                    clsLog.addLog(ex.ToString());
                     throw;
                 }
                 return instance;
@@ -88,7 +91,14 @@ namespace RejectDetailsLib {
         }
 
         private void initialize() {
-            this.listController = Database.GetController();
+            if(SystemKeys.GET_DATA_FROM_XML) {
+                this.ds = new DataXML();
+            } else {
+                this.ds = new Database();
+            }
+
+            /*
+            this.listController = ds.GetController();
 
             // 192.168.1.10 -> 10, 20, 30, 40
             foreach(clsController clsCon in this.listController) {
@@ -113,100 +123,229 @@ namespace RejectDetailsLib {
                 }
             }
 
-            dictReadWrite = Database.GetReadWriteTag();
+            dictReadWrite = ds.GetReadWriteTag();
+            */
+            this.listController = ds.GetController();
+
+            foreach(clsController clsCon in this.listController) {
+                if(clsCon.isEnabled) {
+                    this.dicTagGroup.Add(clsCon.Id, clsTagGroup.GetGroup(clsCon.Id, clsCon.IpAddress));
+                }
+            }
+            //this.listTagGroup = clsTagGroup.GetAllGroups();
         }
 
         public void Start() {
+            if(!IsRunning) {
+                IsRunning = true;
 
-            foreach((clsStation, Libplctag) stationTag in ListStationLibplctag) {
+                try {
+                    Process();
+                } catch(Exception e) {
+                    throw e;
+                } finally {
+                    IsRunning = false;
+                }
+            }
+        }
+        private void Process() {
+            // get controller first for ip address 
+            foreach(clsController clsCon in this.listController) {
+                if(this.dicTagGroup.ContainsKey(clsCon.Id)) {
+                    // get all tags under current ip address
+                    foreach(clsTagGroup tagGroup in this.dicTagGroup[clsCon.Id]) {
+                        // no tag for this ip address 
+                        if(tagGroup.listTags.Count == 0)
+                            continue;
 
-                Libplctag client = stationTag.Item2;
+                        Libplctag client = tagGroup.tagClass;
 
-                bool isOK = true;
-                bool DBRequest = false;
-                List<(string, int)> listReadValues = new List<(string, int)>();
-                Tag tagWrite = null;
-                int tagSerialNoValue = 0;
+                        // check read tag first, every group has one read tag only.
+                        int counter = 0;
+                        while(counter < 100 && client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_PENDING) {
+                            Thread.Sleep(100);
+                            ++counter;
+                        }
 
-                foreach(clsTag tagClass in stationTag.Item1.TagList) {
-                    Tag tag = tagClass.plcTag;
+                        if(counter >= 100)
+                            continue;
 
-                    while(client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING) {
-                        Thread.Sleep(100);
+                        // if read tag is ready, read all tags
+                        if(client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_OK) {
+                            bool DBRequest = client.GetBitValue(tagGroup.tagRead.plcTag, -1, DataTimeout);
+
+                            if(DBRequest) {
+                                List<(string, string)> listReadValues = new List<(string, string)>();
+                                int tagSerialNoValue = 0;
+                                bool isOK = true;
+
+                                foreach(clsTag tagClass in tagGroup.listTags) {
+                                    Tag tag = tagClass.plcTag;
+
+                                    while(client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING) {
+                                        Thread.Sleep(100);
+                                    }
+
+                                    int tagStatus = client.GetStatus(tag);
+                                    if(tagStatus != Libplctag.PLCTAG_STATUS_OK) {
+                                        Console.WriteLine($"Error setting up tag internal state. Error{ client.DecodeError(tagStatus)}");
+                                        isOK = false;
+                                        break;
+                                    }
+
+                                    var tagValue = client.ReadTag(tag, DataTimeout);
+
+                                    if(tagValue != Libplctag.PLCTAG_STATUS_OK) {
+                                        Console.WriteLine($"ERROR: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+                                        isOK = false;
+                                        break;
+                                    }
+
+                                    object readValue;
+                                    if(tagClass.TagType == "Bool") {
+                                        readValue = client.GetBitValue(tag, -1, DataTimeout);
+                                    } else if(tagClass.TagType == "String") {
+                                        readValue = GetStringValue(tag, client);
+                                    } else if(tagClass.TagType == "Real") {
+                                        readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
+                                    } else { // int
+                                        readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
+                                    }
+
+                                    listReadValues.Add((readValue.ToString(), tagClass.TagName));
+
+                                    if(tag.Name.EndsWith("SerialNumber")) {
+                                        tagSerialNoValue = (int)readValue;
+                                    }
+                                }
+
+                                if(isOK) {
+                                    // set back to write tags. 
+                                    foreach(clsTag tagWrite in tagGroup.tagWrite) {
+                                        client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
+                                    }
+
+                                    SaveToFile(listReadValues, tagSerialNoValue, clsCon.Id);
+
+                                }
+                            }
+                        }
                     }
+                }
+            }
+        }
 
-                    int tagStatus = client.GetStatus(tag);
-                    if(tagStatus != Libplctag.PLCTAG_STATUS_OK) {
-                        Console.WriteLine($"Error setting up tag internal state. Error{ client.DecodeError(tagStatus)}");
-                        isOK = false;
-                        break;
+        //private void Process() {
+        //    foreach((clsStation, Libplctag) stationTag in ListStationLibplctag) {
+
+        //        Libplctag client = stationTag.Item2;
+
+        //        bool isOK = true;
+        //        bool DBRequest = false;
+        //        List<(string, int)> listReadValues = new List<(string, int)>();
+        //        Tag tagWrite = null;
+        //        int tagSerialNoValue = 0;
+
+        //        foreach(clsTag tagClass in stationTag.Item1.TagList) {
+        //            Tag tag = tagClass.plcTag;
+
+        //            while(client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING) {
+        //                Thread.Sleep(100);
+        //            }
+
+        //            int tagStatus = client.GetStatus(tag);
+        //            if(tagStatus != Libplctag.PLCTAG_STATUS_OK) {
+        //                Console.WriteLine($"Error setting up tag internal state. Error{ client.DecodeError(tagStatus)}");
+        //                isOK = false;
+        //                break;
+        //            }
+
+        //            var tagValue = client.ReadTag(tag, DataTimeout);
+
+        //            if(tagValue != Libplctag.PLCTAG_STATUS_OK) {
+        //                Console.WriteLine($"ERROR: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+        //                isOK = false;
+        //                break;
+        //            }
+
+        //            //var dataType = tagClass.TagType; // dictTagInfo[tag.Name].TagType;
+        //            object readValue;
+        //            if(tagClass.TagType == "Bool") {
+        //                readValue = client.GetBitValue(tag, -1, DataTimeout);
+        //            } else if(tagClass.TagType == "String") {
+        //                readValue = GetStringValue(tag, client);
+        //            } else if(tagClass.TagType == "Real") {
+        //                readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
+        //            } else { // int
+        //                readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
+        //            }
+
+        //            listReadValues.Add((readValue.ToString(), tagClass.StationTagId));
+
+        //            if(tagClass.ReadWrite == 1) {
+        //                DBRequest = (bool)readValue;
+        //            } else if(tagClass.ReadWrite == -1) {
+        //                tagWrite = tag;
+        //            }
+
+        //            if(tag.Name.EndsWith("SerialNumber")) {
+        //                tagSerialNoValue = (int)readValue;
+        //            }
+        //        }
+
+        //        if(!isOK)
+        //            break;
+
+        //        if(DBRequest) {
+        //            foreach(var tagValue in listReadValues) {
+        //                SaveToFile(tagValue, tagSerialNoValue);
+        //            }
+        //        }
+
+        //        if(tagWrite != null) {
+        //            if(DBRequest) {
+        //                client.SetBitValue(tagWrite, 0, Convert.ToBoolean(1), DataTimeout);
+        //            } else {
+        //                client.SetBitValue(tagWrite, 0, Convert.ToBoolean(0), DataTimeout);
+        //            }
+        //        }
+        //    }
+
+        //}
+
+        private void SaveToFile(List<(string, string)> tagValue, int serialNumber, string ipAddress) {
+            if(SystemKeys.SAVE_TO_FILE) {
+                string fileName = SystemKeys.getFullFileName();
+
+                if(!File.Exists(fileName)) {
+                    // if csv file is not in the path, create a header to it first.
+                    StringBuilder sbField = new StringBuilder();
+
+                    foreach((string, string) tv in tagValue) {
+                        sbField.Append(tv.Item2).Append(",");
                     }
+                    sbField.Append("TimeStamp");
 
-                    var tagValue = client.ReadTag(tag, DataTimeout);
-
-                    if(tagValue != Libplctag.PLCTAG_STATUS_OK) {
-                        Console.WriteLine($"ERROR: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
-                        isOK = false;
-                        break;
-                    }
-
-                    //var dataType = tagClass.TagType; // dictTagInfo[tag.Name].TagType;
-                    object readValue;
-                    if(tagClass.TagType == "Bool") {
-                        readValue = client.GetBitValue(tag, -1, DataTimeout);
-                    } else if(tagClass.TagType == "String") {
-                        readValue = GetStringValue(tag, client);
-                    } else if(tagClass.TagType == "Real") {
-                        readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
-                    } else { // int
-                        readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
-                    }
-
-                    listReadValues.Add((readValue.ToString(), tagClass.StationTagId));
-
-                    if(tagClass.ReadWrite == 1) {
-                        DBRequest = (bool)readValue;
-                    } else if(tagClass.ReadWrite == -1) {
-                        tagWrite = tag;
-                    } 
-
-                    if (tag.Name.EndsWith("SerialNumber")) {
-                        tagSerialNoValue = (int)readValue;
+                    using(StreamWriter sw = File.AppendText(fileName)) {
+                        sw.WriteLine(sbField.ToString());
                     }
                 }
 
-                if(!isOK)
-                    break;
-
-                if(DBRequest) {
-                    foreach(var tagValue in listReadValues) {
-                        SaveToFile(tagValue, tagSerialNoValue);
-                    }
+                StringBuilder sb = new StringBuilder();
+                foreach((string, string) tv in tagValue) {
+                    sb.Append(tv.Item1).Append(",");
                 }
+                sb.Append(SystemKeys.getCurrentDateTime());
 
-                if(tagWrite != null)
-                    if(DBRequest)
-                        client.SetBitValue(tagWrite, 0, Convert.ToBoolean(1), DataTimeout);
-                    else
-                        client.SetBitValue(tagWrite, 0, Convert.ToBoolean(0), DataTimeout);
+                using(StreamWriter sw = File.AppendText(fileName)) {
+                    sw.WriteLine(sb.ToString());
+                }
+            }
+            if(SystemKeys.SAVE_TO_DB) {
+                Database.SetContent(tagValue, ipAddress, serialNumber);
             }
         }
 
 
-        public void SaveToFile((string, int) tagValue, int serialNumber, bool saveToFile = false) {
-            if(saveToFile) {
-                using(StreamWriter sw = File.AppendText(SystemKeys.getFullFileName())) {
-                    sw.WriteLine(tagValue.Item1);
-                }
-            }
-            Database.SetContent(tagValue.Item1, tagValue.Item2, serialNumber);
-        }
-
-        public void CopyFile() {
-            string lsSource = SystemKeys.getFullFileName();
-            if(File.Exists(lsSource)) {
-                File.Copy(lsSource, SystemKeys.getCopyFileName(), true);
-            }
-        }
     }
 }

@@ -41,7 +41,8 @@ namespace RejectDetailsLib {
                 dataType = DataType.INT;
             }
 
-            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagFullName, dataType, 1, 1);
+            //this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagFullName, dataType, 1, 1);
+            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1, 1);
         }
 
         public string TagFullName {

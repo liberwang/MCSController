@@ -31,5 +31,10 @@ namespace RejectDetailsWin {
             frmSettings settings = new frmSettings();
             settings.ShowDialog();
         }
+
+        private void btnTags_Click(object sender, EventArgs e) {
+            frmTags tag = new frmTags();
+            tag.ShowDialog();
+        }
     }
 }

@@ -5,47 +5,37 @@ using System.Timers;
 using RejectDetailsLib;
 
 namespace RejectDetailsService {
-    public partial class Service1 : ServiceBase
-    {
+    public partial class Service1 : ServiceBase {
         //private RejectDetails rejectClass = new RejectDetails();
 
-        public Service1()
-        {
+        public Service1() {
             InitializeComponent();
         }
 
-        protected override void OnStart(string[] args)
-        {
+        protected override void OnStart(string[] args) {
             clsLog.addLog("Start...");
-            try
-            {
+            try {
                 Timer timer = new Timer();
                 timer.Interval = SystemKeys.VISIT_INTERVAL; // 500; // 0.5 seconds
                 timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
                 timer.Start();
-            }
-            catch (Exception e)
-            {
+            } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
-            try
-            {
+            try {
                 //addLog("START COPY" + DateTime.Now.ToShortTimeString());
                 Timer timer = new Timer();
                 timer.Interval = SystemKeys.COPY_INTERVAL; //  31000; // 60 seconds
                 timer.Elapsed += new ElapsedEventHandler(this.OnTimerCopy);
                 timer.Start();
-            }
-            catch (Exception e)
-            {
+            } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
 
 
         }
 
-        protected override void OnStop()
-        {
+        protected override void OnStop() {
             clsLog.addLog("Stop...");
         }
 
@@ -59,23 +49,27 @@ namespace RejectDetailsService {
         //    }
         //}
 
-        public void OnTimer(object sender, ElapsedEventArgs args)
-        {
+        public void OnTimer(object sender, ElapsedEventArgs args) {
             try {
                 RejectDetails.Instance.Start();
-            } catch ( Exception e ) {
+            } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
         }
 
-        public void OnTimerCopy(object sender, ElapsedEventArgs args)
-        {
+        public void OnTimerCopy(object sender, ElapsedEventArgs args) {
             try {
-                RejectDetails.Instance.CopyFile();
-            } catch ( Exception e ) {
+                if(SystemKeys.SAVE_TO_FILE) {
+                    string lsSource = SystemKeys.getFullFileName();
+                    if(File.Exists(lsSource)) {
+                        File.Copy(lsSource, SystemKeys.getCopyFileName(), true);
+                    }
+                }
+            } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
         }
 
     }
 }
+

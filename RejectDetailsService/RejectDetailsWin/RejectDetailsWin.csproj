@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmIPModify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIPModify.Designer.cs">
+      <DependentUpon>frmIPModify.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +64,18 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmTagModify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTagModify.Designer.cs">
+      <DependentUpon>frmTagModify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTags.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTags.Designer.cs">
+      <DependentUpon>frmTags.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,11 +84,20 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmIPModify.resx">
+      <DependentUpon>frmIPModify.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTagModify.resx">
+      <DependentUpon>frmTagModify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTags.resx">
+      <DependentUpon>frmTags.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTest.resx">
       <DependentUpon>frmTest.cs</DependentUpon>
