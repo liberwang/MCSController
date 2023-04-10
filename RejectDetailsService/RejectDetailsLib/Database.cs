@@ -4,17 +4,17 @@ using System.Data.SqlClient;
 
 namespace RejectDetailsLib {
     public class Database : DataSource {
-        public static void SetContent(string psContent, string psTagName, string ipaddress, int serialNumber) {
+        public static void SetContent(string psContent, string psTagName, string ipaddress, string serialNumber) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, tag_name, controller_ip, serial_number) VALUES ('{psContent}', '{psTagName}','{ipaddress}', {serialNumber})";
+                    com.CommandText = $@"INSERT INTO dbo.tblTagContent (tag_cont, tag_name, controller_ip, serial_number) VALUES ('{psContent}', '{psTagName}','{ipaddress}', '{serialNumber}')";
                     com.ExecuteNonQuery();
                 }
             }
         }
 
-        public static void SetContent(List<(string, string)>tagValue, string ipaddress, int serialNumber) {
+        public static void SetContent(List<(string, string)>tagValue, string ipaddress, string serialNumber) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
@@ -103,7 +103,7 @@ where b.StationId = {StationID} ";
                             TagName = dr.GetString(1),
                             TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
                             Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
-                            ReadWrite = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Read = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
                             StationTagId = dr.GetInt32(5),
                         };
                         listTags.Add(tag);
@@ -121,10 +121,10 @@ where b.StationId = {StationID} ";
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRW, ft.tagDescription 
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite 
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
-WHERE (ft.tagRW IS NULL OR ft.tagRW != 1)
+WHERE (ft.tagRead IS NULL OR ft.tagRead != 1)
 AND controllerId = {ControllerID}
 ";
 
@@ -144,8 +144,9 @@ AND controllerId = {ControllerID}
                             TagId = dr.GetInt32(0),
                             TagName = dr.GetString(1),
                             TagType = dr.GetString(2),
-                            ReadWrite = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
+                            Read = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
                             Comment = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
+                            Write = dr.GetInt16(5)
                         };
                         listTags.Add(tag);
                     }
@@ -162,10 +163,10 @@ AND controllerId = {ControllerID}
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     com.CommandText = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRW, ft.tagDescription 
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite 
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
-WHERE ft.tagRW = 1 AND controllerId = {ControllerID}";
+WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
 
                     SqlDataReader dr = com.ExecuteReader();
 
@@ -174,9 +175,9 @@ WHERE ft.tagRW = 1 AND controllerId = {ControllerID}";
                             TagId = dr.GetInt32(0),
                             TagName = dr.GetString(1),
                             TagType = dr.GetString(2),
-                            ReadWrite = dr.GetInt16(3),
+                            Read = dr.GetInt16(3),
                             Comment = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
-                            
+                            Write = dr.GetInt16(5)
                         };
                         listTags.Add(tag);
                     }
@@ -186,25 +187,26 @@ WHERE ft.tagRW = 1 AND controllerId = {ControllerID}";
             }
             return listTags;
         }
-        public Dictionary<string, string> GetReadWriteTag() {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
 
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
-                    conn.Open();
-                    com.CommandText = $@"select tg1.tagName As ReadTagName, tg2.tagName As WriteTagName from tblTagReadWrite rw 
-  join tbltags tg1 on rw.readTagId = tg1.id 
-  join tblTags tg2 on rw.writeTagId = tg2.id ";
-                    SqlDataReader dr = com.ExecuteReader();
+  //      public Dictionary<string, string> GetReadWriteTag() {
+  //          Dictionary<string, string> dic = new Dictionary<string, string>();
 
-                    while(dr.Read()) {
-                        dic.Add(dr.GetString(0), dr.GetString(1));
-                    }
-                    dr.Close();
-                }
-            }
-            return dic;
-        }
+  //          using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
+  //              using(SqlCommand com = conn.CreateCommand()) {
+  //                  conn.Open();
+  //                  com.CommandText = $@"select tg1.tagName As ReadTagName, tg2.tagName As WriteTagName from tblTagReadWrite rw 
+  //join tbltags tg1 on rw.readTagId = tg1.id 
+  //join tblTags tg2 on rw.writeTagId = tg2.id ";
+  //                  SqlDataReader dr = com.ExecuteReader();
+
+  //                  while(dr.Read()) {
+  //                      dic.Add(dr.GetString(0), dr.GetString(1));
+  //                  }
+  //                  dr.Close();
+  //              }
+  //          }
+  //          return dic;
+  //      }
 
         public Dictionary<string, string> GetSystemSettings() {
             Dictionary<string, string> dic = new Dictionary<string, string>();
@@ -310,8 +312,10 @@ COMMIT TRANSACTION;
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, ft.tagRW, ft.tagDescription, 
-CASE WHEN ft.tagRW = 1 THEN 'Read' WHEN ft.tagRW = -1 THEN 'Write' ELSE '' END as tagRWText
+                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, 
+ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, 
+CASE WHEN ft.tagRead = 1 THEN 'Read' ELSE '' END as tagReadText,
+CASE WHEN ft.tagWrite = 1 THEN 'Write' ELSE '' END as tagWriteText
 FROM dbo.tblFullTag ft WITH(NOLOCK) JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE controllerId = {ControllerID}";
 
@@ -326,18 +330,18 @@ WHERE controllerId = {ControllerID}";
             }
         }
 
-        public void SetFullTags(int ControllerId, string tagName, int tagType, int tagRW, string description) {
+        public void SetFullTags(int ControllerId, string tagName, int tagType, int tagRead, int tagWrite,string description) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     com.CommandText = $@"
 IF EXISTS( SELECT 1 FROM tblFullTag WHERE controllerId = {ControllerId} AND tagName = '{tagName}' )
     UPDATE tblFullTag 
-    SET tagType = {tagType}, tagDescription = '{description}', tagRW = {tagRW} 
+    SET tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite} 
     WHERE controllerId = {ControllerId} AND tagName = '{tagName}'
 ELSE 
-    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRW ) VALUES 
-    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRW})
+    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite) VALUES 
+    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite})
 ";
                     com.ExecuteNonQuery();
                 }

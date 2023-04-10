@@ -21,8 +21,9 @@ namespace RejectDetailsLib {
 
         public string Comment { get; set; }
 
-        public int ReadWrite { get; set; }
+        public int Read { get; set; }
 
+        public int Write { get; set; }
         //public string IpAddress { get; set; }
 
         public Tag plcTag { get; set; }

@@ -45,15 +45,15 @@ namespace RejectDetailsLib {
             controllerId = controlId;
         }
 
-          public void GetTags(string IpAddress) {
+        public void GetTags(string IpAddress) {
 
-            if ( tagRead != null && ! string.IsNullOrWhiteSpace(tagRead.TagName)) {
+            if(tagRead != null && !string.IsNullOrWhiteSpace(tagRead.TagName)) {
                 tagRead.GenerateTag(IpAddress);
                 this.tagClass.AddTag(tagRead.plcTag);
 
                 string prefix = "";
-                if (tagRead.TagName.IndexOf('.') >= 0 ) {
-                    int lastIndex = tagRead.TagName.LastIndexOf('.');
+                if(tagRead.TagName.IndexOf('.') >= 0) {
+                    int lastIndex = tagRead.TagName.IndexOf('.');
                     prefix = tagRead.TagName.Substring(0, lastIndex + 1);
                 }
                 List<clsTag> tagList = new Database().GetTagGroup(prefix, this.controllerId);
@@ -61,13 +61,14 @@ namespace RejectDetailsLib {
                 tagWrite = new List<clsTag>();
                 listTags = new List<clsTag>();
 
-                foreach( clsTag tag in tagList) {
+                foreach(clsTag tag in tagList) {
                     tag.GenerateTag(IpAddress);
+                    listTags.Add(tag);
 
-                    if ( tag.ReadWrite == -1 ) {
+                    if(tag.Write == 1) {
                         tagWrite.Add(tag);
-                    } else {
-                        listTags.Add(tag);
+                        //} else {
+                        //    listTags.Add(tag);
                     }
 
                     this.tagClass.AddTag(tag.plcTag);
@@ -80,8 +81,8 @@ namespace RejectDetailsLib {
 
             List<clsTag> listTags = new Database().GetReadTags(ControllerID);
 
-            foreach( clsTag readTag in listTags) {
-                clsTagGroup group = new clsTagGroup( readTag, ControllerID);
+            foreach(clsTag readTag in listTags) {
+                clsTagGroup group = new clsTagGroup(readTag, ControllerID);
                 group.GetTags(IpAddress);
 
                 list.Add(group);

@@ -176,7 +176,7 @@ namespace RejectDetailsLib {
 
                             if(DBRequest) {
                                 List<(string, string)> listReadValues = new List<(string, string)>();
-                                int tagSerialNoValue = 0;
+                                string tagSerialNoValue = string.Empty;
                                 bool isOK = true;
 
                                 foreach(clsTag tagClass in tagGroup.listTags) {
@@ -215,7 +215,7 @@ namespace RejectDetailsLib {
                                     listReadValues.Add((readValue.ToString(), tagClass.TagName));
 
                                     if(tag.Name.EndsWith("SerialNumber")) {
-                                        tagSerialNoValue = (int)readValue;
+                                        tagSerialNoValue = readValue.ToString();
                                     }
                                 }
 
@@ -313,7 +313,7 @@ namespace RejectDetailsLib {
 
         //}
 
-        private void SaveToFile(List<(string, string)> tagValue, int serialNumber, string ipAddress) {
+        private void SaveToFile(List<(string, string)> tagValue, string serialNumber, string ipAddress) {
             if(SystemKeys.SAVE_TO_FILE) {
                 string fileName = SystemKeys.getFullFileName();
 

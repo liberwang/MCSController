@@ -19,19 +19,16 @@ namespace RejectDetailsWin {
             InitializeComponent();
         }
 
-        public frmTagModify(int conId, string ipAdd, string name="", int iType = 1, int iRW = 0, string description = "" ) : this() {
+        public frmTagModify(int conId, string ipAdd, string name="", int iType = 1, int iRead = 0, int iWrite = 0,string description = "" ) : this() {
             this.controllerId = conId;
             this.ipAddress = ipAdd;
 
             this.txtTagName.Text = name;
             this.cboType.SelectedValue = iType;
             this.txtDescription.Text = description;
-            if(iRW == 0) {
-                this.optRegular.Checked = true;
-            } else if(iRW == 1)
-                this.optRead.Checked = true;
-            else
-                this.optWrite.Checked = true;
+            this.optRegular.Checked = iRead == 0;
+            this.optRead.Checked = iRead == 1;
+            this.chkWriteBack.Checked = iWrite == 1;
         }
 
         private void frmTagModify_Load(object sender, EventArgs e) {
@@ -47,14 +44,15 @@ namespace RejectDetailsWin {
             string sName = this.txtTagName.Text.Trim();
             string sDescription = this.txtDescription.Text.Trim();
             int iType = (int)this.cboType.SelectedValue;
-            int iRW = this.optRegular.Checked ? 0 : (this.optRead.Checked ? 1 : -1);
+            int iRead = this.optRegular.Checked ? 0 : 1;
+            int iWrite = this.chkWriteBack.Checked ? 1 : 0;
 
             if ( string.IsNullOrWhiteSpace( sName)) {
                 MessageBox.Show("Please input tag name.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            db.SetFullTags(this.controllerId, sName, iType, iRW, sDescription);
+            db.SetFullTags(this.controllerId, sName, iType, iRead, iWrite, sDescription);
 
             this.DialogResult = DialogResult.OK;
             this.Close();

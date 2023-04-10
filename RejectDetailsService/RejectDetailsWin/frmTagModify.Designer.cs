@@ -32,11 +32,11 @@ namespace RejectDetailsWin {
             this.label4 = new System.Windows.Forms.Label();
             this.optRegular = new System.Windows.Forms.RadioButton();
             this.optRead = new System.Windows.Forms.RadioButton();
-            this.optWrite = new System.Windows.Forms.RadioButton();
             this.txtIPAddress = new System.Windows.Forms.TextBox();
             this.txtTagName = new System.Windows.Forms.TextBox();
             this.cboType = new System.Windows.Forms.ComboBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
+            this.chkWriteBack = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnSave
@@ -110,23 +110,12 @@ namespace RejectDetailsWin {
             // optRead
             // 
             this.optRead.AutoSize = true;
-            this.optRead.Location = new System.Drawing.Point(267, 251);
+            this.optRead.Location = new System.Drawing.Point(148, 278);
             this.optRead.Name = "optRead";
-            this.optRead.Size = new System.Drawing.Size(63, 21);
+            this.optRead.Size = new System.Drawing.Size(94, 21);
             this.optRead.TabIndex = 7;
-            this.optRead.Text = "Read";
+            this.optRead.Text = "Read Flag";
             this.optRead.UseVisualStyleBackColor = true;
-            // 
-            // optWrite
-            // 
-            this.optWrite.AutoSize = true;
-            this.optWrite.Location = new System.Drawing.Point(375, 251);
-            this.optWrite.Name = "optWrite";
-            this.optWrite.Size = new System.Drawing.Size(62, 21);
-            this.optWrite.TabIndex = 8;
-            this.optWrite.TabStop = true;
-            this.optWrite.Text = "Write";
-            this.optWrite.UseVisualStyleBackColor = true;
             // 
             // txtIPAddress
             // 
@@ -159,17 +148,27 @@ namespace RejectDetailsWin {
             this.txtDescription.Size = new System.Drawing.Size(420, 22);
             this.txtDescription.TabIndex = 12;
             // 
+            // chkWriteBack
+            // 
+            this.chkWriteBack.AutoSize = true;
+            this.chkWriteBack.Location = new System.Drawing.Point(290, 264);
+            this.chkWriteBack.Name = "chkWriteBack";
+            this.chkWriteBack.Size = new System.Drawing.Size(97, 21);
+            this.chkWriteBack.TabIndex = 13;
+            this.chkWriteBack.Text = "Write back";
+            this.chkWriteBack.UseVisualStyleBackColor = true;
+            // 
             // frmTagModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(656, 404);
+            this.Controls.Add(this.chkWriteBack);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.cboType);
             this.Controls.Add(this.txtTagName);
             this.Controls.Add(this.txtIPAddress);
-            this.Controls.Add(this.optWrite);
             this.Controls.Add(this.optRead);
             this.Controls.Add(this.optRegular);
             this.Controls.Add(this.label4);
@@ -200,10 +199,10 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton optRegular;
         private System.Windows.Forms.RadioButton optRead;
-        private System.Windows.Forms.RadioButton optWrite;
         private System.Windows.Forms.TextBox txtIPAddress;
         private System.Windows.Forms.TextBox txtTagName;
         private System.Windows.Forms.ComboBox cboType;
         private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.CheckBox chkWriteBack;
     }
 }

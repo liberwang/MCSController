@@ -31,12 +31,13 @@ namespace RejectDetailsWin {
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnTags = new System.Windows.Forms.Button();
+            this.btnQuery = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTest
             // 
             this.btnTest.Image = ((System.Drawing.Image)(resources.GetObject("btnTest.Image")));
-            this.btnTest.Location = new System.Drawing.Point(561, 120);
+            this.btnTest.Location = new System.Drawing.Point(635, 120);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(125, 125);
             this.btnTest.TabIndex = 1;
@@ -59,7 +60,7 @@ namespace RejectDetailsWin {
             // btnSetting
             // 
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
-            this.btnSetting.Location = new System.Drawing.Point(371, 120);
+            this.btnSetting.Location = new System.Drawing.Point(435, 120);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(125, 125);
             this.btnSetting.TabIndex = 2;
@@ -70,7 +71,7 @@ namespace RejectDetailsWin {
             // btnTags
             // 
             this.btnTags.Image = ((System.Drawing.Image)(resources.GetObject("btnTags.Image")));
-            this.btnTags.Location = new System.Drawing.Point(80, 120);
+            this.btnTags.Location = new System.Drawing.Point(34, 120);
             this.btnTags.Name = "btnTags";
             this.btnTags.Size = new System.Drawing.Size(125, 125);
             this.btnTags.TabIndex = 3;
@@ -78,12 +79,23 @@ namespace RejectDetailsWin {
             this.btnTags.UseVisualStyleBackColor = true;
             this.btnTags.Click += new System.EventHandler(this.btnTags_Click);
             // 
+            // btnQuery
+            // 
+            this.btnQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnQuery.Image")));
+            this.btnQuery.Location = new System.Drawing.Point(235, 120);
+            this.btnQuery.Name = "btnQuery";
+            this.btnQuery.Size = new System.Drawing.Size(125, 125);
+            this.btnQuery.TabIndex = 4;
+            this.toolTip.SetToolTip(this.btnQuery, "Query Tag Data");
+            this.btnQuery.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnQuery);
             this.Controls.Add(this.btnTags);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnTest);
@@ -105,5 +117,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Button btnTags;
+        private System.Windows.Forms.Button btnQuery;
     }
 }

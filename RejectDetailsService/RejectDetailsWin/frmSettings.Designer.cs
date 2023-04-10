@@ -40,8 +40,6 @@ namespace RejectDetailsWin {
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.txtOutputFileExt = new System.Windows.Forms.TextBox();
             this.txtCopyFileFolder = new System.Windows.Forms.TextBox();
             this.txtCopyFilePrefix = new System.Windows.Forms.TextBox();
@@ -190,7 +188,7 @@ namespace RejectDetailsWin {
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(127, 449);
+            this.label8.Location = new System.Drawing.Point(127, 435);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 17);
@@ -200,7 +198,7 @@ namespace RejectDetailsWin {
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(493, 449);
+            this.label9.Location = new System.Drawing.Point(493, 435);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(94, 17);
@@ -210,32 +208,12 @@ namespace RejectDetailsWin {
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(111, 500);
+            this.label10.Location = new System.Drawing.Point(111, 486);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(106, 17);
             this.label10.TabIndex = 15;
             this.label10.Text = "Log File Folder:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(133, 552);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(86, 17);
-            this.label12.TabIndex = 17;
-            this.label12.Text = "Save to File:";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(302, 552);
-            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 17);
-            this.label13.TabIndex = 18;
-            this.label13.Text = "Save to DB:";
             // 
             // txtOutputFileExt
             // 
@@ -271,7 +249,7 @@ namespace RejectDetailsWin {
             // 
             // nudVisitInterval
             // 
-            this.nudVisitInterval.Location = new System.Drawing.Point(225, 446);
+            this.nudVisitInterval.Location = new System.Drawing.Point(225, 432);
             this.nudVisitInterval.Margin = new System.Windows.Forms.Padding(4);
             this.nudVisitInterval.Maximum = new decimal(new int[] {
             100000,
@@ -294,7 +272,7 @@ namespace RejectDetailsWin {
             // 
             // nudCopyInterval
             // 
-            this.nudCopyInterval.Location = new System.Drawing.Point(597, 446);
+            this.nudCopyInterval.Location = new System.Drawing.Point(597, 432);
             this.nudCopyInterval.Margin = new System.Windows.Forms.Padding(4);
             this.nudCopyInterval.Maximum = new decimal(new int[] {
             100000,
@@ -344,7 +322,7 @@ namespace RejectDetailsWin {
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.txtCopyFilePrefix);
             this.groupBox2.Controls.Add(this.txtCopyFileExt);
-            this.groupBox2.Location = new System.Drawing.Point(52, 256);
+            this.groupBox2.Location = new System.Drawing.Point(52, 244);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
@@ -367,26 +345,30 @@ namespace RejectDetailsWin {
             // chkSaveToFile
             // 
             this.chkSaveToFile.AutoSize = true;
-            this.chkSaveToFile.Location = new System.Drawing.Point(229, 551);
+            this.chkSaveToFile.Location = new System.Drawing.Point(225, 532);
             this.chkSaveToFile.Margin = new System.Windows.Forms.Padding(4);
             this.chkSaveToFile.Name = "chkSaveToFile";
-            this.chkSaveToFile.Size = new System.Drawing.Size(18, 17);
+            this.chkSaveToFile.Size = new System.Drawing.Size(104, 21);
             this.chkSaveToFile.TabIndex = 27;
+            this.chkSaveToFile.Text = "Save to File";
             this.chkSaveToFile.UseVisualStyleBackColor = true;
             // 
             // chkSaveToDB
             // 
             this.chkSaveToDB.AutoSize = true;
-            this.chkSaveToDB.Location = new System.Drawing.Point(397, 551);
+            this.chkSaveToDB.Checked = true;
+            this.chkSaveToDB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSaveToDB.Location = new System.Drawing.Point(361, 532);
             this.chkSaveToDB.Margin = new System.Windows.Forms.Padding(4);
             this.chkSaveToDB.Name = "chkSaveToDB";
-            this.chkSaveToDB.Size = new System.Drawing.Size(18, 17);
+            this.chkSaveToDB.Size = new System.Drawing.Size(101, 21);
             this.chkSaveToDB.TabIndex = 28;
+            this.chkSaveToDB.Text = "Save to DB";
             this.chkSaveToDB.UseVisualStyleBackColor = true;
             // 
             // txtLogFolder
             // 
-            this.txtLogFolder.Location = new System.Drawing.Point(225, 494);
+            this.txtLogFolder.Location = new System.Drawing.Point(225, 480);
             this.txtLogFolder.Margin = new System.Windows.Forms.Padding(4);
             this.txtLogFolder.Name = "txtLogFolder";
             this.txtLogFolder.Size = new System.Drawing.Size(529, 22);
@@ -394,7 +376,7 @@ namespace RejectDetailsWin {
             // 
             // btnLogFileFolder
             // 
-            this.btnLogFileFolder.Location = new System.Drawing.Point(766, 492);
+            this.btnLogFileFolder.Location = new System.Drawing.Point(766, 478);
             this.btnLogFileFolder.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogFileFolder.Name = "btnLogFileFolder";
             this.btnLogFileFolder.Size = new System.Drawing.Size(32, 28);
@@ -417,8 +399,6 @@ namespace RejectDetailsWin {
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.nudCopyInterval);
             this.Controls.Add(this.nudVisitInterval);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label12);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -461,8 +441,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtOutputFileExt;
         private System.Windows.Forms.TextBox txtCopyFileFolder;
         private System.Windows.Forms.TextBox txtCopyFilePrefix;

@@ -40,18 +40,20 @@ namespace RejectDetailsWin {
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnAddTag = new System.Windows.Forms.Button();
             this.dgvTags = new System.Windows.Forms.DataGridView();
+            this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.cboIPAddress = new System.Windows.Forms.ComboBox();
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
-            this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.colTagId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTypeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagRWText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagRW = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagRead = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagWriteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagWrite = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagEdit = new System.Windows.Forms.DataGridViewImageColumn();
             this.colTagDelete = new System.Windows.Forms.DataGridViewImageColumn();
             this.tabControl1.SuspendLayout();
@@ -60,8 +62,8 @@ namespace RejectDetailsWin {
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -218,7 +220,9 @@ namespace RejectDetailsWin {
             this.colTypeName,
             this.colTagDesc,
             this.colTagRWText,
-            this.colTagRW,
+            this.colTagRead,
+            this.colTagWriteText,
+            this.colTagWrite,
             this.colTagEdit,
             this.colTagDelete});
             this.dgvTags.DataSource = this.bindingSource3;
@@ -269,6 +273,7 @@ namespace RejectDetailsWin {
             this.colTagId.Name = "colTagId";
             this.colTagId.ReadOnly = true;
             this.colTagId.Visible = false;
+            this.colTagId.Width = 125;
             // 
             // colTagName
             // 
@@ -286,6 +291,7 @@ namespace RejectDetailsWin {
             this.colTypeId.MinimumWidth = 6;
             this.colTypeId.Name = "colTypeId";
             this.colTypeId.Visible = false;
+            this.colTypeId.Width = 125;
             // 
             // colTypeName
             // 
@@ -307,22 +313,41 @@ namespace RejectDetailsWin {
             // 
             // colTagRWText
             // 
-            this.colTagRWText.DataPropertyName = "tagRWText";
-            this.colTagRWText.HeaderText = "RW";
+            this.colTagRWText.DataPropertyName = "tagReadText";
+            this.colTagRWText.HeaderText = "Read";
             this.colTagRWText.MinimumWidth = 6;
             this.colTagRWText.Name = "colTagRWText";
             this.colTagRWText.ReadOnly = true;
             this.colTagRWText.Width = 50;
             // 
-            // colTagRW
+            // colTagRead
             // 
-            this.colTagRW.DataPropertyName = "tagRW";
-            this.colTagRW.HeaderText = "Column1";
-            this.colTagRW.MinimumWidth = 6;
-            this.colTagRW.Name = "colTagRW";
-            this.colTagRW.ReadOnly = true;
-            this.colTagRW.Visible = false;
-            this.colTagRW.Width = 125;
+            this.colTagRead.DataPropertyName = "tagRead";
+            this.colTagRead.HeaderText = "Column1";
+            this.colTagRead.MinimumWidth = 6;
+            this.colTagRead.Name = "colTagRead";
+            this.colTagRead.ReadOnly = true;
+            this.colTagRead.Visible = false;
+            this.colTagRead.Width = 125;
+            // 
+            // colTagWriteText
+            // 
+            this.colTagWriteText.DataPropertyName = "tagWriteText";
+            this.colTagWriteText.HeaderText = "Write";
+            this.colTagWriteText.MinimumWidth = 6;
+            this.colTagWriteText.Name = "colTagWriteText";
+            this.colTagWriteText.ReadOnly = true;
+            this.colTagWriteText.Width = 50;
+            // 
+            // colTagWrite
+            // 
+            this.colTagWrite.DataPropertyName = "tagWrite";
+            this.colTagWrite.HeaderText = "Column1";
+            this.colTagWrite.MinimumWidth = 6;
+            this.colTagWrite.Name = "colTagWrite";
+            this.colTagWrite.ReadOnly = true;
+            this.colTagWrite.Visible = false;
+            this.colTagWrite.Width = 125;
             // 
             // colTagEdit
             // 
@@ -368,8 +393,8 @@ namespace RejectDetailsWin {
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -401,7 +426,9 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridViewTextBoxColumn colTypeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagDesc;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagRWText;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTagRW;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTagRead;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTagWriteText;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTagWrite;
         private System.Windows.Forms.DataGridViewImageColumn colTagEdit;
         private System.Windows.Forms.DataGridViewImageColumn colTagDelete;
     }

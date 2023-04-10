@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows.Forms;
+﻿using RejectDetailsLib;
+using System;
 using System.IO;
-using RejectDetailsLib;
+using System.Windows.Forms;
 
 namespace RejectDetailsWin {
     public partial class frmSettings : Form {
@@ -36,6 +28,8 @@ namespace RejectDetailsWin {
 
             this.chkSaveToDB.Checked = SystemKeys.SAVE_TO_DB;
             this.chkSaveToFile.Checked = SystemKeys.SAVE_TO_FILE;
+
+            
         }
 
         private void btnOutputFileFolder_Click(object sender, EventArgs e) {
@@ -96,43 +90,43 @@ namespace RejectDetailsWin {
             bool sSaveToDB = this.chkSaveToDB.Checked;
             bool sSaveToFile = this.chkSaveToFile.Checked;
 
-            if(sOutputFileFolder != SystemKeys.FILE_FOLDER) {
+            //if(sOutputFileFolder != SystemKeys.FILE_FOLDER) {
                 SystemKeys.setKey(SystemKeys.FILE_FOLDER_KEY, sOutputFileFolder);
-            }
-            if(sOutputFileName != SystemKeys.FILE_NAME) {
+            //}
+            //if(sOutputFileName != SystemKeys.FILE_NAME) {
                 SystemKeys.setKey(SystemKeys.FILE_NAME_KEY, sOutputFileName);
-            }
-            if(sOutputFilePrefix != SystemKeys.FILE_NAME_PREFIX) {
+            //}
+            //if(sOutputFilePrefix != SystemKeys.FILE_NAME_PREFIX) {
                 SystemKeys.setKey(SystemKeys.FILE_NAME_PREFIX_KEY, sOutputFilePrefix);
-            }
-            if(sOutputFileExt != SystemKeys.FILE_NAME_EXT) {
+            //}
+            //if(sOutputFileExt != SystemKeys.FILE_NAME_EXT) {
                 SystemKeys.setKey(SystemKeys.FILE_NAME_EXT_KEY, sOutputFileExt);
-            }
-            if(sCopyFileFolder != SystemKeys.COPY_FOLDER) {
+            //}
+            //if(sCopyFileFolder != SystemKeys.COPY_FOLDER) {
                 SystemKeys.setKey(SystemKeys.COPY_FOLDER_KEY, sCopyFileFolder);
-            }
-            if(sCopyFilePrefix != SystemKeys.COPY_FILE_PREFIX) {
+            //}
+            //if(sCopyFilePrefix != SystemKeys.COPY_FILE_PREFIX) {
                 SystemKeys.setKey(SystemKeys.COPY_FILE_PREFIX_KEY, sCopyFilePrefix);
-            }
-            if(sCopyFileExt != SystemKeys.COPY_FILE_EXT) {
+            //}
+            //if(sCopyFileExt != SystemKeys.COPY_FILE_EXT) {
                 SystemKeys.setKey(SystemKeys.COPY_FILE_EXT_KEY, sCopyFileExt);
-            }
-            if(nCopyInterval != SystemKeys.COPY_INTERVAL) {
+            //}
+            //if(nCopyInterval != SystemKeys.COPY_INTERVAL) {
                 SystemKeys.setKey(SystemKeys.COPY_INTERVAL_KEY, nCopyInterval.ToString());
-            }
-            if(nVisitInterval != SystemKeys.VISIT_INTERVAL) {
+            //}
+            //if(nVisitInterval != SystemKeys.VISIT_INTERVAL) {
                 SystemKeys.setKey(SystemKeys.VISIT_INTERVAL_KEY, nVisitInterval.ToString());
-            }
+            //}
 
-            if(sLogFolder != SystemKeys.LOG_FILE) {
+            //if(sLogFolder != SystemKeys.LOG_FILE) {
                 SystemKeys.setKey(SystemKeys.LOG_FILE_KEY, sLogFolder);
-            }
-            if(sSaveToDB != SystemKeys.SAVE_TO_DB) {
+            //}
+            //if(sSaveToDB != SystemKeys.SAVE_TO_DB) {
                 SystemKeys.setKey(SystemKeys.SAVE_TO_DB_KEY, sSaveToDB.ToString());
-            }
-            if(sSaveToFile != SystemKeys.SAVE_TO_FILE) {
+            //}
+            //if(sSaveToFile != SystemKeys.SAVE_TO_FILE) {
                 SystemKeys.setKey(SystemKeys.SAVE_TO_FILE_KEY, sSaveToFile.ToString());
-            }
+            //}
 
             this.Close();
         }

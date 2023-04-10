@@ -12,6 +12,6 @@ namespace RejectDetailsLib {
 
         List<clsTag> GetTagInformation(int StationID, string StationName);
 
-        Dictionary<string, string> GetReadWriteTag();
+        //Dictionary<string, string> GetReadWriteTag();
     }
 }
