@@ -28,6 +28,34 @@ namespace RejectDetailsLib {
             }
         }
 
+        public DataSet GetContent(string startTime, string endTime, string ipAddress, string tagName, string tagValue) {
+            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
+                using(SqlCommand com = conn.CreateCommand()) {
+                    conn.Open();
+                    string sqlString = $@"SELECT id, tag_cont AS tagValue, tag_name AS tagName, tag_add_dt AS tagTime, controller_ip AS IPAddress, Serial_number as SerialNumber FROM tblTagContent WITH(NOLOCK)";
+                    sqlString += $@" WHERE tag_add_dt between '{startTime}' AND '{endTime}'";
+                    if(ipAddress != "All") {
+                        sqlString += $@" AND controller_ip = '{ipAddress}'";
+                    }
+                    if (!string.IsNullOrWhiteSpace(tagName)) {
+                        sqlString += $@" AND tag_name LIKE '%{tagName}%'";
+                    }
+                    if (!string.IsNullOrWhiteSpace(tagValue)) {
+                        sqlString += $@" AND tag_cont LIKE '%{tagValue}%'";
+                    }
+                    com.CommandText = sqlString;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    adapter.SelectCommand = com;
+
+                    DataSet controller = new DataSet();
+                    adapter.Fill(controller, "Customers");
+
+                    return controller;
+                }
+            }
+        }
+
         public List<clsController> GetController() {
             List<clsController> listCont = new List<clsController>();
 
@@ -243,11 +271,15 @@ ELSE
         }
 
 
-        public DataSet GetIPAddressDataSet() {
+        public DataSet GetIPAddressDataSet(bool enabledOnly = false) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, ip_address, description, isEnabled FROM tblController WITH(NOLOCK)";
+                    string sqlString = $@"SELECT id, ip_address, description, isEnabled FROM tblController WITH(NOLOCK)";
+                    if (enabledOnly) {
+                        sqlString += " WHERE isEnabled = 1";
+                    }
+                    com.CommandText = sqlString ;
 
                     SqlDataAdapter adapter = new SqlDataAdapter();
                     adapter.SelectCommand = com;

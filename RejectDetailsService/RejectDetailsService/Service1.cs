@@ -6,10 +6,9 @@ using RejectDetailsLib;
 
 namespace RejectDetailsService {
     public partial class Service1 : ServiceBase {
-        //private RejectDetails rejectClass = new RejectDetails();
-
         public Service1() {
             InitializeComponent();
+            SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
         }
 
         protected override void OnStart(string[] args) {
@@ -23,7 +22,6 @@ namespace RejectDetailsService {
                 clsLog.addLog(e.Message);
             }
             try {
-                //addLog("START COPY" + DateTime.Now.ToShortTimeString());
                 Timer timer = new Timer();
                 timer.Interval = SystemKeys.COPY_INTERVAL; //  31000; // 60 seconds
                 timer.Elapsed += new ElapsedEventHandler(this.OnTimerCopy);
@@ -31,23 +29,11 @@ namespace RejectDetailsService {
             } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
-
-
         }
 
         protected override void OnStop() {
             clsLog.addLog("Stop...");
         }
-
-        //public static void addLog(string slog)
-        //{
-        //    string logFile = SystemKeys.getLogName();
-
-        //    using (StreamWriter sw = File.AppendText(logFile))
-        //    {
-        //        sw.WriteLine(SystemKeys.getCurrentDateTime() + " " + slog);
-        //    }
-        //}
 
         public void OnTimer(object sender, ElapsedEventArgs args) {
             try {

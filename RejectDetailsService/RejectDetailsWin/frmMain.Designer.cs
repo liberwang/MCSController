@@ -32,6 +32,8 @@ namespace RejectDetailsWin {
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnTags = new System.Windows.Forms.Button();
             this.btnQuery = new System.Windows.Forms.Button();
+            this.cboDB = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnTest
@@ -88,6 +90,26 @@ namespace RejectDetailsWin {
             this.btnQuery.TabIndex = 4;
             this.toolTip.SetToolTip(this.btnQuery, "Query Tag Data");
             this.btnQuery.UseVisualStyleBackColor = true;
+            this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click);
+            // 
+            // cboDB
+            // 
+            this.cboDB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDB.FormattingEnabled = true;
+            this.cboDB.Location = new System.Drawing.Point(333, 23);
+            this.cboDB.Name = "cboDB";
+            this.cboDB.Size = new System.Drawing.Size(210, 24);
+            this.cboDB.TabIndex = 5;
+            this.cboDB.SelectedIndexChanged += new System.EventHandler(this.cboDB_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(254, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Database:";
             // 
             // frmMain
             // 
@@ -95,6 +117,8 @@ namespace RejectDetailsWin {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cboDB);
             this.Controls.Add(this.btnQuery);
             this.Controls.Add(this.btnTags);
             this.Controls.Add(this.btnSetting);
@@ -106,7 +130,9 @@ namespace RejectDetailsWin {
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MCS Controller Tool";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -118,5 +144,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Button btnTags;
         private System.Windows.Forms.Button btnQuery;
+        private System.Windows.Forms.ComboBox cboDB;
+        private System.Windows.Forms.Label label1;
     }
 }

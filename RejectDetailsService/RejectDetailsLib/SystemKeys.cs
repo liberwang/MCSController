@@ -5,22 +5,24 @@ using System.IO;
 
 namespace RejectDetailsLib {
     public class SystemKeys {
-        public static readonly string DB_CONNECT = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
+        public static string DB_CONNECT = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
+        public static readonly string DB_REMOTE = @"Server=tcp:{0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
+        public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
 
-        public static readonly string FILE_FOLDER;
-        public static readonly string FILE_NAME_PREFIX;
-        public static readonly string FILE_NAME;
-        public static readonly string FILE_NAME_EXT;
-        public static readonly string COPY_FOLDER;
-        public static readonly string COPY_FILE_EXT;
-        public static readonly string COPY_FILE_PREFIX;
-        public static readonly int VISIT_INTERVAL;
-        public static readonly int COPY_INTERVAL;
-        public static readonly string LOG_FILE;
-        public static readonly string IP_ADDRESS_THIS;
-        public static readonly bool SAVE_TO_FILE;
-        public static readonly bool SAVE_TO_DB;
-        public static readonly bool GET_DATA_FROM_XML;
+        public static string FILE_FOLDER;
+        public static string FILE_NAME_PREFIX;
+        public static string FILE_NAME;
+        public static string FILE_NAME_EXT;
+        public static string COPY_FOLDER;
+        public static string COPY_FILE_EXT;
+        public static string COPY_FILE_PREFIX;
+        public static int VISIT_INTERVAL;
+        public static int COPY_INTERVAL;
+        public static string LOG_FILE;
+        public static string IP_ADDRESS_THIS;
+        public static bool SAVE_TO_FILE;
+        public static bool SAVE_TO_DB;
+        public static bool GET_DATA_FROM_XML;
 
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
         public const string FILE_NAME_PREFIX_KEY = "OutputFileNamePrefix";
@@ -39,6 +41,10 @@ namespace RejectDetailsLib {
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
 
         static SystemKeys() {
+            initializeKey();
+        }
+
+        public static void initializeKey() {
             Database db = new Database();
             Dictionary<string, string> keys = db.GetSystemSettings();
 

@@ -220,8 +220,16 @@ namespace RejectDetailsLib {
                                 }
 
                                 if(isOK) {
+                                    // set read flag back first;
+                                    if (tagGroup.tagRead.Write == 1) {
+                                        client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
+                                    }
+
                                     // set back to write tags. 
                                     foreach(clsTag tagWrite in tagGroup.tagWrite) {
+                                        // todo write value back;
+                                        // TODO
+
                                         client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
                                     }
 
