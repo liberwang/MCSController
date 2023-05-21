@@ -34,6 +34,10 @@ namespace RejectDetailsWin {
             this.btnQuery = new System.Windows.Forms.Button();
             this.cboDB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTest
@@ -96,7 +100,7 @@ namespace RejectDetailsWin {
             // 
             this.cboDB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboDB.FormattingEnabled = true;
-            this.cboDB.Location = new System.Drawing.Point(333, 23);
+            this.cboDB.Location = new System.Drawing.Point(568, 16);
             this.cboDB.Name = "cboDB";
             this.cboDB.Size = new System.Drawing.Size(210, 24);
             this.cboDB.TabIndex = 5;
@@ -105,34 +109,58 @@ namespace RejectDetailsWin {
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(254, 26);
+            this.label1.Location = new System.Drawing.Point(464, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 17);
             this.label1.TabIndex = 6;
             this.label1.Text = "Database:";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(169, 62);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.cboDB);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(800, 60);
+            this.panel1.TabIndex = 8;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cboDB);
+            this.ClientSize = new System.Drawing.Size(800, 460);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnQuery);
             this.Controls.Add(this.btnTags);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnClose);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MCS Controller Tool";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -146,5 +174,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnQuery;
         private System.Windows.Forms.ComboBox cboDB;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
