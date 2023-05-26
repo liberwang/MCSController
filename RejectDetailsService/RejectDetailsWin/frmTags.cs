@@ -70,9 +70,10 @@ namespace RejectDetailsWin {
                 string sDescription = dgvTags.CurrentRow.Cells["colTagDesc"].Value.ToString();
                 short iRead = (short)dgvTags.CurrentRow.Cells["colTagRead"].Value;
                 short iWrite = (short)dgvTags.CurrentRow.Cells["colTagWrite"].Value;
+                short iOutput = (short)dgvTags.CurrentRow.Cells["colTagOutput"].Value;
 
                 if ( dgvTags.Columns[colindex].Name == "colTagEdit") {
-                    frmTagModify tagModify = new frmTagModify(controllerId, ipAddress, sTagName,iTagType, iRead, iWrite, sDescription);
+                    frmTagModify tagModify = new frmTagModify(controllerId, ipAddress, sTagName,iTagType, iRead, iWrite, sDescription, iOutput);
                     tagModify.ShowDialog();
 
                     if (tagModify.DialogResult == DialogResult.OK) {

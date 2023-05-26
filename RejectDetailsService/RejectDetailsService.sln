@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RejectDetailsLib", "RejectD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RejectDetailsWin", "RejectDetailsWin\RejectDetailsWin.csproj", "{058B5C2F-B8D2-4C9D-95AF-EDDE3070A33A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorWin", "MonitorWin\MonitorWin.csproj", "{00A24120-C134-4381-922D-56B95BA9E635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{058B5C2F-B8D2-4C9D-95AF-EDDE3070A33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{058B5C2F-B8D2-4C9D-95AF-EDDE3070A33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{058B5C2F-B8D2-4C9D-95AF-EDDE3070A33A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A24120-C134-4381-922D-56B95BA9E635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A24120-C134-4381-922D-56B95BA9E635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A24120-C134-4381-922D-56B95BA9E635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A24120-C134-4381-922D-56B95BA9E635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

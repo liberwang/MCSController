@@ -2,3 +2,9 @@ C:\Windows\Microsoft.NET\Framework64\v4.0.30319\installUtil.exe RejectDetailsSer
 
 uninstall: 
 installUtil.exe /u RejectDetailsService.exe
+
+
+
+1. install SQL Express 2019
+2. set enable for all in sql server configuration 
+3. set Windows and SQL login model in property of sql server

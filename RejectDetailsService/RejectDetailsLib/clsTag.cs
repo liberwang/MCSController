@@ -26,6 +26,8 @@ namespace RejectDetailsLib {
         public int Write { get; set; }
         //public string IpAddress { get; set; }
 
+        public int Output { get; set; }
+
         public Tag plcTag { get; set; }
 
         public void GenerateTag(string IpAddress) {

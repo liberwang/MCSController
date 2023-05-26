@@ -18,6 +18,7 @@ namespace RejectDetailsWin {
             string ipAddress = (this.cboIPAddress.SelectedItem as dynamic).Value;
             string tagName = this.txtTagName.Text.Trim();
             string tagValue = this.txtTagValue.Text.Trim();
+            string serialNo = this.txtSerialNumber.Text.Trim();
 
             if ( start.CompareTo(end) > 0 ) {
                 MessageBox.Show("Start time should be less than end time.", "Query", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -25,7 +26,7 @@ namespace RejectDetailsWin {
             }
 
 
-            DataSet ds = new Database().GetContent(start, end, ipAddress, tagName, tagValue);
+            DataSet ds = new Database().GetContent(start, end, ipAddress, tagName, tagValue, serialNo);
 
             this.bindingSource.DataSource = ds.Tables[0];
         }
@@ -35,7 +36,7 @@ namespace RejectDetailsWin {
             this.cboIPAddress.ValueMember = "Value";
 
             this.cboIPAddress.Items.Add(new { Text = "All", Value = "All" });
-            DataSet ds = new Database().GetIPAddressDataSet(true);
+            DataSet ds = new Database().GetIPAddressDataSet();
             foreach( DataRow dr in ds.Tables[0].Rows ) {
                 this.cboIPAddress.Items.Add(new { Text = dr[2].ToString(), Value = dr[1].ToString() });
             }

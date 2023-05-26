@@ -26,8 +26,13 @@ namespace RejectDetailsWin {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtTagValue = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtTagName = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.cboIPAddress = new System.Windows.Forms.ComboBox();
@@ -35,21 +40,19 @@ namespace RejectDetailsWin {
             this.label2 = new System.Windows.Forms.Label();
             this.btnQuery = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtTagName = new System.Windows.Forms.TextBox();
-            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtTagValue = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtSerialNumber = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToOrderColumns = true;
             this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.DataSource = this.bindingSource;
@@ -83,6 +86,8 @@ namespace RejectDetailsWin {
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.txtSerialNumber);
+            this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.txtTagValue);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtTagName);
@@ -98,6 +103,38 @@ namespace RejectDetailsWin {
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1131, 94);
             this.panel1.TabIndex = 2;
+            // 
+            // txtTagValue
+            // 
+            this.txtTagValue.Location = new System.Drawing.Point(426, 60);
+            this.txtTagValue.Name = "txtTagValue";
+            this.txtTagValue.Size = new System.Drawing.Size(200, 22);
+            this.txtTagValue.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(343, 63);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Tag Value:";
+            // 
+            // txtTagName
+            // 
+            this.txtTagName.Location = new System.Drawing.Point(101, 60);
+            this.txtTagName.Name = "txtTagName";
+            this.txtTagName.Size = new System.Drawing.Size(200, 22);
+            this.txtTagName.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 63);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 17);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Tag Name:";
             // 
             // dtpEnd
             // 
@@ -121,15 +158,15 @@ namespace RejectDetailsWin {
             // 
             this.cboIPAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboIPAddress.FormattingEnabled = true;
-            this.cboIPAddress.Location = new System.Drawing.Point(756, 15);
+            this.cboIPAddress.Location = new System.Drawing.Point(782, 15);
             this.cboIPAddress.Name = "cboIPAddress";
-            this.cboIPAddress.Size = new System.Drawing.Size(152, 24);
+            this.cboIPAddress.Size = new System.Drawing.Size(173, 24);
             this.cboIPAddress.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(670, 18);
+            this.label3.Location = new System.Drawing.Point(683, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 17);
             this.label3.TabIndex = 3;
@@ -163,37 +200,21 @@ namespace RejectDetailsWin {
             this.label1.TabIndex = 0;
             this.label1.Text = "Start Time:";
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 63);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 17);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Tag Name:";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(661, 62);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 17);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Serial Number:";
             // 
-            // txtTagName
+            // txtSerialNumber
             // 
-            this.txtTagName.Location = new System.Drawing.Point(101, 60);
-            this.txtTagName.Name = "txtTagName";
-            this.txtTagName.Size = new System.Drawing.Size(200, 22);
-            this.txtTagName.TabIndex = 8;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(343, 63);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 17);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Tag Value:";
-            // 
-            // txtTagValue
-            // 
-            this.txtTagValue.Location = new System.Drawing.Point(426, 60);
-            this.txtTagValue.Name = "txtTagValue";
-            this.txtTagValue.Size = new System.Drawing.Size(200, 22);
-            this.txtTagValue.TabIndex = 10;
+            this.txtSerialNumber.Location = new System.Drawing.Point(782, 59);
+            this.txtSerialNumber.Name = "txtSerialNumber";
+            this.txtSerialNumber.Size = new System.Drawing.Size(173, 22);
+            this.txtSerialNumber.TabIndex = 12;
             // 
             // frmQuery
             // 
@@ -208,11 +229,11 @@ namespace RejectDetailsWin {
             this.Text = "Query Tags";
             this.Load += new System.EventHandler(this.frmQuery_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -234,5 +255,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.BindingSource bindingSource;
         private System.Windows.Forms.TextBox txtTagValue;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtSerialNumber;
+        private System.Windows.Forms.Label label6;
     }
 }

@@ -28,11 +28,13 @@ namespace RejectDetailsLib {
             }
         }
 
-        public DataSet GetContent(string startTime, string endTime, string ipAddress, string tagName, string tagValue) {
+        public DataSet GetContent(string startTime, string endTime, string ipAddress, string tagName, string tagValue, string serialNo) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    string sqlString = $@"SELECT id, tag_cont AS tagValue, tag_name AS tagName, tag_add_dt AS tagTime, controller_ip AS IPAddress, Serial_number as SerialNumber FROM tblTagContent WITH(NOLOCK)";
+                    string sqlString = $@"SELECT Serial_number as SerialNumber, tag_add_dt AS tagTime, tag_name AS tagName, tag_cont AS tagValue, isnull( co.description, tc.controller_ip) AS IPAddress  
+FROM tblTagContent tc WITH(NOLOCK)
+LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
                     sqlString += $@" WHERE tag_add_dt between '{startTime}' AND '{endTime}'";
                     if(ipAddress != "All") {
                         sqlString += $@" AND controller_ip = '{ipAddress}'";
@@ -42,6 +44,9 @@ namespace RejectDetailsLib {
                     }
                     if (!string.IsNullOrWhiteSpace(tagValue)) {
                         sqlString += $@" AND tag_cont LIKE '%{tagValue}%'";
+                    }
+                    if (!string.IsNullOrWhiteSpace(serialNo)) {
+                        sqlString += $@" AND serial_number LIKE '%{serialNo}%'";
                     }
                     com.CommandText = sqlString;
 
@@ -345,9 +350,10 @@ COMMIT TRANSACTION;
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, 
-ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, 
+ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, ISNULL(ft.tagOutput, 0) AS tagOutput,
 CASE WHEN ft.tagRead = 1 THEN 'Read' ELSE '' END as tagReadText,
-CASE WHEN ft.tagWrite = 1 THEN 'Write' ELSE '' END as tagWriteText
+CASE WHEN ft.tagWrite = 1 THEN 'Write' ELSE '' END as tagWriteText,
+CASE WHEN ft.tagOutput = 1 THEN 'Output' ELSE '' END as tagOutputText
 FROM dbo.tblFullTag ft WITH(NOLOCK) JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE controllerId = {ControllerID}";
 
@@ -362,18 +368,18 @@ WHERE controllerId = {ControllerID}";
             }
         }
 
-        public void SetFullTags(int ControllerId, string tagName, int tagType, int tagRead, int tagWrite,string description) {
+        public void SetFullTags(int ControllerId, string tagName, int tagType, int tagRead, int tagWrite,string description, int tagOutput) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     com.CommandText = $@"
 IF EXISTS( SELECT 1 FROM tblFullTag WHERE controllerId = {ControllerId} AND tagName = '{tagName}' )
     UPDATE tblFullTag 
-    SET tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite} 
+    SET tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite}, tagOutput = {tagOutput}
     WHERE controllerId = {ControllerId} AND tagName = '{tagName}'
 ELSE 
-    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite) VALUES 
-    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite})
+    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite, tagOutput) VALUES 
+    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite},{tagOutput} )
 ";
                     com.ExecuteNonQuery();
                 }

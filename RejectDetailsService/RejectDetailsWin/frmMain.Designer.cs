@@ -36,6 +36,7 @@ namespace RejectDetailsWin {
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnChart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -43,7 +44,7 @@ namespace RejectDetailsWin {
             // btnTest
             // 
             this.btnTest.Image = ((System.Drawing.Image)(resources.GetObject("btnTest.Image")));
-            this.btnTest.Location = new System.Drawing.Point(635, 120);
+            this.btnTest.Location = new System.Drawing.Point(428, 267);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(125, 125);
             this.btnTest.TabIndex = 1;
@@ -55,7 +56,7 @@ namespace RejectDetailsWin {
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-            this.btnClose.Location = new System.Drawing.Point(678, 343);
+            this.btnClose.Location = new System.Drawing.Point(688, 413);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(100, 100);
             this.btnClose.TabIndex = 0;
@@ -66,7 +67,7 @@ namespace RejectDetailsWin {
             // btnSetting
             // 
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
-            this.btnSetting.Location = new System.Drawing.Point(435, 120);
+            this.btnSetting.Location = new System.Drawing.Point(235, 267);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(125, 125);
             this.btnSetting.TabIndex = 2;
@@ -77,7 +78,7 @@ namespace RejectDetailsWin {
             // btnTags
             // 
             this.btnTags.Image = ((System.Drawing.Image)(resources.GetObject("btnTags.Image")));
-            this.btnTags.Location = new System.Drawing.Point(34, 120);
+            this.btnTags.Location = new System.Drawing.Point(35, 267);
             this.btnTags.Name = "btnTags";
             this.btnTags.Size = new System.Drawing.Size(125, 125);
             this.btnTags.TabIndex = 3;
@@ -88,7 +89,7 @@ namespace RejectDetailsWin {
             // btnQuery
             // 
             this.btnQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnQuery.Image")));
-            this.btnQuery.Location = new System.Drawing.Point(235, 120);
+            this.btnQuery.Location = new System.Drawing.Point(35, 104);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(125, 125);
             this.btnQuery.TabIndex = 4;
@@ -138,12 +139,23 @@ namespace RejectDetailsWin {
             this.panel1.Size = new System.Drawing.Size(800, 60);
             this.panel1.TabIndex = 8;
             // 
+            // btnChart
+            // 
+            this.btnChart.Image = ((System.Drawing.Image)(resources.GetObject("btnChart.Image")));
+            this.btnChart.Location = new System.Drawing.Point(235, 104);
+            this.btnChart.Name = "btnChart";
+            this.btnChart.Size = new System.Drawing.Size(125, 125);
+            this.btnChart.TabIndex = 9;
+            this.toolTip.SetToolTip(this.btnChart, "Tag Data Chart");
+            this.btnChart.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(800, 460);
+            this.ClientSize = new System.Drawing.Size(800, 525);
+            this.Controls.Add(this.btnChart);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnQuery);
             this.Controls.Add(this.btnTags);
@@ -176,5 +188,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnChart;
     }
 }

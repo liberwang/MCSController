@@ -37,6 +37,7 @@ namespace RejectDetailsWin {
             this.cboType = new System.Windows.Forms.ComboBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkWriteBack = new System.Windows.Forms.CheckBox();
+            this.chkOutput = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnSave
@@ -158,12 +159,23 @@ namespace RejectDetailsWin {
             this.chkWriteBack.Text = "Write back";
             this.chkWriteBack.UseVisualStyleBackColor = true;
             // 
+            // chkOutput
+            // 
+            this.chkOutput.AutoSize = true;
+            this.chkOutput.Location = new System.Drawing.Point(446, 264);
+            this.chkOutput.Name = "chkOutput";
+            this.chkOutput.Size = new System.Drawing.Size(73, 21);
+            this.chkOutput.TabIndex = 14;
+            this.chkOutput.Text = "Output";
+            this.chkOutput.UseVisualStyleBackColor = true;
+            // 
             // frmTagModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(656, 404);
+            this.Controls.Add(this.chkOutput);
             this.Controls.Add(this.chkWriteBack);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.cboType);
@@ -204,5 +216,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.ComboBox cboType;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.CheckBox chkWriteBack;
+        private System.Windows.Forms.CheckBox chkOutput;
     }
 }

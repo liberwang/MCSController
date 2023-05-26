@@ -19,7 +19,7 @@ namespace RejectDetailsWin {
             InitializeComponent();
         }
 
-        public frmTagModify(int conId, string ipAdd, string name="", int iType = 1, int iRead = 0, int iWrite = 0,string description = "" ) : this() {
+        public frmTagModify(int conId, string ipAdd, string name="", int iType = 1, int iRead = 0, int iWrite = 0,string description = "", int iOutput = 1) : this() {
             this.controllerId = conId;
             this.ipAddress = ipAdd;
 
@@ -29,6 +29,7 @@ namespace RejectDetailsWin {
             this.optRegular.Checked = iRead == 0;
             this.optRead.Checked = iRead == 1;
             this.chkWriteBack.Checked = iWrite == 1;
+            this.chkOutput.Checked = iOutput == 1;
         }
 
         private void frmTagModify_Load(object sender, EventArgs e) {
@@ -46,13 +47,14 @@ namespace RejectDetailsWin {
             int iType = (int)this.cboType.SelectedValue;
             int iRead = this.optRegular.Checked ? 0 : 1;
             int iWrite = this.chkWriteBack.Checked ? 1 : 0;
+            int iOutput = this.chkOutput.Checked ? 1 : 0;
 
             if ( string.IsNullOrWhiteSpace( sName)) {
                 MessageBox.Show("Please input tag name.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            db.SetFullTags(this.controllerId, sName, iType, iRead, iWrite, sDescription);
+            db.SetFullTags(this.controllerId, sName, iType, iRead, iWrite, sDescription, iOutput);
 
             this.DialogResult = DialogResult.OK;
             this.Close();
