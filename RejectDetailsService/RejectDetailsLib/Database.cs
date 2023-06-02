@@ -111,41 +111,41 @@ LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
             return listStation;
         }
 
-        public List<clsTag> GetTagInformation(int StationID, string StationName) {
-            List<clsTag> listTags = new List<clsTag>();
+//        public List<clsTag> GetTagInformation(int StationID, string StationName) {
+//            List<clsTag> listTags = new List<clsTag>();
 
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
-                    conn.Open();
-                    com.CommandText = $@"
-SELECT a.id, a.tagName, a.tagType, a.Comment, 
-case when rw1.id is not null then 1 when rw2.id is not null then -1 else 0 end AS ReadWrite,
-b.Id as StationTagId
-FROM tbltags a
-join tblStationTag b on a.id = b.TagId 
-left join tblTagReadWrite rw1 on a.id = rw1.readTagId
-left join tblTagReadWrite rw2 on a.id = rw2.writeTagId
-where b.StationId = {StationID} ";
-                    SqlDataReader dr = com.ExecuteReader();
+//            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
+//                using(SqlCommand com = conn.CreateCommand()) {
+//                    conn.Open();
+//                    com.CommandText = $@"
+//SELECT a.id, a.tagName, a.tagType, a.Comment, 
+//case when rw1.id is not null then 1 when rw2.id is not null then -1 else 0 end AS ReadWrite,
+//b.Id as StationTagId
+//FROM tbltags a
+//join tblStationTag b on a.id = b.TagId 
+//left join tblTagReadWrite rw1 on a.id = rw1.readTagId
+//left join tblTagReadWrite rw2 on a.id = rw2.writeTagId
+//where b.StationId = {StationID} ";
+//                    SqlDataReader dr = com.ExecuteReader();
 
-                    while(dr.Read()) {
-                        clsTag tag = new clsTag() {
-                            StationId = StationID,
-                            StationName = StationName,
-                            TagId = dr.GetInt32(0),
-                            TagName = dr.GetString(1),
-                            TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
-                            Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
-                            Read = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                            StationTagId = dr.GetInt32(5),
-                        };
-                        listTags.Add(tag);
-                    }
-                    dr.Close();
-                }
-            }
-            return listTags;
-        }
+//                    while(dr.Read()) {
+//                        clsTag tag = new clsTag() {
+//                            StationId = StationID,
+//                            StationName = StationName,
+//                            TagId = dr.GetInt32(0),
+//                            TagName = dr.GetString(1),
+//                            TagType = dr.IsDBNull(2) ? string.Empty : dr.GetString(2),
+//                            Comment = dr.IsDBNull(3) ? string.Empty : dr.GetString(3),
+//                            Read = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+//                            StationTagId = dr.GetInt32(5),
+//                        };
+//                        listTags.Add(tag);
+//                    }
+//                    dr.Close();
+//                }
+//            }
+//            return listTags;
+//        }
 
 
         public List<clsTag> GetTagGroup( string prefix, int ControllerID) {
@@ -154,7 +154,7 @@ where b.StationId = {StationID} ";
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite 
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE (ft.tagRead IS NULL OR ft.tagRead != 1)
@@ -179,7 +179,8 @@ AND controllerId = {ControllerID}
                             TagType = dr.GetString(2),
                             Read = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
                             Comment = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
-                            Write = dr.GetInt16(5)
+                            Write = dr.GetInt16(5),
+                            Output = dr.GetInt16(6)
                         };
                         listTags.Add(tag);
                     }
@@ -196,7 +197,7 @@ AND controllerId = {ControllerID}
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
                     com.CommandText = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite 
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
@@ -210,7 +211,8 @@ WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
                             TagType = dr.GetString(2),
                             Read = dr.GetInt16(3),
                             Comment = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
-                            Write = dr.GetInt16(5)
+                            Write = dr.GetInt16(5),
+                            Output = dr.GetInt16(6),
                         };
                         listTags.Add(tag);
                     }

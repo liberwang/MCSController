@@ -10,7 +10,7 @@ namespace RejectDetailsLib {
 
         List<clsStation> GetStations(int ControllerID);
 
-        List<clsTag> GetTagInformation(int StationID, string StationName);
+        //List<clsTag> GetTagInformation(int StationID, string StationName);
 
         //Dictionary<string, string> GetReadWriteTag();
     }

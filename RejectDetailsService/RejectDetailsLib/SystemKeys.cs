@@ -6,7 +6,7 @@ using System.IO;
 namespace RejectDetailsLib {
     public class SystemKeys {
         public static string DB_CONNECT = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
-        public static readonly string DB_REMOTE = @"Server=tcp:{0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
+        public static readonly string DB_REMOTE = @"Server={0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
         public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
 
         public static string FILE_FOLDER;

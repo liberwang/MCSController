@@ -212,7 +212,8 @@ namespace RejectDetailsLib {
                                         readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
                                     }
 
-                                    listReadValues.Add((readValue.ToString(), tagClass.TagName));
+                                    if (tagClass.Output == 1)
+                                        listReadValues.Add((readValue.ToString(), tagClass.TagName));
 
                                     if(tag.Name.EndsWith("SerialNumber")) {
                                         tagSerialNoValue = readValue.ToString();
