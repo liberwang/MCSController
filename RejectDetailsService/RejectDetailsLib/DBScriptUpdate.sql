@@ -16,6 +16,10 @@ BEGIN
 	ALTER TABLE tblFullTag ADD tagOutput SMALLINT NULL 
 END
 
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE name = 'serial_number' AND object_name( object_id ) = 'tblTagContent' ) 
+BEGIN
+	ALTER TABLE tblTagContent ADD serial_number VARCHAR(256)
+END
 
 /****** Object:  StoredProcedure [dbo].[spGetShiftCount]    Script Date: 5/31/2023 10:50:38 PM ******/
 SET ANSI_NULLS ON
