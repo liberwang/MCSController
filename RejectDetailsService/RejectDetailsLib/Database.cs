@@ -20,7 +20,7 @@ namespace RejectDetailsLib {
                     conn.Open();
                     string sScript = $@"INSERT INTO dbo.tblTagContent (tag_cont, tag_name, controller_ip, serial_number) VALUES";
                     foreach((string, string) tv in tagValue) {
-                        sScript += $"('{tv.Item1}', '{tv.Item2}','{ipaddress}', {serialNumber}),";
+                        sScript += $"('{tv.Item1}', '{tv.Item2}','{ipaddress}', '{serialNumber}'),";
                     }
                     com.CommandText = sScript.Substring( 0, sScript.Length - 1 ) ;
                     com.ExecuteNonQuery();

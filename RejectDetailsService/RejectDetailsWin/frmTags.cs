@@ -26,7 +26,7 @@ namespace RejectDetailsWin {
             dv.RowFilter = "isEnabled = True";
 
             this.bindingSource2.DataSource = dv;
-            this.cboIPAddress.DisplayMember = "ip_address";
+            this.cboIPAddress.DisplayMember = "description";
             this.cboIPAddress.ValueMember = "id";
 
             this.refreshTags();

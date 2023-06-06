@@ -8,7 +8,8 @@ namespace RejectDetailsService {
     public partial class Service1 : ServiceBase {
         public Service1() {
             InitializeComponent();
-            SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
+            //SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
+            SystemKeys.initializeKey();
         }
 
         protected override void OnStart(string[] args) {

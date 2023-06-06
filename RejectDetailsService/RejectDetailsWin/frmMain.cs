@@ -10,55 +10,80 @@ using System.Timers;
 using System.Windows.Forms;
 using RejectDetailsLib;
 
-namespace RejectDetailsWin {
-    public partial class frmMain : Form {
+namespace RejectDetailsWin
+{
+    public partial class frmMain : Form
+    {
 
 
-        public frmMain() {
+        public frmMain()
+        {
             InitializeComponent();
         }
 
-        private void btnClose_Click(object sender, EventArgs e) {
+        private void btnClose_Click(object sender, EventArgs e)
+        {
             this.Close();
         }
 
-        private void btnTest_Click(object sender, EventArgs e) {
+        private void btnTest_Click(object sender, EventArgs e)
+        {
             frmTest test = new frmTest();
             test.ShowDialog();
         }
 
-        private void btnSetting_Click(object sender, EventArgs e) {
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
             frmSettings settings = new frmSettings();
             settings.ShowDialog();
         }
 
-        private void btnTags_Click(object sender, EventArgs e) {
+        private void btnTags_Click(object sender, EventArgs e)
+        {
             frmTags tag = new frmTags();
             tag.ShowDialog();
         }
 
-        private void frmMain_Load(object sender, EventArgs e) {
-            this.cboDB.Items.Add(clsKeys.LOCAL_HOST_STRING);
-            this.cboDB.Items.AddRange(clsKeys.DB_LIST);
-
-            this.cboDB.SelectedIndex = 0;
-        }
-
-        private void cboDB_SelectedIndexChanged(object sender, EventArgs e) {
-            string dbName = this.cboDB.SelectedItem.ToString();
-
-            if(dbName == clsKeys.LOCAL_HOST_STRING) {
-                SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
-            } else {
-                SystemKeys.DB_CONNECT = string.Format( SystemKeys.DB_REMOTE, dbName );
-            }
-
-            SystemKeys.initializeKey();
-        }
-
-        private void btnQuery_Click(object sender, EventArgs e) {
+        private void btnQuery_Click(object sender, EventArgs e)
+        {
             frmQuery frmQry = new frmQuery();
             frmQry.ShowDialog();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            //this.cboDB.Items.Add(clsKeys.LOCAL_HOST_STRING);
+            if (clsKeys.DB_LIST != null && clsKeys.DB_LIST.Length > 0)
+                this.cboDB.Items.AddRange(clsKeys.DB_LIST);
+
+            if (this.cboDB.Items.Count > 0)
+                this.cboDB.SelectedIndex = 0;
+            else
+            {
+                this.DisabledFunctions();
+            }
+        }
+
+        private void DisabledFunctions()
+        {
+            this.btnChart.Enabled = false;
+            this.btnQuery.Enabled = false;
+            this.btnSetting.Enabled = false;
+            this.btnTags.Enabled = false;
+            this.btnTest.Enabled = false;
+        }
+
+        private void cboDB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string dbName = this.cboDB.SelectedItem.ToString();
+
+            //if(dbName == clsKeys.LOCAL_HOST_STRING) {
+            //    SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
+            //} else {
+            //  SystemKeys.DB_CONNECT = string.Format(SystemKeys.DB_REMOTE, dbName);
+            //}
+            SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
+            //SystemKeys.initializeKey();
         }
     }
 }

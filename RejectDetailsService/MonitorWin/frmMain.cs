@@ -69,7 +69,7 @@ namespace MonitorWin
             if (current != currentShift)
             {
                 currentShift = current;
-                lblCurrentShift.Text = current.ToString();
+                lblCurrentShift.Text = "Current: " + current.ToString();
                 RefreshLast();
             }
             (Shift, DateTime, DateTime) currShift = clsShift.GetCurrentShiftCombo();
@@ -106,7 +106,7 @@ namespace MonitorWin
         private void RefreshLast()
         {
             (Shift, DateTime, DateTime) lastShift = clsShift.GetLastShiftCombo();
-            this.lblLastShift.Text = lastShift.Item1.ToString();
+            this.lblLastShift.Text = "Last: " + lastShift.Item1.ToString();
 
             DataSet dsLast = null;
             foreach( List<string> list in clsKeys.DB_LIST)
@@ -134,7 +134,7 @@ namespace MonitorWin
             }
 
             (Shift, DateTime, DateTime) secondShift = clsShift.GetSecondLastShiftCombo();
-            this.lblSecond.Text = secondShift.Item1.ToString(); 
+            this.lblSecond.Text = "Last Two: " + secondShift.Item1.ToString(); 
 
             DataSet dsSecond = new DataSet();
             foreach (List<string> list in clsKeys.DB_LIST)

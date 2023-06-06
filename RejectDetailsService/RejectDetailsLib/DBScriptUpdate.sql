@@ -42,9 +42,27 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT @prodName AS prod_name, COUNT(*) AS tag_cnt, ISNULL( SUM(CASE WHEN ISNULL(serial_number, '') = '' THEN 1 ELSE 0 END ), 0) AS reject_cnt 
+	SELECT ISNULL(serial_number, '') AS serial_number 
+	INTO #tag_temp 
 	FROM dbo.tblTagContent WITH(NOLOCK)
-	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd 
+	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd;
+
+	DECLARE @tag_pass INT;
+	DECLARE	@tag_reject INT;
+
+	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != '');
+	SET @tag_reject = (SELECT COUNT(*) FROM #tag_temp WHERE serial_number = '' );
+
+	--SELECT @prodName AS prod_name,  
+	--(SELECT COUNT(DISTINCT serial_number) FROM dbo.tblTagContent WITH(NOLOCK)
+	--WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd AND ISNULL(serial_number, '') != '' ) AS tag_cnt, 
+	--(SELECT COUNT(*) FROM dbo.tblTagContent WITH(NOLOCK)
+	--WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd AND ISNULL(serial_number, '') = '' ) AS reject_cnt 
+
+	SELECT @prodName AS prod_name,  
+		@tag_pass + @tag_reject AS tag_cnt,
+		@tag_pass AS pass_cnt,
+		@tag_reject AS reject_cnt
 
 END
 GO

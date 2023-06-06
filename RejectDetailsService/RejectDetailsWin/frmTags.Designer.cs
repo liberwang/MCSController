@@ -40,11 +40,6 @@ namespace RejectDetailsWin {
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnAddTag = new System.Windows.Forms.Button();
             this.dgvTags = new System.Windows.Forms.DataGridView();
-            this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
-            this.cboIPAddress = new System.Windows.Forms.ComboBox();
-            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
             this.colTagId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -58,6 +53,15 @@ namespace RejectDetailsWin {
             this.colTagOutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTagEdit = new System.Windows.Forms.DataGridViewImageColumn();
             this.colTagDelete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
+            this.cboIPAddress = new System.Windows.Forms.ComboBox();
+            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIPAddress)).BeginInit();
@@ -66,35 +70,43 @@ namespace RejectDetailsWin {
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(4, 5);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1032, 696);
+            this.tabControl1.Size = new System.Drawing.Size(1772, 1087);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.btnAdd);
-            this.tabPage1.Controls.Add(this.dgvIPAddress);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Controls.Add(this.tableLayoutPanel2);
+            this.tabPage1.Location = new System.Drawing.Point(8, 39);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1024, 667);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage1.Size = new System.Drawing.Size(1756, 1040);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "IP Address";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(833, 16);
+            this.btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnAdd.Location = new System.Drawing.Point(1564, 19);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(120, 40);
+            this.btnAdd.Size = new System.Drawing.Size(180, 62);
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add...";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -115,11 +127,13 @@ namespace RejectDetailsWin {
             this.colEdit,
             this.colDelete});
             this.dgvIPAddress.DataSource = this.bindingSource1;
-            this.dgvIPAddress.Location = new System.Drawing.Point(6, 66);
+            this.dgvIPAddress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvIPAddress.Location = new System.Drawing.Point(4, 105);
+            this.dgvIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvIPAddress.Name = "dgvIPAddress";
             this.dgvIPAddress.RowHeadersWidth = 25;
             this.dgvIPAddress.RowTemplate.Height = 24;
-            this.dgvIPAddress.Size = new System.Drawing.Size(1012, 595);
+            this.dgvIPAddress.Size = new System.Drawing.Size(1740, 920);
             this.dgvIPAddress.TabIndex = 0;
             this.dgvIPAddress.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvIPAddress_CellClick);
             // 
@@ -186,23 +200,23 @@ namespace RejectDetailsWin {
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.btnAddTag);
-            this.tabPage2.Controls.Add(this.dgvTags);
-            this.tabPage2.Controls.Add(this.cboIPAddress);
-            this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Controls.Add(this.tableLayoutPanel3);
+            this.tabPage2.Location = new System.Drawing.Point(8, 39);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1024, 667);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage2.Size = new System.Drawing.Size(1756, 1040);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tags";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // btnAddTag
             // 
-            this.btnAddTag.Location = new System.Drawing.Point(843, 10);
+            this.btnAddTag.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnAddTag.Location = new System.Drawing.Point(1558, 5);
+            this.btnAddTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddTag.Name = "btnAddTag";
-            this.btnAddTag.Size = new System.Drawing.Size(120, 40);
+            this.btnAddTag.Size = new System.Drawing.Size(180, 54);
             this.btnAddTag.TabIndex = 3;
             this.btnAddTag.Text = "Add...";
             this.btnAddTag.UseVisualStyleBackColor = true;
@@ -230,44 +244,15 @@ namespace RejectDetailsWin {
             this.colTagEdit,
             this.colTagDelete});
             this.dgvTags.DataSource = this.bindingSource3;
-            this.dgvTags.Location = new System.Drawing.Point(6, 68);
+            this.dgvTags.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTags.Location = new System.Drawing.Point(4, 75);
+            this.dgvTags.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvTags.Name = "dgvTags";
             this.dgvTags.RowHeadersWidth = 25;
             this.dgvTags.RowTemplate.Height = 24;
-            this.dgvTags.Size = new System.Drawing.Size(1012, 593);
+            this.dgvTags.Size = new System.Drawing.Size(1740, 950);
             this.dgvTags.TabIndex = 2;
             this.dgvTags.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTags_CellClick);
-            // 
-            // cboIPAddress
-            // 
-            this.cboIPAddress.DataSource = this.bindingSource2;
-            this.cboIPAddress.DisplayMember = "id";
-            this.cboIPAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboIPAddress.FormattingEnabled = true;
-            this.cboIPAddress.Location = new System.Drawing.Point(124, 19);
-            this.cboIPAddress.Name = "cboIPAddress";
-            this.cboIPAddress.Size = new System.Drawing.Size(241, 24);
-            this.cboIPAddress.TabIndex = 1;
-            this.cboIPAddress.TextChanged += new System.EventHandler(this.cboIPAddress_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "IP Address:";
-            // 
-            // btnClose
-            // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(869, 714);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(120, 40);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
             // 
             // colTagId
             // 
@@ -393,15 +378,113 @@ namespace RejectDetailsWin {
             this.colTagDelete.ToolTipText = "Delete current Tag";
             this.colTagDelete.Width = 40;
             // 
+            // cboIPAddress
+            // 
+            this.cboIPAddress.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cboIPAddress.DataSource = this.bindingSource2;
+            this.cboIPAddress.DisplayMember = "id";
+            this.cboIPAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboIPAddress.FormattingEnabled = true;
+            this.cboIPAddress.Location = new System.Drawing.Point(204, 15);
+            this.cboIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cboIPAddress.Name = "cboIPAddress";
+            this.cboIPAddress.Size = new System.Drawing.Size(360, 33);
+            this.cboIPAddress.TabIndex = 1;
+            this.cboIPAddress.TextChanged += new System.EventHandler(this.cboIPAddress_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(74, 19);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(122, 25);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "IP Address:";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(1596, 1116);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(180, 62);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.btnClose, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1780, 1197);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.btnAdd, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.dgvIPAddress, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 5);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1748, 1030);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.dgvTags, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 5);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1748, 1030);
+            this.tableLayoutPanel3.TabIndex = 4;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.btnAddTag, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cboIPAddress, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1742, 64);
+            this.tableLayoutPanel4.TabIndex = 3;
+            // 
             // frmTags
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(1049, 766);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ClientSize = new System.Drawing.Size(1780, 1197);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmTags";
@@ -413,10 +496,14 @@ namespace RejectDetailsWin {
             ((System.ComponentModel.ISupportInitialize)(this.dgvIPAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -455,5 +542,9 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagOutput;
         private System.Windows.Forms.DataGridViewImageColumn colTagEdit;
         private System.Windows.Forms.DataGridViewImageColumn colTagDelete;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
     }
 }

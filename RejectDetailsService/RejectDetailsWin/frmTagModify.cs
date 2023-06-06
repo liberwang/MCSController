@@ -12,17 +12,25 @@ using RejectDetailsLib;
 namespace RejectDetailsWin {
     public partial class frmTagModify : Form {
         private int controllerId;
-        private string ipAddress;
+        //private string ipAddress;
         private Database db;
 
         public frmTagModify() {
             InitializeComponent();
+
+            db = new Database();
+            //this.txtIPAddress.Text = this.ipAddress;
+
+            this.cboType.DataSource = db.GetTagTypeDataSet().Tables[0];
+            this.cboType.DisplayMember = "typeName";
+            this.cboType.ValueMember = "typeid";
         }
 
         public frmTagModify(int conId, string ipAdd, string name="", int iType = 1, int iRead = 0, int iWrite = 0,string description = "", int iOutput = 1) : this() {
             this.controllerId = conId;
-            this.ipAddress = ipAdd;
+            //this.ipAddress = ipAdd;
 
+            this.txtIPAddress.Text = ipAdd;
             this.txtTagName.Text = name;
             this.cboType.SelectedValue = iType;
             this.txtDescription.Text = description;
@@ -33,12 +41,7 @@ namespace RejectDetailsWin {
         }
 
         private void frmTagModify_Load(object sender, EventArgs e) {
-            db = new Database();
-            this.txtIPAddress.Text = this.ipAddress;
 
-            this.cboType.DataSource = db.GetTagTypeDataSet().Tables[0];
-            this.cboType.DisplayMember = "typeName";
-            this.cboType.ValueMember = "typeid";
         }
 
         private void btnSave_Click(object sender, EventArgs e) {

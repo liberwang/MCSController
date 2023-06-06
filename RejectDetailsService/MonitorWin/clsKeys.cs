@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace MonitorWin
 {
@@ -10,9 +11,11 @@ namespace MonitorWin
         private const char NAME_DELIMTER = '|';
 
         public static readonly List<List<string>> DB_LIST;
+        public static readonly int TIMER_INTERVAL_VALUE;
 
         public const string LOCAL_HOST_STRING = "Localhost";
         private const string REMOTE_DB_LIST_KEY = "RemoteDBList";
+        private const string TIMER_INTERVAL_KEY = "RefreshInterval";
 
         static clsKeys()
         {
@@ -29,6 +32,14 @@ namespace MonitorWin
             foreach( string dbname in db_array )
             {
                 DB_LIST.Add(dbname.Split(NAME_DELIMTER).ToList());  
+            }
+
+            string settingValue = appSetings[TIMER_INTERVAL_KEY]??"60000";
+            if (int.TryParse(settingValue, out int result )) {
+                TIMER_INTERVAL_VALUE = result;
+            } else
+            {
+                TIMER_INTERVAL_VALUE = 60000;
             }
         }
     }

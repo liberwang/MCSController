@@ -7,7 +7,7 @@ namespace RejectDetailsLib {
     public class SystemKeys {
         public static string DB_CONNECT = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
         public static readonly string DB_REMOTE = @"Server={0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
-        public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
+        //public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
 
         public static string FILE_FOLDER;
         public static string FILE_NAME_PREFIX;
@@ -40,8 +40,14 @@ namespace RejectDetailsLib {
         public const string SAVE_TO_DB_KEY = "SaveToDB";
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
 
-        static SystemKeys() {
-            initializeKey();
+        //static SystemKeys() {
+        //    initializeKey();
+        //}
+
+        public static void SetDBConnect(string sConnect)
+        {
+            DB_CONNECT = sConnect;
+            initializeKey(); 
         }
 
         public static void initializeKey() {
