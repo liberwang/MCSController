@@ -13,7 +13,7 @@ namespace RejectDetailsLib.Clients
         private string[] titles = new string[] { "DATE", "TIME", "REJECT#", "PARTTYPE", "CAVITY", "STN#", "NUT#", "LIMITS", "HI/LOW", "VALUE" };
 
         private string[] partType = new string[] { "", "CIVIC", "ILX", "ILX-S" };
-        private string rejectField = "RejectDetail1";
+        private HashSet<string> rejectFields = new HashSet<string>(new string[] { "RejectDetail1", "RejectDetail2", "RejectDetail3", "RejectDetail4", "RejectDetail5", "RejectDetail6", "RejectDetail7", "RejectDetail8", "RejectDetail9", "RejectDetail10" });
         private const char DELIMITER = ';';
         private const int PARTTYPE_POS = 3;
         private const int PART_NUMBER_POS = 2;
@@ -28,81 +28,78 @@ namespace RejectDetailsLib.Clients
         {
             base.SaveToFile();
 
-            //clsLog.addLog("honda-buldhead: save to file!");
-
             if (!this.m_serialNumber.StartsWith("Reject"))
             {
                 return;
             }
 
-            string svalue = "";
-
             foreach ((string, string) tagValue in this.m_tagValueList)
             {
-                if (tagValue.Item2.EndsWith(rejectField))
+                int index = tagValue.Item2.LastIndexOf('.');
+                string rejectName = index < 0 ? tagValue.Item2 : tagValue.Item2.Substring(index + 1);
+
+                if (rejectFields.Contains(rejectName) && !string.IsNullOrWhiteSpace(tagValue.Item1))
                 {
-                    svalue = tagValue.Item1;
-                    break;
+                    this.SaveRejectInfo(tagValue.Item1);
                 }
             }
+        }
 
+        private void SaveRejectInfo(string rejecrValue)
+        {
             //if (!string.IsNullOrWhiteSpace(svalue) && ( m_serialNumber != m_lastSerialNumber || svalue != m_lastRejectDetail ))
-            if (!string.IsNullOrWhiteSpace(svalue))
+            clsLog.addLog($@"rejectvalue : {rejecrValue}");
 
+            //m_lastRejectDetail = rejecrValue;
+            //m_lastSerialNumber = m_serialNumber;
+
+            List<(string, string)> list = new List<(string, string)>();
+            string[] valueArry = rejecrValue.Split(DELIMITER);
+            for (int i = 0; i < valueArry.Length; ++i)
             {
-                clsLog.addLog($@"rejectvalue : {svalue}");
-
-                m_lastRejectDetail = svalue;
-                m_lastSerialNumber = m_serialNumber;
-
-                List<(string, string)> list = new List<(string, string)>();
-                string[] valueArry = svalue.Split(DELIMITER);
-                for (int i = 0; i < valueArry.Length; ++i)
+                string rejectValue = valueArry[i];
+                if (i < titles.Length)
                 {
-                    string rejectValue = valueArry[i];
-                    if (i < titles.Length)
-                    {
 
-                        if (i == PARTTYPE_POS)
+                    if (i == PARTTYPE_POS)
+                    {
+                        if (int.TryParse(rejectValue, out int val) && val < partType.Length)
                         {
-                            if (int.TryParse(rejectValue, out int val) && val < partType.Length)
-                            {
-                                list.Add((partType[val], titles[i]));
-                            }
-                            else
-                            {
-                                list.Add((partType[0], titles[i]));
-                            }
-                        }
-                        else if (i == PART_NUMBER_POS)
-                        {
-                            if (rejectValue.StartsWith(PART_NUMBER_START, StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                rejectValue = rejectValue.Substring(PART_NUMBER_START.Length);
-                            }
-                            list.Add((rejectValue, titles[i]));
-                        }
-                        else if (i == STATION_NO_POS)
-                        {
-                            if (rejectValue.StartsWith(STATION_NO_START, StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                rejectValue = rejectValue.Substring(STATION_NO_START.Length);
-                            }
-                            list.Add((rejectValue, titles[i]));
+                            list.Add((partType[val], titles[i]));
                         }
                         else
                         {
-                            list.Add((rejectValue, titles[i]));
+                            list.Add((partType[0], titles[i]));
                         }
+                    }
+                    else if (i == PART_NUMBER_POS)
+                    {
+                        if (rejectValue.StartsWith(PART_NUMBER_START, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            rejectValue = rejectValue.Substring(PART_NUMBER_START.Length);
+                        }
+                        list.Add((rejectValue, titles[i]));
+                    }
+                    else if (i == STATION_NO_POS)
+                    {
+                        if (rejectValue.StartsWith(STATION_NO_START, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            rejectValue = rejectValue.Substring(STATION_NO_START.Length);
+                        }
+                        list.Add((rejectValue, titles[i]));
                     }
                     else
                     {
-                        list.Add((rejectValue, $@"temp{i}"));
+                        list.Add((rejectValue, titles[i]));
                     }
                 }
-
-                this.SaveToFile(GetFileName(), list, false);
+                else
+                {
+                    list.Add((rejectValue, $@"temp{i}"));
+                }
             }
+
+            this.SaveToFile(GetFileName(), list, false);
 
         }
 
