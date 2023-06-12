@@ -1,0 +1,12 @@
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.csproj.SuggestedBindingRedirects.cache
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.frmMain.resources
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.Properties.Resources.resources
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.csproj.GenerateResource.cache
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.csproj.CoreCompileInputs.cache
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\bin\Debug\MonitorWin.exe.config
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\bin\Debug\MonitorWin.exe
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\bin\Debug\MonitorWin.pdb
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.exe
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.pdb
+C:\Repos\MCSController\RejectDetailsService\MonitorWin\obj\Debug\MonitorWin.UserControlTotal.resources

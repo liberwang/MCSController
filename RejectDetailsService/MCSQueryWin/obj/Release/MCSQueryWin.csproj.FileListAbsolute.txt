@@ -1,0 +1,17 @@
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\MCSQueryWin.exe.config
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\MCSQueryWin.exe
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\MCSQueryWin.pdb
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\RejectDetailsLib.dll
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\LibplctagWrapper.dll
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\libplctag.NativeImport.dll
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\RejectDetailsLib.pdb
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\libplctag.NativeImport.xml
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.SuggestedBindingRedirects.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.frmMain.resources
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.Properties.Resources.resources
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.GenerateResource.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.CoreCompileInputs.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.CopyComplete
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.exe
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.pdb

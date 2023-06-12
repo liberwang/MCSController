@@ -30,14 +30,14 @@ namespace RejectDetailsLib.Clients
 
             //clsLog.addLog("honda-buldhead: save to file!");
 
-            if (! this.m_serialNumber.StartsWith("Reject"))
+            if (!this.m_serialNumber.StartsWith("Reject"))
             {
                 return;
             }
 
             string svalue = "";
-            
-            foreach((string, string) tagValue in this.m_tagValueList)
+
+            foreach ((string, string) tagValue in this.m_tagValueList)
             {
                 if (tagValue.Item2.EndsWith(rejectField))
                 {
@@ -46,25 +46,30 @@ namespace RejectDetailsLib.Clients
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(svalue) && ( m_serialNumber != m_lastSerialNumber || svalue != m_lastRejectDetail ))
+            //if (!string.IsNullOrWhiteSpace(svalue) && ( m_serialNumber != m_lastSerialNumber || svalue != m_lastRejectDetail ))
+            if (!string.IsNullOrWhiteSpace(svalue))
+
             {
                 clsLog.addLog($@"rejectvalue : {svalue}");
 
                 m_lastRejectDetail = svalue;
                 m_lastSerialNumber = m_serialNumber;
 
-                List<(string, string)> list = new List<(string, string)> ();
-                string[] valueArry = svalue.Split (DELIMITER); 
-                for( int i = 0; i < valueArry.Length; ++i ) {
+                List<(string, string)> list = new List<(string, string)>();
+                string[] valueArry = svalue.Split(DELIMITER);
+                for (int i = 0; i < valueArry.Length; ++i)
+                {
                     string rejectValue = valueArry[i];
                     if (i < titles.Length)
                     {
-                       
+
                         if (i == PARTTYPE_POS)
                         {
-                            if (int.TryParse(rejectValue, out int val) && val < partType.Length) {
+                            if (int.TryParse(rejectValue, out int val) && val < partType.Length)
+                            {
                                 list.Add((partType[val], titles[i]));
-                            } else
+                            }
+                            else
                             {
                                 list.Add((partType[0], titles[i]));
                             }
@@ -75,7 +80,7 @@ namespace RejectDetailsLib.Clients
                             {
                                 rejectValue = rejectValue.Substring(PART_NUMBER_START.Length);
                             }
-                            list.Add((rejectValue, titles[i])); 
+                            list.Add((rejectValue, titles[i]));
                         }
                         else if (i == STATION_NO_POS)
                         {
@@ -89,9 +94,10 @@ namespace RejectDetailsLib.Clients
                         {
                             list.Add((rejectValue, titles[i]));
                         }
-                    } else
+                    }
+                    else
                     {
-                        list.Add((rejectValue, $@"temp{i}" ));
+                        list.Add((rejectValue, $@"temp{i}"));
                     }
                 }
 
