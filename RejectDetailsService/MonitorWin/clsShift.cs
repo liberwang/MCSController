@@ -20,7 +20,7 @@ namespace MonitorWin
         public static Shift GetCurrentShift()
         {
             DateTime dt = DateTime.Now;
-
+            //DateTime dt = new DateTime(2023, 6, 11, 4, 11, 11);
             Shift shift = Shift.None;
 
             DateTime morningStart = new DateTime(dt.Year, dt.Month, dt.Day, 7, 0, 0);
@@ -46,6 +46,7 @@ namespace MonitorWin
         public static (DateTime, DateTime) GetShiftTime(Shift shift)
         {
             DateTime dt = DateTime.Now;
+            //DateTime dt = new DateTime(2023, 6, 11, 12, 11, 11);
             DateTime morningStart = new DateTime(dt.Year, dt.Month, dt.Day, 7, 0, 0);
 
             //Shift shift = GetCurrentShift();
@@ -59,14 +60,14 @@ namespace MonitorWin
             }
             else
             {
-                DateTime midNight = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
+                DateTime midNight = new DateTime(dt.Year, dt.Month, dt.Day, 23, 0, 0);
                 if (dt.CompareTo(midNight) >= 0)
                 {
-                    return (midNight.AddHours(-1), midNight.AddHours(7));
+                    return (midNight, midNight.AddHours(8));
                 }
                 else
                 {
-                    return (midNight.AddHours(23), midNight.AddHours(31));
+                    return (midNight.AddHours(-24), midNight.AddHours(-16));
                 }
             }
         }

@@ -52,7 +52,6 @@ namespace RejectDetailsWin
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            //this.cboDB.Items.Add(clsKeys.LOCAL_HOST_STRING);
             if (clsKeys.DB_LIST != null && clsKeys.DB_LIST.Length > 0)
                 this.cboDB.Items.AddRange(clsKeys.DB_LIST);
 
@@ -60,30 +59,33 @@ namespace RejectDetailsWin
                 this.cboDB.SelectedIndex = 0;
             else
             {
-                this.DisabledFunctions();
+                this.EnabledFunctions();
             }
         }
 
-        private void DisabledFunctions()
+        private void EnabledFunctions(bool enabled = false)
         {
-            this.btnChart.Enabled = false;
-            this.btnQuery.Enabled = false;
-            this.btnSetting.Enabled = false;
-            this.btnTags.Enabled = false;
-            this.btnTest.Enabled = false;
+            this.btnChart.Enabled = enabled;
+            this.btnQuery.Enabled = enabled;
+            this.btnSetting.Enabled = enabled;
+            this.btnTags.Enabled = enabled;
+            this.btnTest.Enabled = enabled;
         }
 
         private void cboDB_SelectedIndexChanged(object sender, EventArgs e)
         {
             string dbName = this.cboDB.SelectedItem.ToString();
 
-            //if(dbName == clsKeys.LOCAL_HOST_STRING) {
-            //    SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
-            //} else {
-            //  SystemKeys.DB_CONNECT = string.Format(SystemKeys.DB_REMOTE, dbName);
-            //}
-            SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
-            //SystemKeys.initializeKey();
+            try
+            {
+                SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
+                EnabledFunctions(true);
+            } catch (Exception ex )
+            {
+                MessageBox.Show( $@"Cannot connect to database '{dbName}'. Please double check if this database is running!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                EnabledFunctions(false);
+            }
+
         }
     }
 }

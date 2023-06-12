@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Net.NetworkInformation;
 
 namespace RejectDetailsLib {
     public class SystemKeys {
@@ -9,6 +10,9 @@ namespace RejectDetailsLib {
         public static readonly string DB_REMOTE = @"Server={0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
         //public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
 
+        public const string PRODUCE_NAME_HONDA_BULKHEAD = "HONDA-BULKHEAD";
+
+        public static string PRODUCT_NAME;
         public static string FILE_FOLDER;
         public static string FILE_NAME_PREFIX;
         public static string FILE_NAME;
@@ -24,6 +28,7 @@ namespace RejectDetailsLib {
         public static bool SAVE_TO_DB;
         public static bool GET_DATA_FROM_XML;
 
+        public const string PRODUCT_NAME_KEY = "ProductName";
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
         public const string FILE_NAME_PREFIX_KEY = "OutputFileNamePrefix";
         public const string FILE_NAME_KEY = "OutputFileName";
@@ -54,6 +59,7 @@ namespace RejectDetailsLib {
             Database db = new Database();
             Dictionary<string, string> keys = db.GetSystemSettings();
 
+            PRODUCT_NAME = keys.ContainsKey(PRODUCT_NAME_KEY) ? keys[PRODUCT_NAME_KEY] : "HONDA-BULKHEAD";
             FILE_FOLDER = keys.ContainsKey(FILE_FOLDER_KEY) ? keys[FILE_FOLDER_KEY] : @"c:\temp";
             FILE_NAME_PREFIX = keys.ContainsKey(FILE_NAME_PREFIX_KEY) ? keys[FILE_NAME_PREFIX_KEY] : @"tag-";
             FILE_NAME = keys.ContainsKey(FILE_NAME_KEY) ? keys[FILE_NAME_KEY] : @"yyy-MM-dd";
@@ -82,6 +88,12 @@ namespace RejectDetailsLib {
             db.SetSystemSetting(appKey, appValue);
         }
 
+
+        public static bool IsHondaBulkHead()
+        {
+            return PRODUCT_NAME == PRODUCE_NAME_HONDA_BULKHEAD;
+        }
+
         private static string getFileNameDateString() {
             return DateTime.Now.ToString(FILE_NAME);
         }
@@ -93,8 +105,26 @@ namespace RejectDetailsLib {
             return Path.Combine(FILE_FOLDER, getFileName());
         }
 
-        public static string getCopyFileName() {
-            return Path.Combine(COPY_FOLDER, COPY_FILE_PREFIX + getFileNameDateString() + "." + COPY_FILE_EXT);
+        public static string getFullFileName(string sFilePrefix)
+        {
+            if ( string.IsNullOrEmpty(sFilePrefix) )
+            {
+                return getFullFileName();
+            } else
+            {
+                string fileName = sFilePrefix + getFileNameDateString() + (string.IsNullOrEmpty(FILE_NAME_EXT) ? "" : ("." + FILE_NAME_EXT));
+                return Path.Combine (FILE_FOLDER, fileName);
+            }
+        }
+
+        public static string getCopyFileName(string fileNamePrex = null) {
+            if (string.IsNullOrWhiteSpace(fileNamePrex))
+            {
+                return Path.Combine(COPY_FOLDER, COPY_FILE_PREFIX + getFileNameDateString() + "." + COPY_FILE_EXT);
+            } else
+            {
+                return Path.Combine(COPY_FOLDER, fileNamePrex + getFileNameDateString() + "." + COPY_FILE_EXT);
+            }
         }
 
         public static string getCurrentDateTime() {

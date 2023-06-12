@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 
@@ -16,6 +17,8 @@ namespace RejectDetailsLib
         private static object lockobject = new object();
 
         private static RejectDetails instance = null;
+
+        private static string lastSerialNumber = string.Empty;
 
         private DataSource ds = null;
 
@@ -269,23 +272,28 @@ namespace RejectDetailsLib
 
                                 if (isOK)
                                 {
-                                    // set read flag back first;
-                                    if (tagGroup.tagRead.Write == 1)
-                                    {
-                                        client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
-                                    }
+                                    // ignore duplicated serialnumber 
+                                    //if (tagSerialNoValue != string.Empty && tagSerialNoValue != lastSerialNumber)
+                                    //{
+                                    //    lastSerialNumber = tagSerialNoValue;
 
-                                    // set back to write tags. 
-                                    foreach (clsTag tagWrite in tagGroup.tagWrite)
-                                    {
-                                        // todo write value back;
-                                        // TODO
-                                        //clsLog.addLog($@"tagwrite: {tagWrite.plcTag.Name}");
-                                        client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
-                                    }
+                                        // set read flag back first;
+                                        if (tagGroup.tagRead.Write == 1)
+                                        {
+                                            client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
+                                        }
 
-                                    SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
+                                        // set back to write tags. 
+                                        foreach (clsTag tagWrite in tagGroup.tagWrite)
+                                        {
+                                            // todo write value back;
+                                            // TODO
+                                            //clsLog.addLog($@"tagwrite: {tagWrite.plcTag.Name}");
+                                            client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
+                                        }
 
+                                        SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
+                                    //}
                                 }
                             }
                         }
@@ -374,43 +382,47 @@ namespace RejectDetailsLib
 
         private void SaveToFile(List<(string, string)> tagValue, string serialNumber, string ipAddress)
         {
-            if (SystemKeys.SAVE_TO_FILE)
-            {
-                string fileName = SystemKeys.getFullFileName();
+            clsOutput op = clsOutput.GetOutputByProduceName();
+  
+            op.SaveToFileAndDatabase(tagValue, serialNumber, ipAddress);
 
-                if (!File.Exists(fileName))
-                {
-                    // if csv file is not in the path, create a header to it first.
-                    StringBuilder sbField = new StringBuilder();
+            //if (SystemKeys.SAVE_TO_FILE)
+            //{
+            //    string fileName = SystemKeys.getFullFileName();
 
-                    foreach ((string, string) tv in tagValue)
-                    {
-                        sbField.Append(tv.Item2).Append(",");
-                    }
-                    sbField.Append("TimeStamp");
+            //    if (!File.Exists(fileName))
+            //    {
+            //        // if csv file is not in the path, create a header to it first.
+            //        StringBuilder sbField = new StringBuilder();
 
-                    using (StreamWriter sw = File.AppendText(fileName))
-                    {
-                        sw.WriteLine(sbField.ToString());
-                    }
-                }
+            //        foreach ((string, string) tv in tagValue)
+            //        {
+            //            sbField.Append(tv.Item2).Append(",");
+            //        }
+            //        sbField.Append("TimeStamp");
 
-                StringBuilder sb = new StringBuilder();
-                foreach ((string, string) tv in tagValue)
-                {
-                    sb.Append(tv.Item1).Append(",");
-                }
-                sb.Append(SystemKeys.getCurrentDateTime());
+            //        using (StreamWriter sw = File.AppendText(fileName))
+            //        {
+            //            sw.WriteLine(sbField.ToString());
+            //        }
+            //    }
 
-                using (StreamWriter sw = File.AppendText(fileName))
-                {
-                    sw.WriteLine(sb.ToString());
-                }
-            }
-            if (SystemKeys.SAVE_TO_DB)
-            {
-                Database.SetContent(tagValue, ipAddress, serialNumber);
-            }
+            //    StringBuilder sb = new StringBuilder();
+            //    foreach ((string, string) tv in tagValue)
+            //    {
+            //        sb.Append(tv.Item1).Append(",");
+            //    }
+            //    sb.Append(SystemKeys.getCurrentDateTime());
+
+            //    using (StreamWriter sw = File.AppendText(fileName))
+            //    {
+            //        sw.WriteLine(sb.ToString());
+            //    }
+            //}
+            //if (SystemKeys.SAVE_TO_DB)
+            //{
+            //    Database.SetContent(tagValue, ipAddress, serialNumber);
+            //}
         }
     }
 }

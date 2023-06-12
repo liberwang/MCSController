@@ -46,12 +46,21 @@ namespace RejectDetailsService {
 
         public void OnTimerCopy(object sender, ElapsedEventArgs args) {
             try {
-                if(SystemKeys.SAVE_TO_FILE) {
-                    string lsSource = SystemKeys.getFullFileName();
-                    if(File.Exists(lsSource)) {
-                        File.Copy(lsSource, SystemKeys.getCopyFileName(), true);
-                    }
+                //if(SystemKeys.SAVE_TO_FILE) {
+                //    string lsSource = SystemKeys.getFullFileName();
+                //    if(File.Exists(lsSource)) {
+                //        File.Copy(lsSource, SystemKeys.getCopyFileName(), true);
+                //    }
+                //}
+                clsOutput op = clsOutput.GetOutputByProduceName();
+                if (op != null)
+                {
+                    op.CopyFileToTarget();
+                } else
+                {
+                    clsLog.addLog("clsOutput is null when copying file!");
                 }
+
             } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }

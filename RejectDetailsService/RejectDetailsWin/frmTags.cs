@@ -15,6 +15,15 @@ namespace RejectDetailsWin {
 
             setIPAddressDatasource();
             //this.dgvIPAddress.AutoGenerateColumns = true;
+
+            if (! SystemKeys.SAVE_TO_FILE)
+                this.tabControl.TabPages.RemoveAt(2);
+
+            this.btnUp.Text = "\u25B2";
+            this.btnDown.Text = "\u25BC";
+
+            this.btnRight.Text = "\u25B6";
+            this.btnLeft.Text = "\u25C0";
         }
 
 
@@ -28,6 +37,12 @@ namespace RejectDetailsWin {
             this.bindingSource2.DataSource = dv;
             this.cboIPAddress.DisplayMember = "description";
             this.cboIPAddress.ValueMember = "id";
+
+            this.cboOutputIP.DisplayMember = "description";
+            this.cboOutputIP.ValueMember = "id";
+
+            this.cboIPAddress.SelectedIndex = -1;
+            this.cboOutputIP.SelectedIndex = -1;
 
             this.refreshTags();
         }
@@ -70,10 +85,10 @@ namespace RejectDetailsWin {
                 string sDescription = dgvTags.CurrentRow.Cells["colTagDesc"].Value.ToString();
                 short iRead = (short)dgvTags.CurrentRow.Cells["colTagRead"].Value;
                 short iWrite = (short)dgvTags.CurrentRow.Cells["colTagWrite"].Value;
-                short iOutput = (short)dgvTags.CurrentRow.Cells["colTagOutput"].Value;
+                //short iOutput = (short)dgvTags.CurrentRow.Cells["colTagOutput"].Value;
 
                 if ( dgvTags.Columns[colindex].Name == "colTagEdit") {
-                    frmTagModify tagModify = new frmTagModify(controllerId, ipAddress, sTagName,iTagType, iRead, iWrite, sDescription, iOutput);
+                    frmTagModify tagModify = new frmTagModify(controllerId, ipAddress, sTagName,iTagType, iRead, iWrite, sDescription);
                     tagModify.ShowDialog();
 
                     if (tagModify.DialogResult == DialogResult.OK) {
@@ -116,7 +131,6 @@ namespace RejectDetailsWin {
                 return;
             }
                 
-
             int controllerId = (int)cboIPAddress.SelectedValue;
             //string ipAddress = cboIPAddress.SelectedText;
 
@@ -142,6 +156,35 @@ namespace RejectDetailsWin {
             refreshTags();
         }
 
+        private void cboOutputIP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboOutputIP.SelectedIndex >= 0 )
+            {
+                int controllerId = (int)cboOutputIP.SelectedValue;
+                DataSet dsUnselected = db.GetUnselectedTags(controllerId);
 
+                if (dsUnselected != null && dsUnselected.Tables.Count > 0)
+                {
+                    this.lstTags.Items.Clear();
+                    this.lstTags.DataSource = dsUnselected.Tables[0];
+
+                    this.lstTags.DisplayMember = "tagName";
+                    this.lstTags.ValueMember = "tagId";
+               }
+
+                DataSet dsSelect = db.GetSelectedOutput(controllerId);
+
+                if (dsSelect?.Tables?.Count > 0)
+                {
+                    this.lstOutput.Items.Clear();
+                    this.lstOutput.DataSource = dsSelect.Tables[0];
+                    
+                    this.lstOutput.DisplayMember = "tagName";
+                    this.lstOutput.ValueMember = "tagId";
+
+                }
+            }
+
+        }
     }
 }

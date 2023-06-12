@@ -28,7 +28,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetShiftCount'))
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetShiftCount'))
 	DROP PROCEDURE [dbo].[spGetShiftCount]
 GO
 
@@ -64,5 +64,58 @@ BEGIN
 		@tag_pass AS pass_cnt,
 		@tag_reject AS reject_cnt
 
+END
+GO
+
+/****** Object:  Table [dbo].[tblOutput]    Script Date: 6/9/2023 11:35:06 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.tables WHERE name = 'tblOutput' )
+BEGIN
+	CREATE TABLE [dbo].[tblOutput](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[tagId] [int] NOT NULL,
+		[byOrder] [int] NOT NULL,
+	 CONSTRAINT [PK_tblOutput] PRIMARY KEY CLUSTERED 
+	(
+		[id] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY]
+END 
+
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spSetSelectedOutputs'))
+	DROP PROCEDURE [dbo].[spSetSelectedOutputs]
+GO
+
+CREATE PROCEDURE dbo.spSetSelectedOutputs
+	@controllerId int,
+	@tagIdList VARCHAR(MAX)
+AS
+BEGIN
+	BEGIN TRANSACTION
+
+	DELETE FROM tblOutput 
+	WHERE tagId IN ( SELECT tagId FROM tblFullTag WHERE controllerId = @controllerId );
+
+
+	DECLARE @temp_tag TABLE (orderId int identity(1,1), tagId int);
+
+	INSERT INTO @temp_tag (tagId )
+	SELECT value FROM STRING_SPLIT(@tagIdList, ',')
+	WHERE value != '';
+
+	INSERT INTO tblOutput (tagId, byOrder)
+	SELECT tt.tagId, tt.orderId 
+	FROM @temp_tag tt
+	JOIN tblFullTag ft ON tt.tagId = ft.tagId
+	ORDER BY tt.orderId;
+
+	COMMIT;
 END
 GO

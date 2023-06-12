@@ -24,8 +24,7 @@ namespace MonitorWin {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
-            this.timeRefresh = new System.Windows.Forms.Timer(this.components);
+            this.timeRefresh = new System.Windows.Forms.Timer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvCurrentTotal = new System.Windows.Forms.DataGridView();
@@ -38,9 +37,9 @@ namespace MonitorWin {
             this.lblSecond = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.bindingSourceCurrentTotal = new System.Windows.Forms.BindingSource(this.components);
-            this.bindingSourceLast = new System.Windows.Forms.BindingSource(this.components);
-            this.bindingSourceSecondLast = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSourceCurrentTotal = new System.Windows.Forms.BindingSource();
+            this.bindingSourceLast = new System.Windows.Forms.BindingSource();
+            this.bindingSourceSecondLast = new System.Windows.Forms.BindingSource();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colProduct = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();

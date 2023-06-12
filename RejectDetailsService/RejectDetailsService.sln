@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RejectDetailsService", "RejectDetailsService\RejectDetailsService.csproj", "{F9B2DD87-A0D2-4303-B96E-4D613E7262A0}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RejectDetailsWin", "RejectDetailsWin\RejectDetailsWin.csproj", "{058B5C2F-B8D2-4C9D-95AF-EDDE3070A33A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorWin", "MonitorWin\MonitorWin.csproj", "{00A24120-C134-4381-922D-56B95BA9E635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCSQueryWin", "MCSQueryWin\MCSQueryWin.csproj", "{B16B4601-219F-4D0B-8F45-0D20245DECB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{00A24120-C134-4381-922D-56B95BA9E635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A24120-C134-4381-922D-56B95BA9E635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A24120-C134-4381-922D-56B95BA9E635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16B4601-219F-4D0B-8F45-0D20245DECB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16B4601-219F-4D0B-8F45-0D20245DECB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16B4601-219F-4D0B-8F45-0D20245DECB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16B4601-219F-4D0B-8F45-0D20245DECB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

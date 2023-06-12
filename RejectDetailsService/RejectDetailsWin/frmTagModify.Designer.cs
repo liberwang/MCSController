@@ -37,14 +37,14 @@ namespace RejectDetailsWin {
             this.cboType = new System.Windows.Forms.ComboBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkWriteBack = new System.Windows.Forms.CheckBox();
-            this.chkOutput = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(346, 329);
+            this.btnSave.Location = new System.Drawing.Point(519, 514);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 40);
+            this.btnSave.Size = new System.Drawing.Size(180, 62);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -53,9 +53,10 @@ namespace RejectDetailsWin {
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(488, 329);
+            this.btnClose.Location = new System.Drawing.Point(732, 514);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(120, 40);
+            this.btnClose.Size = new System.Drawing.Size(180, 62);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -63,36 +64,40 @@ namespace RejectDetailsWin {
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 41);
+            this.label1.Location = new System.Drawing.Point(92, 64);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.Size = new System.Drawing.Size(122, 25);
             this.label1.TabIndex = 2;
             this.label1.Text = "IP Address:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(61, 94);
+            this.label2.Location = new System.Drawing.Point(92, 147);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 17);
+            this.label2.Size = new System.Drawing.Size(117, 25);
             this.label2.TabIndex = 3;
             this.label2.Text = "Tag Name:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(68, 147);
+            this.label3.Location = new System.Drawing.Point(102, 230);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 17);
+            this.label3.Size = new System.Drawing.Size(109, 25);
             this.label3.TabIndex = 4;
             this.label3.Text = "Tag Type:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(56, 200);
+            this.label4.Location = new System.Drawing.Point(84, 312);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 17);
+            this.label4.Size = new System.Drawing.Size(126, 25);
             this.label4.TabIndex = 5;
             this.label4.Text = "Description:";
             // 
@@ -100,9 +105,10 @@ namespace RejectDetailsWin {
             // 
             this.optRegular.AutoSize = true;
             this.optRegular.Checked = true;
-            this.optRegular.Location = new System.Drawing.Point(148, 251);
+            this.optRegular.Location = new System.Drawing.Point(222, 392);
+            this.optRegular.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.optRegular.Name = "optRegular";
-            this.optRegular.Size = new System.Drawing.Size(79, 21);
+            this.optRegular.Size = new System.Drawing.Size(118, 29);
             this.optRegular.TabIndex = 6;
             this.optRegular.TabStop = true;
             this.optRegular.Text = "Regular";
@@ -111,71 +117,66 @@ namespace RejectDetailsWin {
             // optRead
             // 
             this.optRead.AutoSize = true;
-            this.optRead.Location = new System.Drawing.Point(148, 278);
+            this.optRead.Location = new System.Drawing.Point(222, 434);
+            this.optRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.optRead.Name = "optRead";
-            this.optRead.Size = new System.Drawing.Size(94, 21);
+            this.optRead.Size = new System.Drawing.Size(142, 29);
             this.optRead.TabIndex = 7;
             this.optRead.Text = "Read Flag";
             this.optRead.UseVisualStyleBackColor = true;
             // 
             // txtIPAddress
             // 
-            this.txtIPAddress.Location = new System.Drawing.Point(148, 41);
+            this.txtIPAddress.Location = new System.Drawing.Point(222, 64);
+            this.txtIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIPAddress.Name = "txtIPAddress";
             this.txtIPAddress.ReadOnly = true;
-            this.txtIPAddress.Size = new System.Drawing.Size(420, 22);
+            this.txtIPAddress.Size = new System.Drawing.Size(628, 31);
             this.txtIPAddress.TabIndex = 9;
             // 
             // txtTagName
             // 
-            this.txtTagName.Location = new System.Drawing.Point(148, 91);
+            this.txtTagName.Location = new System.Drawing.Point(222, 142);
+            this.txtTagName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTagName.Name = "txtTagName";
-            this.txtTagName.Size = new System.Drawing.Size(420, 22);
+            this.txtTagName.Size = new System.Drawing.Size(628, 31);
             this.txtTagName.TabIndex = 10;
             // 
             // cboType
             // 
             this.cboType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboType.FormattingEnabled = true;
-            this.cboType.Location = new System.Drawing.Point(148, 144);
+            this.cboType.Location = new System.Drawing.Point(222, 225);
+            this.cboType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cboType.Name = "cboType";
-            this.cboType.Size = new System.Drawing.Size(420, 24);
+            this.cboType.Size = new System.Drawing.Size(628, 33);
             this.cboType.TabIndex = 11;
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(148, 197);
+            this.txtDescription.Location = new System.Drawing.Point(222, 308);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(420, 22);
+            this.txtDescription.Size = new System.Drawing.Size(628, 31);
             this.txtDescription.TabIndex = 12;
             // 
             // chkWriteBack
             // 
             this.chkWriteBack.AutoSize = true;
-            this.chkWriteBack.Location = new System.Drawing.Point(290, 264);
+            this.chkWriteBack.Location = new System.Drawing.Point(486, 415);
+            this.chkWriteBack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkWriteBack.Name = "chkWriteBack";
-            this.chkWriteBack.Size = new System.Drawing.Size(97, 21);
+            this.chkWriteBack.Size = new System.Drawing.Size(146, 29);
             this.chkWriteBack.TabIndex = 13;
             this.chkWriteBack.Text = "Write back";
             this.chkWriteBack.UseVisualStyleBackColor = true;
             // 
-            // chkOutput
-            // 
-            this.chkOutput.AutoSize = true;
-            this.chkOutput.Location = new System.Drawing.Point(446, 264);
-            this.chkOutput.Name = "chkOutput";
-            this.chkOutput.Size = new System.Drawing.Size(73, 21);
-            this.chkOutput.TabIndex = 14;
-            this.chkOutput.Text = "Output";
-            this.chkOutput.UseVisualStyleBackColor = true;
-            // 
             // frmTagModify
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(656, 404);
-            this.Controls.Add(this.chkOutput);
+            this.ClientSize = new System.Drawing.Size(984, 631);
             this.Controls.Add(this.chkWriteBack);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.cboType);
@@ -190,6 +191,7 @@ namespace RejectDetailsWin {
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmTagModify";
@@ -216,6 +218,5 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.ComboBox cboType;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.CheckBox chkWriteBack;
-        private System.Windows.Forms.CheckBox chkOutput;
     }
 }
