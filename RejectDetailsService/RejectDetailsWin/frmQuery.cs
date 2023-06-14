@@ -35,12 +35,12 @@ namespace RejectDetailsWin {
             this.cboIPAddress.DisplayMember = "Text";
             this.cboIPAddress.ValueMember = "Value";
 
-            this.cboIPAddress.Items.Add(new { Text = "All", Value = "All" });
-            DataSet ds = new Database().GetIPAddressDataSet();
-            foreach( DataRow dr in ds.Tables[0].Rows ) {
-                this.cboIPAddress.Items.Add(new { Text = dr[2].ToString(), Value = dr[1].ToString() });
-            }
-
+            //this.cboIPAddress.Items.Add(new { Text = "All", Value = "All" });
+            //DataSet ds = new Database().GetIPAddressDataSet();
+            //foreach( cls ) {
+            //    this.cboIPAddress.Items.Add(new { Text = dr[2].ToString(), Value = dr[1].ToString() });
+            //}
+            this.cboIPAddress.DataSource = clsController.GetControllerItemDataSource(true);
             this.cboIPAddress.SelectedIndex = 0;
 
             this.dataGridView.AutoGenerateColumns = true;

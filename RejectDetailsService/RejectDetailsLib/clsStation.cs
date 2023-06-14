@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
 namespace RejectDetailsLib {
-    public class clsStation {
-        public int Id { get; set; }
-        public string Name { get; set; }
+    //public class clsStation {
+        //public int Id { get; set; }
+        //public string Name { get; set; }
 
-        public int ControllerId { get; set; }
+        //public int ControllerId { get; set; }
 
-        public List<clsTag> TagList { get; set; }
+        //public List<clsTag> TagList { get; set; }
 
         //public void GetTagList() {
         //    if(this.Id > 0) {
@@ -17,5 +17,5 @@ namespace RejectDetailsLib {
         //            TagList = new Database().GetTagInformation(Id, Name);
         //    }
         //}
-    }
+    //}
 }

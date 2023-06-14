@@ -12,22 +12,22 @@ namespace RejectDetailsLib {
             return list;
         }
 
-        public Dictionary<string, string> GetReadWriteTag() {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+        //public Dictionary<string, string> GetReadWriteTag() {
+        //    Dictionary<string, string> dic = new Dictionary<string, string>();
 
-            return dic;    
-        }
+        //    return dic;    
+        //}
 
-        public List<clsStation> GetStations(int ControllerID) {
-            List<clsStation> list = new List<clsStation>();
+        //public List<clsStation> GetStations(int ControllerID) {
+        //    List<clsStation> list = new List<clsStation>();
 
-            return list;
-        }
+        //    return list;
+        //}
 
-        public List<clsTag> GetTagInformation(int StationID, string StationName) {
-            List<clsTag> list = new List<clsTag>();
+        //public List<clsTag> GetTagInformation(int StationID, string StationName) {
+        //    List<clsTag> list = new List<clsTag>();
 
-            return list;
-        }
+        //    return list;
+        //}
     }
 }

@@ -3,11 +3,11 @@
 namespace RejectDetailsLib {
     public class clsTag {
 
-        public int StationTagId { get; set; }
+        //public int StationTagId { get; set; }
 
-        public int StationId { get; set; }
+        //public int StationId { get; set; }
 
-        public string StationName { get; set; }
+        //public string StationName { get; set; }
 
         public int TagId { get; set; }
         
@@ -48,10 +48,10 @@ namespace RejectDetailsLib {
             this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1, 1);
         }
 
-        public string TagFullName {
-            get {
-                return $@"Station0{StationName}.{TagName}";
-            }
-        }
+        //public string TagFullName {
+        //    get {
+        //        return $@"Station0{StationName}.{TagName}";
+        //    }
+        //}
     }
 }

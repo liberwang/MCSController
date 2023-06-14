@@ -38,8 +38,15 @@ namespace RejectDetailsWin {
                 return;
             }
 
-            Database db = new Database();
-            db.SetIPAddress(sIPAddress, sDescription, isEnabled ? 1 : 0);
+            clsController con = new clsController()
+            {
+                IpAddress = sIPAddress, 
+                Description = sDescription,
+                IsEnabled = isEnabled
+            };
+            con.SaveController();
+            //Database db = new Database();
+            //db.SetIPAddress(sIPAddress, sDescription, isEnabled ? 1 : 0);
 
             this.DialogResult = DialogResult.OK;
             this.Visible = false;

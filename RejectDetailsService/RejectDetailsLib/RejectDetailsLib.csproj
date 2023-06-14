@@ -54,6 +54,7 @@
     <Compile Include="clsStation.cs" />
     <Compile Include="clsTag.cs" />
     <Compile Include="clsTagGroup.cs" />
+    <Compile Include="clsTagValue.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DataSource.cs" />
     <Compile Include="DataXML.cs" />

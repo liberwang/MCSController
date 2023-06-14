@@ -37,7 +37,7 @@ namespace RejectDetailsWin {
             this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colEdit = new System.Windows.Forms.DataGridViewImageColumn();
             this.colDelete = new System.Windows.Forms.DataGridViewImageColumn();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSourceIPAddress = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvTags = new System.Windows.Forms.DataGridView();
@@ -58,7 +58,6 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddTag = new System.Windows.Forms.Button();
             this.cboIPAddress = new System.Windows.Forms.ComboBox();
-            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageOutput = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -72,29 +71,28 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.cboOutputIP = new System.Windows.Forms.ComboBox();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl.SuspendLayout();
             this.tabPageIPAddress.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIPAddress)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceIPAddress)).BeginInit();
             this.tabPageTags.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.tabPageOutput.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -163,7 +161,7 @@ namespace RejectDetailsWin {
             this.colEnabled,
             this.colEdit,
             this.colDelete});
-            this.dgvIPAddress.DataSource = this.bindingSource1;
+            this.dgvIPAddress.DataSource = this.bindingSourceIPAddress;
             this.dgvIPAddress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvIPAddress.Location = new System.Drawing.Point(4, 105);
             this.dgvIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -450,8 +448,7 @@ namespace RejectDetailsWin {
             // cboIPAddress
             // 
             this.cboIPAddress.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cboIPAddress.DataSource = this.bindingSource2;
-            this.cboIPAddress.DisplayMember = "id";
+            this.cboIPAddress.DisplayMember = "Text";
             this.cboIPAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboIPAddress.FormattingEnabled = true;
             this.cboIPAddress.Location = new System.Drawing.Point(204, 30);
@@ -459,6 +456,7 @@ namespace RejectDetailsWin {
             this.cboIPAddress.Name = "cboIPAddress";
             this.cboIPAddress.Size = new System.Drawing.Size(360, 33);
             this.cboIPAddress.TabIndex = 1;
+            this.cboIPAddress.ValueMember = "Value";
             this.cboIPAddress.TextChanged += new System.EventHandler(this.cboIPAddress_TextChanged);
             // 
             // label1
@@ -503,7 +501,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 101F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.lstTags, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSaveOutput, 2, 1);
@@ -636,33 +634,6 @@ namespace RejectDetailsWin {
             this.btnDown.Text = "Down";
             this.btnDown.UseVisualStyleBackColor = true;
             // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(1634, 1259);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(180, 62);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.btnClose, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tabControl, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1818, 1340);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
             // tableLayoutPanel9
             // 
             this.tableLayoutPanel9.ColumnCount = 2;
@@ -691,14 +662,42 @@ namespace RejectDetailsWin {
             // cboOutputIP
             // 
             this.cboOutputIP.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cboOutputIP.DataSource = this.bindingSource2;
+            this.cboOutputIP.DisplayMember = "Text";
             this.cboOutputIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboOutputIP.FormattingEnabled = true;
             this.cboOutputIP.Location = new System.Drawing.Point(323, 30);
             this.cboOutputIP.Name = "cboOutputIP";
             this.cboOutputIP.Size = new System.Drawing.Size(343, 33);
             this.cboOutputIP.TabIndex = 1;
+            this.cboOutputIP.ValueMember = "Value";
             this.cboOutputIP.SelectedIndexChanged += new System.EventHandler(this.cboOutputIP_SelectedIndexChanged);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(1634, 1259);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(180, 62);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.btnClose, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1818, 1340);
+            this.tableLayoutPanel1.TabIndex = 2;
             // 
             // frmTags
             // 
@@ -718,22 +717,21 @@ namespace RejectDetailsWin {
             this.tabPageIPAddress.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvIPAddress)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceIPAddress)).EndInit();
             this.tabPageTags.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.tabPageOutput.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -746,7 +744,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridView dgvIPAddress;
         private System.Windows.Forms.TabPage tabPageTags;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.BindingSource bindingSourceIPAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn colID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIP;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
@@ -757,7 +755,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridView dgvTags;
         private System.Windows.Forms.ComboBox cboIPAddress;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.BindingSource bindingSource3;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagName;

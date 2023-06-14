@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 namespace RejectDetailsLib {
     public class Database : DataSource {
+
+        /*  ------- tag contents --------- */
         public static void SetContent(string psContent, string psTagName, string ipaddress, string serialNumber) {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
@@ -62,13 +65,21 @@ LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
             }
         }
 
-        public List<clsController> GetController() {
+/*  ----  controller/ip adress -------------- */
+        public List<clsController> GetControllerList(bool OnlyEnabled) {
             List<clsController> listCont = new List<clsController>();
 
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
                 using(SqlCommand com = conn.CreateCommand()) {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK) WHERE isEnabled = 1";
+                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK)";
+                    if (OnlyEnabled)
+                    {
+                        sqlString += " WHERE isEnabled = 1";
+                    }
+                    sqlString += " ORDER BY description";
+
+                    com.CommandText = sqlString;
                     SqlDataReader dr = com.ExecuteReader();
                     
                     while( dr.Read() ) {
@@ -77,7 +88,7 @@ LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
                             IpAddress = dr.GetString(1),
                             Description = dr.GetString(2),
                             CpuTypeId = dr.GetInt32(3),
-                            isEnabled = dr.GetBoolean(4),
+                            IsEnabled = dr.GetBoolean(4),
                         };
                         listCont.Add(clsCon);
                     }
@@ -88,29 +99,82 @@ LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
             return listCont;
         }
 
-        public List<clsStation> GetStations(int ControllerID) {
-            List<clsStation> listStation = new List<clsStation>();
-
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
+        public DataSet GetControllerDataSet()
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, name, controllerId FROM tblStation WHERE controllerId = {ControllerID}";
-                    SqlDataReader dr = com.ExecuteReader();
+                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK)";
 
-                    while( dr.Read()) {
-                        clsStation clsSta = new clsStation() {
-                            Id = dr.GetInt32(0),
-                            Name = dr.GetString(1),
-                            ControllerId = dr.GetInt32(2),
-                        };
+                    SqlDataAdapter adapter = new SqlDataAdapter(com);
+                    DataSet controller = new DataSet();
+                    adapter.Fill(controller, "controller");
 
-                        listStation.Add(clsSta);
-                    }
-                    dr.Close();
+                    return controller;
                 }
             }
-            return listStation;
         }
+
+        public void DeleteIPAddress(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"
+BEGIN TRANSACTION
+    DELETE FROM tblFullTag WHERE controllerId = {id}
+    DELETE FROM tblController WHERE ID = {id} 
+COMMIT TRANSACTION;
+";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void SetIPAddress(string ipAddress, string description, int cupTypeId, int isEnabled)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"
+IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE ip_address = '{ipAddress}' ) 
+    UPDATE tblController SET description = '{description}', isEnabled = {isEnabled} WHERE ip_address = '{ipAddress}' 
+ELSE 
+    INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled} );
+";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+        //public List<clsStation> GetStations(int ControllerID) {
+        //    List<clsStation> listStation = new List<clsStation>();
+
+        //    using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
+        //        using(SqlCommand com = conn.CreateCommand()) {
+        //            conn.Open();
+        //            com.CommandText = $@"SELECT id, name, controllerId FROM tblStation WHERE controllerId = {ControllerID}";
+        //            SqlDataReader dr = com.ExecuteReader();
+
+        //            while( dr.Read()) {
+        //                clsStation clsSta = new clsStation() {
+        //                    Id = dr.GetInt32(0),
+        //                    Name = dr.GetString(1),
+        //                    ControllerId = dr.GetInt32(2),
+        //                };
+
+        //                listStation.Add(clsSta);
+        //            }
+        //            dr.Close();
+        //        }
+        //    }
+        //    return listStation;
+        //}
 
         public List<clsTag> GetTagGroup( string prefix, int ControllerID) {
             List<clsTag> listTags = new List<clsTag>();
@@ -222,56 +286,11 @@ ELSE
         }
 
 
-        public DataSet GetIPAddressDataSet(bool enabledOnly = false) {
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
-                    conn.Open();
-                    string sqlString = $@"SELECT id, ip_address, description, isEnabled FROM tblController WITH(NOLOCK)";
-                    if (enabledOnly) {
-                        sqlString += " WHERE isEnabled = 1";
-                    }
-                    com.CommandText = sqlString ;
 
-                    SqlDataAdapter adapter = new SqlDataAdapter();
-                    adapter.SelectCommand = com;
 
-                    DataSet controller = new DataSet();
-                    adapter.Fill(controller, "Customers");
 
-                    return controller;
-                }
-            }
-        }
 
-        public void SetIPAddress( string ipAddress, string description, int isEnabled ) {
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
-                    conn.Open();
-                    com.CommandText = $@"
-IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE ip_address = '{ipAddress}' ) 
-    UPDATE tblController SET description = '{description}', isEnabled = {isEnabled} WHERE ip_address = '{ipAddress}' 
-ELSE 
-    INSERT INTO tblController (ip_address, description, isEnabled) VALUES ( '{ipAddress}', '{description}', {isEnabled} );
-";
-                    com.ExecuteNonQuery();
-                }
-            }
-        }
 
-        public void DeleteIPAddress( int id ) {
-            using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-                using(SqlCommand com = conn.CreateCommand()) {
-                    conn.Open();
-                    com.CommandText = $@"
-BEGIN TRANSACTION
-    DELETE FROM tblFullTag WHERE controllerId = {id}
-    DELETE FROM tblController WHERE ID = {id} 
-COMMIT TRANSACTION;
-";
-                    com.ExecuteNonQuery();
-                }
-            }
-        }
 
         public DataSet GetTagTypeDataSet() {
             using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {

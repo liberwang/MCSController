@@ -28,18 +28,31 @@ namespace RejectDetailsWin {
 
 
         private void setIPAddressDatasource() {
-            DataSet controller = db.GetIPAddressDataSet();
-            this.bindingSource1.DataSource = controller.Tables[0];
+            //DataSet controller = db.GetIPAddressDataSet();
+            //this.bindingSource1.DataSource = controller.Tables[0];
 
-            DataView dv = new DataView(controller.Tables[0]);
-            dv.RowFilter = "isEnabled = True";
+            //DataView dv = new DataView(controller.Tables[0]);
+            //dv.RowFilter = "isEnabled = True";
 
-            this.bindingSource2.DataSource = dv;
-            this.cboIPAddress.DisplayMember = "description";
-            this.cboIPAddress.ValueMember = "id";
+            //this.bindingSource2.DataSource = dv;
+            //this.cboIPAddress.DisplayMember = "description";
+            //this.cboIPAddress.ValueMember = "id";
 
-            this.cboOutputIP.DisplayMember = "description";
-            this.cboOutputIP.ValueMember = "id";
+            //this.cboOutputIP.DisplayMember = "description";
+            //this.cboOutputIP.ValueMember = "id";
+
+            clsController.RefreshController();
+
+            this.bindingSourceIPAddress.DataSource = clsController.GetControllerDataTable();
+            //this.bindingSourceIPdropdown.DataSource = clsController.GetControllerDataSource();
+
+            this.cboIPAddress.DataSource = clsController.GetControllerItemDataSource();
+            //this.cboIPAddress.DisplayMember = "Text";
+            //this.cboIPAddress.ValueMember = "Value";
+
+            this.cboOutputIP.DataSource = clsController.GetControllerItemDataSource();
+            //this.cboOutputIP.DisplayMember = "Text";
+            //this.cboOutputIP.ValueMember = "Value";
 
             this.cboIPAddress.SelectedIndex = -1;
             this.cboOutputIP.SelectedIndex = -1;
@@ -130,11 +143,12 @@ namespace RejectDetailsWin {
                 this.bindingSource3.DataSource = null;
                 return;
             }
-                
-            int controllerId = (int)cboIPAddress.SelectedValue;
-            //string ipAddress = cboIPAddress.SelectedText;
 
-            this.bindingSource3.DataSource = db.GetFullTags(controllerId).Tables[0];
+                int controllerId = (int)cboIPAddress.SelectedValue;
+                //string ipAddress = cboIPAddress.SelectedText;
+
+                this.bindingSource3.DataSource = db.GetFullTags(controllerId).Tables[0];
+
         }
 
         private void btnAddTag_Click(object sender, EventArgs e) {
@@ -165,7 +179,7 @@ namespace RejectDetailsWin {
 
                 if (dsUnselected != null && dsUnselected.Tables.Count > 0)
                 {
-                    this.lstTags.Items.Clear();
+                    //this.lstTags.Items.Clear();
                     this.lstTags.DataSource = dsUnselected.Tables[0];
 
                     this.lstTags.DisplayMember = "tagName";
@@ -176,7 +190,7 @@ namespace RejectDetailsWin {
 
                 if (dsSelect?.Tables?.Count > 0)
                 {
-                    this.lstOutput.Items.Clear();
+                    //this.lstOutput.Items.Clear();
                     this.lstOutput.DataSource = dsSelect.Tables[0];
                     
                     this.lstOutput.DisplayMember = "tagName";

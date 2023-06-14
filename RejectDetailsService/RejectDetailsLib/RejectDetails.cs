@@ -147,11 +147,11 @@ namespace RejectDetailsLib
 
             dictReadWrite = ds.GetReadWriteTag();
             */
-            this.listController = ds.GetController();
+            this.listController = clsController.GetControllerList();
 
             foreach (clsController clsCon in this.listController)
             {
-                if (clsCon.isEnabled)
+                if (clsCon.IsEnabled)
                 {
                     this.dicTagGroup.Add(clsCon.Id, clsTagGroup.GetGroup(clsCon.Id, clsCon.IpAddress));
                 }
