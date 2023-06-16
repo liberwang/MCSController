@@ -47,7 +47,7 @@ namespace MCSQueryWin
             //{
             //    this.cboIPAddress.Items.Add(new { Text = dr[2].ToString(), Value = dr[1].ToString() });
             //}
-            this.cboIPAddress.DataSource = clsController.GetControllerDataSource(true);
+            this.cboIPAddress.DataSource = clsController.GetControllerItemDataSource();
             this.cboIPAddress.SelectedIndex = 0;
 
             this.dataGridView.AutoGenerateColumns = true;

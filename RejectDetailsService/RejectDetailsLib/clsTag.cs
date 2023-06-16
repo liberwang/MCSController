@@ -2,56 +2,56 @@
 
 namespace RejectDetailsLib {
     public class clsTag {
+        protected const string BOOL_STR = "Bool";
+        protected const string REAL_STR = "Real";
+        protected const string STRING_STR = "String";
+        protected const string INT_STR = "Int";
 
-        //public int StationTagId { get; set; }
+        public clsTag()
+        {
 
-        //public int StationId { get; set; }
+        }
 
-        //public string StationName { get; set; }
+        public clsTag(int id, string name) : this()
+        {
+            TagId = id;
+            TagName = name;
+        }
 
         public int TagId { get; set; }
         
         public string TagName { get; set; }
 
-        //public string SubName { get; set; }
-
-        //public string ProcessTag { get; set; }
-
         public string TagType { get; set; }
 
-        public string Comment { get; set; }
+        public string Description { get; set; }
 
         public int Read { get; set; }
 
         public int Write { get; set; }
-        //public string IpAddress { get; set; }
 
         public int Output { get; set; }
+
+        public int RejectType { get; set; }
 
         public Tag plcTag { get; set; }
 
         public void GenerateTag(string IpAddress) {
-            //string tagName = getTagPath();
 
             int dataType = DataType.INT;
-            if(TagType == "Bool") {
+            if(TagType == BOOL_STR) {
                 dataType = DataType.SINT;
-            } else if(TagType == "Real") {
+            } else if(TagType == REAL_STR) {
                 dataType = DataType.REAL;
-            } else if(TagType == "String") {
+            } else if(TagType == STRING_STR) {
                 dataType = DataType.String;
-            } else if(TagType == "Int") {
+            } else if(TagType == INT_STR) {
                 dataType = DataType.INT;
             }
 
-            //this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagFullName, dataType, 1, 1);
             this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1, 1);
         }
 
-        //public string TagFullName {
-        //    get {
-        //        return $@"Station0{StationName}.{TagName}";
-        //    }
-        //}
+        
     }
 }

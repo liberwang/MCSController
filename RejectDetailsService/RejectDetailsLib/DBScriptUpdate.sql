@@ -50,14 +50,11 @@ BEGIN
 	DECLARE @tag_pass INT;
 	DECLARE	@tag_reject INT;
 
-	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != '');
-	SET @tag_reject = (SELECT COUNT(*) FROM #tag_temp WHERE serial_number = '' );
-
-	--SELECT @prodName AS prod_name,  
-	--(SELECT COUNT(DISTINCT serial_number) FROM dbo.tblTagContent WITH(NOLOCK)
-	--WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd AND ISNULL(serial_number, '') != '' ) AS tag_cnt, 
-	--(SELECT COUNT(*) FROM dbo.tblTagContent WITH(NOLOCK)
-	--WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd AND ISNULL(serial_number, '') = '' ) AS reject_cnt 
+	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != '' AND LEFT(serial_number,7) != 'Reject:' );
+	IF @prodName = 'Honda-BulkHead' 
+		SET @tag_reject = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number = '' OR LEFT(serial_number, 7) = 'Reject:' );
+	ELSE 
+		SET @tag_reject = (SELECT COUNT(*) FROM #tag_temp WHERE serial_number = '' );
 
 	SELECT @prodName AS prod_name,  
 		@tag_pass + @tag_reject AS tag_cnt,

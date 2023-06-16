@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace RejectDetailsLib
 {
-    public class clsTagValue
+    public class clsTagValue : clsTag
     {
-
         private const char TAG_DELIMITER = '.';
 
-        public string tagFullName { get;set; }
-
-        public string tagValue { get;set; }    
-
+        public string TagValue { get;set; }    
 
         /// <summary>
         /// return last part of tag name after last point for output. 
@@ -22,11 +18,20 @@ namespace RejectDetailsLib
         /// <returns>last part of tag </returns>
         public string GetTagOutputName()
         {
-            int ind = tagFullName.LastIndexOf(TAG_DELIMITER); ;
+            int ind = TagName.LastIndexOf(TAG_DELIMITER);
             if (ind < 0)
-                return tagFullName;
+                return TagName;
             else
-                return tagFullName.Substring(ind + 1);
+                return TagName.Substring(ind + 1);
+        }
+
+        public static string GetTagOutputName(string pTagName)
+        {
+            int ind = pTagName.LastIndexOf(TAG_DELIMITER);
+            if (ind < 0)
+                return pTagName;
+            else
+                return pTagName.Substring(ind + 1);
         }
     }
 }

@@ -11,25 +11,27 @@ namespace RejectDetailsWin {
         }
 
         private void frmSettings_Load(object sender, EventArgs e) {
+            this.txtProductName.Text = SystemKeys.PRODUCT_NAME;
+
+            this.chkSaveToDB.Checked = SystemKeys.SAVE_TO_DB;
+            this.chkSaveToFile.Checked = SystemKeys.SAVE_TO_FILE;
             this.txtOutputFileFolder.Text = SystemKeys.FILE_FOLDER;
             this.txtOutputFileName.Text = SystemKeys.FILE_NAME;
             this.txtOutputFilePrefix.Text = SystemKeys.FILE_NAME_PREFIX;
             this.txtOutputFileExt.Text = SystemKeys.FILE_NAME_EXT;
 
             this.txtCopyFileFolder.Text = SystemKeys.COPY_FOLDER;
-            this.txtCopyFilePrefix.Text = SystemKeys.COPY_FILE_PREFIX;
-            this.txtCopyFileExt.Text = SystemKeys.COPY_FILE_EXT;
+            this.txtRejectFilePrefix.Text = SystemKeys.REJECT_FILE_PREFIX;
+            //this.txtCopyFileExt.Text = SystemKeys.COPY_FILE_EXT;
 
             this.nudCopyInterval.Value = SystemKeys.COPY_INTERVAL;
             this.nudVisitInterval.Value = SystemKeys.VISIT_INTERVAL;
 
             this.txtLogFolder.Text = SystemKeys.LOG_FILE;
-            //this.txtDBConnect.Text = SystemKeys.DB_CONNECT;
 
-            this.chkSaveToDB.Checked = SystemKeys.SAVE_TO_DB;
-            this.chkSaveToFile.Checked = SystemKeys.SAVE_TO_FILE;
+            this.SaveToFileStatus(SystemKeys.SAVE_TO_FILE);
 
-            
+            this.cboTimeOfOutputFile.SelectedItem = SystemKeys.GENERATE_OUTPUT_FILE_TIME;
         }
 
         private void btnOutputFileFolder_Click(object sender, EventArgs e) {
@@ -78,8 +80,9 @@ namespace RejectDetailsWin {
             string sOutputFileExt = this.txtOutputFileExt.Text.Trim();
 
             string sCopyFileFolder = this.txtCopyFileFolder.Text.Trim();
-            string sCopyFilePrefix = this.txtCopyFilePrefix.Text.Trim();
-            string sCopyFileExt = this.txtCopyFileExt.Text.Trim();
+            //string sCopyFilePrefix = this.txtRejectFilePrefix.Text.Trim();
+            //string sCopyFileExt = this.txtCopyFileExt.Text.Trim();
+            string sRejectFilePrefix = this.txtRejectFilePrefix.Text.Trim();
 
             int nCopyInterval = (int)this.nudCopyInterval.Value;
             int nVisitInterval = (int)this.nudVisitInterval.Value;
@@ -89,6 +92,8 @@ namespace RejectDetailsWin {
 
             bool sSaveToDB = this.chkSaveToDB.Checked;
             bool sSaveToFile = this.chkSaveToFile.Checked;
+
+            string sGenerateOutputTime = this.cboTimeOfOutputFile.SelectedItem.ToString();
 
             if(sOutputFileFolder != SystemKeys.FILE_FOLDER) {
                 SystemKeys.setKey(SystemKeys.FILE_FOLDER_KEY, sOutputFileFolder);
@@ -105,11 +110,15 @@ namespace RejectDetailsWin {
             if(sCopyFileFolder != SystemKeys.COPY_FOLDER) {
                 SystemKeys.setKey(SystemKeys.COPY_FOLDER_KEY, sCopyFileFolder);
             }
-            if(sCopyFilePrefix != SystemKeys.COPY_FILE_PREFIX) {
-                SystemKeys.setKey(SystemKeys.COPY_FILE_PREFIX_KEY, sCopyFilePrefix);
-            }
-            if(sCopyFileExt != SystemKeys.COPY_FILE_EXT) {
-                SystemKeys.setKey(SystemKeys.COPY_FILE_EXT_KEY, sCopyFileExt);
+            //if(sCopyFilePrefix != SystemKeys.COPY_FILE_PREFIX) {
+            //    SystemKeys.setKey(SystemKeys.COPY_FILE_PREFIX_KEY, sCopyFilePrefix);
+            //}
+            //if(sCopyFileExt != SystemKeys.COPY_FILE_EXT) {
+            //    SystemKeys.setKey(SystemKeys.COPY_FILE_EXT_KEY, sCopyFileExt);
+            //}
+            if(sRejectFilePrefix != SystemKeys.REJECT_FILE_PREFIX)
+            {
+                SystemKeys.setKey(SystemKeys.REJECT_FILE_PREFIX_KEY, sRejectFilePrefix);
             }
             if(nCopyInterval != SystemKeys.COPY_INTERVAL) {
                 SystemKeys.setKey(SystemKeys.COPY_INTERVAL_KEY, nCopyInterval.ToString());
@@ -126,9 +135,30 @@ namespace RejectDetailsWin {
             if(sSaveToFile != SystemKeys.SAVE_TO_FILE) {
                 SystemKeys.setKey(SystemKeys.SAVE_TO_FILE_KEY, sSaveToFile.ToString());
             }
+            if(sGenerateOutputTime != SystemKeys.GENERATE_OUTPUT_FILE_TIME)
+            {
+                SystemKeys.setKey(SystemKeys.GENERATE_OUTPUT_FILE_TIME_KEY, sGenerateOutputTime);
+            }
 
             SystemKeys.initializeKey();
             this.Close();
+        }
+
+        private void chkSaveToFile_CheckedChanged(object sender, EventArgs e)
+        {
+            this.SaveToFileStatus(chkSaveToFile.Checked);
+        }
+
+        private void SaveToFileStatus(bool isEnabled )
+        {
+            this.txtCopyFileFolder.Enabled = isEnabled;
+            this.txtOutputFileExt.Enabled = isEnabled;
+            this.txtOutputFileFolder.Enabled = isEnabled;
+            this.txtOutputFileName.Enabled = isEnabled;
+            this.txtOutputFilePrefix.Enabled = isEnabled;
+            this.txtRejectFilePrefix.Enabled = isEnabled;
+            this.btnOutputFileFolder.Enabled = isEnabled;
+            this.btnCopyFileFolder.Enabled = isEnabled; 
         }
     }
 }

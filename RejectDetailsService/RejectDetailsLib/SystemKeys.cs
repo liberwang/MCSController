@@ -20,12 +20,14 @@ namespace RejectDetailsLib {
         public static string COPY_FOLDER;
         public static string COPY_FILE_EXT;
         public static string COPY_FILE_PREFIX;
+        public static string REJECT_FILE_PREFIX;
         public static int VISIT_INTERVAL;
         public static int COPY_INTERVAL;
         public static string LOG_FILE;
         public static string IP_ADDRESS_THIS;
         public static bool SAVE_TO_FILE;
         public static bool SAVE_TO_DB;
+        public static string GENERATE_OUTPUT_FILE_TIME;
         public static bool GET_DATA_FROM_XML;
 
         public const string PRODUCT_NAME_KEY = "ProductName";
@@ -36,6 +38,7 @@ namespace RejectDetailsLib {
         public const string COPY_FOLDER_KEY = "CopyFolder";
         public const string COPY_FILE_EXT_KEY = "CopyFileExt";
         public const string COPY_FILE_PREFIX_KEY = "CopyFilePrefix";
+        public const string REJECT_FILE_PREFIX_KEY = "RejectFilePrefix";
         public const string VISIT_INTERVAL_KEY = "VisitInterval";
         public const string COPY_INTERVAL_KEY = "CopyInterval";
         public const string LOG_FILE_KEY = "LogFileFolder";
@@ -43,6 +46,7 @@ namespace RejectDetailsLib {
         public const string IP_ADDRESS_THIS_KEY = "ThisIP";
         public const string SAVE_TO_FILE_KEY = "SaveToFile";
         public const string SAVE_TO_DB_KEY = "SaveToDB";
+        public const string GENERATE_OUTPUT_FILE_TIME_KEY = "GenerateOutputFileFrom";
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
 
         //static SystemKeys() {
@@ -61,12 +65,13 @@ namespace RejectDetailsLib {
 
             PRODUCT_NAME = keys.ContainsKey(PRODUCT_NAME_KEY) ? keys[PRODUCT_NAME_KEY] : "HONDA-BULKHEAD";
             FILE_FOLDER = keys.ContainsKey(FILE_FOLDER_KEY) ? keys[FILE_FOLDER_KEY] : @"c:\temp";
-            FILE_NAME_PREFIX = keys.ContainsKey(FILE_NAME_PREFIX_KEY) ? keys[FILE_NAME_PREFIX_KEY] : @"tag-";
+            FILE_NAME_PREFIX = keys.ContainsKey(FILE_NAME_PREFIX_KEY) ? keys[FILE_NAME_PREFIX_KEY] : @"TagData-";
             FILE_NAME = keys.ContainsKey(FILE_NAME_KEY) ? keys[FILE_NAME_KEY] : @"yyy-MM-dd";
             FILE_NAME_EXT = keys.ContainsKey(FILE_NAME_EXT_KEY) ? keys[FILE_NAME_EXT_KEY] : "csv";
             COPY_FOLDER = keys.ContainsKey(COPY_FOLDER_KEY) ? keys[COPY_FOLDER_KEY] : @"c:\temp";
-            COPY_FILE_PREFIX = keys.ContainsKey(COPY_FILE_PREFIX_KEY) ? keys[COPY_FILE_PREFIX_KEY] : @"RejectDetails-tag-";
+            COPY_FILE_PREFIX = keys.ContainsKey(COPY_FILE_PREFIX_KEY) ? keys[COPY_FILE_PREFIX_KEY] : @"RejectDetails-";
             COPY_FILE_EXT = keys.ContainsKey(COPY_FILE_EXT_KEY) ? keys[COPY_FILE_EXT_KEY] : @"csv";
+            REJECT_FILE_PREFIX = keys.ContainsKey(REJECT_FILE_PREFIX_KEY) ? keys[REJECT_FILE_PREFIX_KEY] : "RejectDetails-";
             VISIT_INTERVAL = keys.ContainsKey(VISIT_INTERVAL_KEY) ? int.Parse(keys[VISIT_INTERVAL_KEY]) : 500;
             COPY_INTERVAL = keys.ContainsKey(COPY_INTERVAL_KEY) ? int.Parse(keys[COPY_INTERVAL_KEY]) : 31000;
             LOG_FILE = keys.ContainsKey(LOG_FILE_KEY) ? keys[LOG_FILE_KEY] : @"c:\temp\log";
@@ -79,26 +84,17 @@ namespace RejectDetailsLib {
             } else {
                 SAVE_TO_DB = true;
             }
+            GENERATE_OUTPUT_FILE_TIME = keys.ContainsKey(GENERATE_OUTPUT_FILE_TIME_KEY) ? keys[GENERATE_OUTPUT_FILE_TIME_KEY] : "00";
         }
 
         public static void setKey(string appKey, string appValue) {
-            //var appSetings = ConfigurationManager.AppSettings;
-            //appSetings[appKey] = appValue;
             Database db = new Database();
             db.SetSystemSetting(appKey, appValue);
         }
 
-
         public static bool IsHondaBulkHead()
         {
             return PRODUCT_NAME == PRODUCE_NAME_HONDA_BULKHEAD;
-        }
-
-        private static string getFileNameDateString() {
-            return DateTime.Now.ToString(FILE_NAME);
-        }
-        private static string getFileName() {
-            return FILE_NAME_PREFIX + getFileNameDateString() + (string.IsNullOrEmpty(FILE_NAME_EXT) ? "" : ("." + FILE_NAME_EXT));
         }
 
         public static string getFullFileName() {
@@ -112,7 +108,7 @@ namespace RejectDetailsLib {
                 return getFullFileName();
             } else
             {
-                string fileName = sFilePrefix + getFileNameDateString() + (string.IsNullOrEmpty(FILE_NAME_EXT) ? "" : ("." + FILE_NAME_EXT));
+                string fileName = sFilePrefix + GetFileNameDateString() + (string.IsNullOrEmpty(FILE_NAME_EXT) ? "" : ("." + FILE_NAME_EXT));
                 return Path.Combine (FILE_FOLDER, fileName);
             }
         }
@@ -120,10 +116,10 @@ namespace RejectDetailsLib {
         public static string getCopyFileName(string fileNamePrex = null) {
             if (string.IsNullOrWhiteSpace(fileNamePrex))
             {
-                return Path.Combine(COPY_FOLDER, COPY_FILE_PREFIX + getFileNameDateString() + "." + COPY_FILE_EXT);
+                return Path.Combine(COPY_FOLDER, COPY_FILE_PREFIX + GetFileNameDateString() + "." + COPY_FILE_EXT);
             } else
             {
-                return Path.Combine(COPY_FOLDER, fileNamePrex + getFileNameDateString() + "." + COPY_FILE_EXT);
+                return Path.Combine(COPY_FOLDER, fileNamePrex + GetFileNameDateString() + "." + COPY_FILE_EXT);
             }
         }
 
@@ -133,10 +129,43 @@ namespace RejectDetailsLib {
 
         public static string getLogName() {
             if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
-                return LOG_FILE + getFileNameDateString() + ".txt";
+                return LOG_FILE + GetFileNameDateString() + ".txt";
             } else {
-                return LOG_FILE.Substring(0, LOG_FILE.Length - 4) + getFileNameDateString() + LOG_FILE.Substring(LOG_FILE.Length - 4);
+                return LOG_FILE.Substring(0, LOG_FILE.Length - 4) + GetFileNameDateString() + LOG_FILE.Substring(LOG_FILE.Length - 4);
             }
         }
+
+
+        #region Private Methods
+        //private static string getFileNameDateString()
+        //{
+        //    return DateTime.Now.ToString(FILE_NAME);
+        //}
+
+        private static string getFileName()
+        {
+            return FILE_NAME_PREFIX + GetFileNameDateString() + (string.IsNullOrWhiteSpace(FILE_NAME_EXT) ? "" : ("." + FILE_NAME_EXT));
+        }
+
+        private static string GetFileNameDateString()
+        {
+            DateTime now = DateTime.Now;
+            if (! int.TryParse(GENERATE_OUTPUT_FILE_TIME, out int hoursDelimt) )
+            {
+                hoursDelimt = 0;
+            }
+
+            DateTime dt = new DateTime(now.Year, now.Month, now.Day, hoursDelimt, 0, 0);
+
+            if (now >= dt)
+            {
+                return now.ToString(FILE_NAME);
+            }
+            else
+            {
+                return dt.AddDays(-1).ToString(FILE_NAME);
+            }
+        }
+        #endregion
     }
 }

@@ -110,6 +110,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
+            /*
             if (SystemKeys.GET_DATA_FROM_XML)
             {
                 this.ds = new DataXML();
@@ -119,7 +120,7 @@ namespace RejectDetailsLib
                 this.ds = new Database();
             }
 
-            /*
+
             this.listController = ds.GetController();
 
             // 192.168.1.10 -> 10, 20, 30, 40
@@ -147,6 +148,9 @@ namespace RejectDetailsLib
 
             dictReadWrite = ds.GetReadWriteTag();
             */
+
+            this.ds = new Database();
+
             this.listController = clsController.GetControllerList();
 
             foreach (clsController clsCon in this.listController)
@@ -272,28 +276,22 @@ namespace RejectDetailsLib
 
                                 if (isOK)
                                 {
-                                    // ignore duplicated serialnumber 
-                                    //if (tagSerialNoValue != string.Empty && tagSerialNoValue != lastSerialNumber)
-                                    //{
-                                    //    lastSerialNumber = tagSerialNoValue;
+                                    // set read flag back first;
+                                    if (tagGroup.tagRead.Write == 1)
+                                    {
+                                        client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
+                                    }
 
-                                        // set read flag back first;
-                                        if (tagGroup.tagRead.Write == 1)
-                                        {
-                                            client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
-                                        }
+                                    // set back to write tags. 
+                                    foreach (clsTag tagWrite in tagGroup.tagWrite)
+                                    {
+                                        // todo write value back;
+                                        // TODO
+                                        //clsLog.addLog($@"tagwrite: {tagWrite.plcTag.Name}");
+                                        client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
+                                    }
 
-                                        // set back to write tags. 
-                                        foreach (clsTag tagWrite in tagGroup.tagWrite)
-                                        {
-                                            // todo write value back;
-                                            // TODO
-                                            //clsLog.addLog($@"tagwrite: {tagWrite.plcTag.Name}");
-                                            client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
-                                        }
-
-                                        SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
-                                    //}
+                                    SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
                                 }
                             }
                         }
@@ -383,46 +381,15 @@ namespace RejectDetailsLib
         private void SaveToFile(List<(string, string)> tagValue, string serialNumber, string ipAddress)
         {
             clsOutput op = clsOutput.GetOutputByProduceName();
-  
+
             op.SaveToFileAndDatabase(tagValue, serialNumber, ipAddress);
+        }
 
-            //if (SystemKeys.SAVE_TO_FILE)
-            //{
-            //    string fileName = SystemKeys.getFullFileName();
+        private void SaveToFile(Dictionary<int, clsTagValue> tagValue, string serialNumber, string ipAddress, int controllerId)
+        {
+            clsOutput op = clsOutput.GetOutputByProduceName();
 
-            //    if (!File.Exists(fileName))
-            //    {
-            //        // if csv file is not in the path, create a header to it first.
-            //        StringBuilder sbField = new StringBuilder();
-
-            //        foreach ((string, string) tv in tagValue)
-            //        {
-            //            sbField.Append(tv.Item2).Append(",");
-            //        }
-            //        sbField.Append("TimeStamp");
-
-            //        using (StreamWriter sw = File.AppendText(fileName))
-            //        {
-            //            sw.WriteLine(sbField.ToString());
-            //        }
-            //    }
-
-            //    StringBuilder sb = new StringBuilder();
-            //    foreach ((string, string) tv in tagValue)
-            //    {
-            //        sb.Append(tv.Item1).Append(",");
-            //    }
-            //    sb.Append(SystemKeys.getCurrentDateTime());
-
-            //    using (StreamWriter sw = File.AppendText(fileName))
-            //    {
-            //        sw.WriteLine(sb.ToString());
-            //    }
-            //}
-            //if (SystemKeys.SAVE_TO_DB)
-            //{
-            //    Database.SetContent(tagValue, ipAddress, serialNumber);
-            //}
+            op.SaveToFileAndDatabase(tagValue, serialNumber, ipAddress, controllerId);
         }
     }
 }

@@ -448,7 +448,7 @@ namespace RejectDetailsWin {
             // cboIPAddress
             // 
             this.cboIPAddress.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cboIPAddress.DisplayMember = "Text";
+            this.cboIPAddress.DisplayMember = "Description";
             this.cboIPAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboIPAddress.FormattingEnabled = true;
             this.cboIPAddress.Location = new System.Drawing.Point(204, 30);
@@ -456,7 +456,7 @@ namespace RejectDetailsWin {
             this.cboIPAddress.Name = "cboIPAddress";
             this.cboIPAddress.Size = new System.Drawing.Size(360, 33);
             this.cboIPAddress.TabIndex = 1;
-            this.cboIPAddress.ValueMember = "Value";
+            this.cboIPAddress.ValueMember = "Id";
             this.cboIPAddress.TextChanged += new System.EventHandler(this.cboIPAddress_TextChanged);
             // 
             // label1
@@ -547,6 +547,7 @@ namespace RejectDetailsWin {
             this.btnRight.TabIndex = 0;
             this.btnRight.Text = ">>";
             this.btnRight.UseVisualStyleBackColor = true;
+            this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
             // 
             // btnLeft
             // 
@@ -560,9 +561,11 @@ namespace RejectDetailsWin {
             this.btnLeft.TabIndex = 1;
             this.btnLeft.Text = "<<";
             this.btnLeft.UseVisualStyleBackColor = true;
+            this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
             // 
             // lstTags
             // 
+            this.lstTags.DisplayMember = "TagName";
             this.lstTags.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstTags.FormattingEnabled = true;
             this.lstTags.ItemHeight = 25;
@@ -572,6 +575,7 @@ namespace RejectDetailsWin {
             this.lstTags.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lstTags.Size = new System.Drawing.Size(683, 917);
             this.lstTags.TabIndex = 1;
+            this.lstTags.ValueMember = "TagId";
             // 
             // btnSaveOutput
             // 
@@ -582,9 +586,11 @@ namespace RejectDetailsWin {
             this.btnSaveOutput.TabIndex = 2;
             this.btnSaveOutput.Text = "Save Output";
             this.btnSaveOutput.UseVisualStyleBackColor = true;
+            this.btnSaveOutput.Click += new System.EventHandler(this.btnSaveOutput_Click);
             // 
             // lstOutput
             // 
+            this.lstOutput.DisplayMember = "TagName";
             this.lstOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstOutput.FormattingEnabled = true;
             this.lstOutput.ItemHeight = 25;
@@ -594,6 +600,7 @@ namespace RejectDetailsWin {
             this.lstOutput.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lstOutput.Size = new System.Drawing.Size(683, 917);
             this.lstOutput.TabIndex = 3;
+            this.lstOutput.ValueMember = "TagName";
             // 
             // tableLayoutPanel7
             // 
@@ -622,6 +629,7 @@ namespace RejectDetailsWin {
             this.btnUp.TabIndex = 0;
             this.btnUp.Text = "Up";
             this.btnUp.UseVisualStyleBackColor = true;
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
             // 
             // btnDown
             // 
@@ -633,6 +641,7 @@ namespace RejectDetailsWin {
             this.btnDown.TabIndex = 1;
             this.btnDown.Text = "Down";
             this.btnDown.UseVisualStyleBackColor = true;
+            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
             // tableLayoutPanel9
             // 
@@ -662,15 +671,15 @@ namespace RejectDetailsWin {
             // cboOutputIP
             // 
             this.cboOutputIP.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cboOutputIP.DisplayMember = "Text";
+            this.cboOutputIP.DisplayMember = "Description";
             this.cboOutputIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboOutputIP.FormattingEnabled = true;
             this.cboOutputIP.Location = new System.Drawing.Point(323, 30);
             this.cboOutputIP.Name = "cboOutputIP";
             this.cboOutputIP.Size = new System.Drawing.Size(343, 33);
             this.cboOutputIP.TabIndex = 1;
-            this.cboOutputIP.ValueMember = "Value";
-            this.cboOutputIP.SelectedIndexChanged += new System.EventHandler(this.cboOutputIP_SelectedIndexChanged);
+            this.cboOutputIP.ValueMember = "Id";
+            this.cboOutputIP.TextChanged += new System.EventHandler(this.cboOutputIP_TextChanged);
             // 
             // btnClose
             // 

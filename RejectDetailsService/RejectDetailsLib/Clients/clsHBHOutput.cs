@@ -116,8 +116,17 @@ namespace RejectDetailsLib.Clients
             }
         }
 
+        protected override List<int> GetOutputTagListByOrder()
+        {
+            return new Database().GetSelectedTagIdOutputOriginal(this.m_controllerId);
+        }
 
-        private string GetFileName()
+        protected override string GetOutputTagName(string sTagName)
+        {
+            return clsTagValue.GetTagOutputName(sTagName);
+        }
+
+        private string GetFileName() 
         {
             return SystemKeys.getFullFileName(fileNamePre);
         }

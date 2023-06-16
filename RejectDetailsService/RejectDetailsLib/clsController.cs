@@ -18,6 +18,15 @@ namespace RejectDetailsLib
 
         private static List<clsController> ControllerList { get; set; }
 
+        public clsController() { }
+
+        public clsController(int id, string IpAddr, string desc ) : this()
+        {
+            Id = id;
+            IpAddress = IpAddr;
+            Description = desc;
+        }
+
         public static void RefreshController()
         {
             ControllerList = null;
@@ -38,16 +47,14 @@ namespace RejectDetailsLib
         }
 
 
-        public static List<object> GetControllerItemDataSource(bool withAllOption = true)
+        public static List<clsController> GetControllerItemDataSource(bool withAllOption = true)
         {
-            List<object> list = new List<object>();
-            if ( withAllOption)
+            List<clsController> list = GetControllerList();
+            if (withAllOption)
             {
-                list.Add(new { Text = "All", Value = -1 });
+                list.Insert(0, new clsController (-1, "All", "All" ));
             }
-            foreach( clsController contr in GetControllerList() ) {
-                list.Add(new { Text = contr.Description, Value = contr.Id });
-            }
+
 
             return list;
         }

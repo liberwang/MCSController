@@ -1,11 +1,7 @@
 ﻿using RejectDetailsLib.Clients;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RejectDetailsLib
 {
@@ -16,16 +12,20 @@ namespace RejectDetailsLib
 
         public List<(string, string)> m_tagValueList { get; set; }
 
+        public Dictionary<int, clsTagValue> m_tagValueDictionary {  get; set; }    
+
         public string m_serialNumber { get; set; }
 
         public string m_ipAddress { get; set; }
 
+        public int m_controllerId { get; set; }
+
+        protected static List<int> m_OutputTagIdList = null;
 
         public static clsOutput GetOutputByProduceName()
         {
             if (SystemKeys.IsHondaBulkHead())
             {
-                //clsLog.addLog("it is honda-bulkhead output class");
                 return new clsHBHOutput();
             }
             else
@@ -36,7 +36,8 @@ namespace RejectDetailsLib
 
         public clsOutput()
         {
-
+            //TODO
+            //m_OutputTagIdList = this.GetOutputTagListByOrder();
         }
 
         public void SaveToFileAndDatabase(List<(string, string)> tagValue, string serialNumber, string ipAddress)
@@ -45,6 +46,16 @@ namespace RejectDetailsLib
             m_serialNumber = serialNumber;
             m_ipAddress = ipAddress;
 
+            this.SaveToFileAndDatabase();
+        }
+
+        public void SaveToFileAndDatabase(Dictionary<int, clsTagValue> tagValue, string serialNumber, string ipAddress, int controllerId)
+        {
+            m_tagValueDictionary = tagValue;
+            m_serialNumber = serialNumber;
+            m_ipAddress = ipAddress;
+            m_controllerId = controllerId;
+                        
             this.SaveToFileAndDatabase();
         }
 
@@ -120,7 +131,7 @@ namespace RejectDetailsLib
 
                 foreach ((string, string) tv in tagValueList)
                 {
-                    sbField.Append(tv.Item2).Append(",");
+                    sbField.Append(GetOutputTagName(tv.Item2)).Append(",");
                 }
 
                 if (bAppendTimeStamp)
@@ -161,10 +172,18 @@ namespace RejectDetailsLib
         {
             if (m_tagValueList?.Count > 0)
             {
-                Database.SetContent(m_tagValueList, m_ipAddress, m_serialNumber);
+                new Database().SetContent(m_tagValueList, m_ipAddress, m_serialNumber);
             }
         }
 
+        protected virtual List<int> GetOutputTagListByOrder()
+        {
+            return new Database().GetSelectedTagIdOutput(this.m_controllerId);
+        }
 
+        protected virtual string GetOutputTagName(string sTagName)
+        {
+            return sTagName;
+        }
     }
 }
