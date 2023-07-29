@@ -2,11 +2,12 @@
 
 namespace RejectDetailsLib {
     public class clsTag {
-        protected const string BOOL_STR = "Bool";
-        protected const string REAL_STR = "Real";
-        protected const string STRING_STR = "String";
-        protected const string INT_STR = "Int";
+        public const string BOOL_TYPE_STR = "Bool";
+        public const string REAL_TYPE_STR = "Real";
+        public const string STRING_TYPE_STR = "String";
+        public const string INT_TYPE_STR = "Int";
 
+        public const string SERIAL_NUMBER_STR = "SerialNumber";
         public clsTag()
         {
 
@@ -34,24 +35,24 @@ namespace RejectDetailsLib {
 
         public int RejectType { get; set; }
 
+        public string TagTitle { get; set; }    
+
         public Tag plcTag { get; set; }
 
         public void GenerateTag(string IpAddress) {
 
             int dataType = DataType.INT;
-            if(TagType == BOOL_STR) {
+            if(TagType == BOOL_TYPE_STR) {
                 dataType = DataType.SINT;
-            } else if(TagType == REAL_STR) {
+            } else if(TagType == REAL_TYPE_STR) {
                 dataType = DataType.REAL;
-            } else if(TagType == STRING_STR) {
+            } else if(TagType == STRING_TYPE_STR) {
                 dataType = DataType.String;
-            } else if(TagType == INT_STR) {
+            } else if(TagType == INT_TYPE_STR) {
                 dataType = DataType.INT;
             }
 
             this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1, 1);
         }
-
-        
     }
 }

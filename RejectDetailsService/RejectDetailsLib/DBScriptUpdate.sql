@@ -116,3 +116,10 @@ BEGIN
 	COMMIT;
 END
 GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE name = 'tagTitle' AND object_name( object_id ) = 'tblFullTag' ) 
+BEGIN
+	ALTER TABLE tblFullTag ADD tagTitle VARCHAR(1024)
+END
+
+GO

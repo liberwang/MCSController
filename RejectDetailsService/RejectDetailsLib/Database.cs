@@ -10,7 +10,7 @@ namespace RejectDetailsLib
     public class Database : DataSource
     {
 
-        /*  ------- tag contents --------- */
+        #region Tag Content 
         public static void SetContent(string psContent, string psTagName, string ipaddress, string serialNumber)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -81,7 +81,9 @@ LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
                 }
             }
         }
+        #endregion
 
+        #region Controller
         /*  ----  controller/ip adress -------------- */
         public List<clsController> GetControllerList(bool OnlyEnabled)
         {
@@ -174,30 +176,10 @@ ELSE
                 }
             }
         }
-        //public List<clsStation> GetStations(int ControllerID) {
-        //    List<clsStation> listStation = new List<clsStation>();
 
-        //    using(SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT)) {
-        //        using(SqlCommand com = conn.CreateCommand()) {
-        //            conn.Open();
-        //            com.CommandText = $@"SELECT id, name, controllerId FROM tblStation WHERE controllerId = {ControllerID}";
-        //            SqlDataReader dr = com.ExecuteReader();
+        #endregion
 
-        //            while( dr.Read()) {
-        //                clsStation clsSta = new clsStation() {
-        //                    Id = dr.GetInt32(0),
-        //                    Name = dr.GetString(1),
-        //                    ControllerId = dr.GetInt32(2),
-        //                };
-
-        //                listStation.Add(clsSta);
-        //            }
-        //            dr.Close();
-        //        }
-        //    }
-        //    return listStation;
-        //}
-
+        #region Tag Info
         public List<clsTag> GetTagGroup(string prefix, int ControllerID)
         {
             List<clsTag> listTags = new List<clsTag>();
@@ -207,7 +189,7 @@ ELSE
                 {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput, tagTitle
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE (ft.tagRead IS NULL OR ft.tagRead != 1)
@@ -238,7 +220,8 @@ AND controllerId = {ControllerID}
                             Read = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
                             Description = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
                             Write = dr.GetInt16(5),
-                            Output = dr.GetInt16(6)
+                            Output = dr.GetInt16(6),
+                            TagTitle = dr.GetString(7),
                         };
                         listTags.Add(tag);
                     }
@@ -258,7 +241,7 @@ AND controllerId = {ControllerID}
                 {
                     conn.Open();
                     com.CommandText = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput, tagTitle
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
@@ -276,6 +259,7 @@ WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
                             Description = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
                             Write = dr.GetInt16(5),
                             Output = dr.GetInt16(6),
+                            TagTitle = dr.GetString(7),
                         };
                         listTags.Add(tag);
                     }
@@ -286,6 +270,71 @@ WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
             return listTags;
         }
 
+        public DataSet GetFullTags(int ControllerID)
+        {
+            // read : 1, write : -1;
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, 
+ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, ISNULL(ft.tagOutput, 0) AS tagOutput,
+CASE WHEN ft.tagRead = 1 THEN 'Read' ELSE '' END as tagReadText,
+CASE WHEN ft.tagWrite = 1 THEN 'Write' ELSE '' END as tagWriteText,
+CASE WHEN ft.tagOutput = 1 THEN 'Output' ELSE '' END as tagOutputText,
+tagTitle 
+FROM dbo.tblFullTag ft WITH(NOLOCK) JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+WHERE controllerId = {ControllerID}";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    adapter.SelectCommand = com;
+
+                    DataSet tags = new DataSet();
+                    adapter.Fill(tags, "tags");
+
+                    return tags;
+                }
+            }
+        }
+
+        public void SetFullTags(int ControllerId, int tagId, string tagName, int tagType, int tagRead, int tagWrite, string description, int tagOutput, string tagTitle)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"
+IF EXISTS( SELECT 1 FROM tblFullTag WHERE controllerId = {ControllerId} AND tagId = {tagId} )
+    UPDATE tblFullTag 
+    SET tagName = '{tagName}', tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite}, tagOutput = {tagOutput}, tagTitle = '{tagTitle}'
+    WHERE controllerId = {ControllerId} AND tagId = {tagId}
+ELSE 
+    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite, tagOutput, tagTitle) VALUES 
+    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite}, {tagOutput}, '{tagTitle}' )
+";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteFullTag(int tagId)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"DELETE FROM tblFullTag WHERE tagId = {tagId}";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        #endregion
+
+        #region System Keys
         public Dictionary<string, string> GetSystemSettings()
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
@@ -326,6 +375,7 @@ ELSE
                 }
             }
         }
+        #endregion
 
         public DataSet GetTagTypeDataSet()
         {
@@ -347,67 +397,7 @@ ELSE
             }
         }
 
-        public DataSet GetFullTags(int ControllerID)
-        {
-            // read : 1, write : -1;
-            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
-            {
-                using (SqlCommand com = conn.CreateCommand())
-                {
-                    conn.Open();
-                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, 
-ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, ISNULL(ft.tagOutput, 0) AS tagOutput,
-CASE WHEN ft.tagRead = 1 THEN 'Read' ELSE '' END as tagReadText,
-CASE WHEN ft.tagWrite = 1 THEN 'Write' ELSE '' END as tagWriteText,
-CASE WHEN ft.tagOutput = 1 THEN 'Output' ELSE '' END as tagOutputText
-FROM dbo.tblFullTag ft WITH(NOLOCK) JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
-WHERE controllerId = {ControllerID}";
-
-                    SqlDataAdapter adapter = new SqlDataAdapter();
-                    adapter.SelectCommand = com;
-
-                    DataSet tags = new DataSet();
-                    adapter.Fill(tags, "tags");
-
-                    return tags;
-                }
-            }
-        }
-
-        public void SetFullTags(int ControllerId, string tagName, int tagType, int tagRead, int tagWrite, string description, int tagOutput)
-        {
-            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
-            {
-                using (SqlCommand com = conn.CreateCommand())
-                {
-                    conn.Open();
-                    com.CommandText = $@"
-IF EXISTS( SELECT 1 FROM tblFullTag WHERE controllerId = {ControllerId} AND tagName = '{tagName}' )
-    UPDATE tblFullTag 
-    SET tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite}, tagOutput = {tagOutput}
-    WHERE controllerId = {ControllerId} AND tagName = '{tagName}'
-ELSE 
-    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite, tagOutput) VALUES 
-    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite},{tagOutput} )
-";
-                    com.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void DeleteFullTag(int tagId)
-        {
-            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
-            {
-                using (SqlCommand com = conn.CreateCommand())
-                {
-                    conn.Open();
-                    com.CommandText = $@"DELETE FROM tblFullTag WHERE tagId = {tagId}";
-                    com.ExecuteNonQuery();
-                }
-            }
-        }
-
+        #region Tag Output 
         public List<clsTag> GetSelectedOutput(int controllerId)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -514,5 +504,7 @@ ORDER BY tag.tagName;";
                 }
             }
         }
+
+        #endregion
     }
 }

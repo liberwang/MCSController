@@ -37,11 +37,13 @@ namespace RejectDetailsWin {
             this.cboType = new System.Windows.Forms.ComboBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkWriteBack = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtTitle = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(519, 514);
+            this.btnSave.Location = new System.Drawing.Point(511, 572);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(180, 62);
@@ -53,7 +55,7 @@ namespace RejectDetailsWin {
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(732, 514);
+            this.btnClose.Location = new System.Drawing.Point(699, 572);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(180, 62);
@@ -105,7 +107,7 @@ namespace RejectDetailsWin {
             // 
             this.optRegular.AutoSize = true;
             this.optRegular.Checked = true;
-            this.optRegular.Location = new System.Drawing.Point(222, 392);
+            this.optRegular.Location = new System.Drawing.Point(222, 448);
             this.optRegular.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.optRegular.Name = "optRegular";
             this.optRegular.Size = new System.Drawing.Size(118, 29);
@@ -117,7 +119,7 @@ namespace RejectDetailsWin {
             // optRead
             // 
             this.optRead.AutoSize = true;
-            this.optRead.Location = new System.Drawing.Point(222, 434);
+            this.optRead.Location = new System.Drawing.Point(222, 508);
             this.optRead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.optRead.Name = "optRead";
             this.optRead.Size = new System.Drawing.Size(142, 29);
@@ -163,7 +165,7 @@ namespace RejectDetailsWin {
             // chkWriteBack
             // 
             this.chkWriteBack.AutoSize = true;
-            this.chkWriteBack.Location = new System.Drawing.Point(486, 415);
+            this.chkWriteBack.Location = new System.Drawing.Point(454, 479);
             this.chkWriteBack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkWriteBack.Name = "chkWriteBack";
             this.chkWriteBack.Size = new System.Drawing.Size(146, 29);
@@ -171,12 +173,30 @@ namespace RejectDetailsWin {
             this.chkWriteBack.Text = "Write back";
             this.chkWriteBack.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(150, 385);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 25);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Title:";
+            // 
+            // txtTitle
+            // 
+            this.txtTitle.Location = new System.Drawing.Point(222, 382);
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.Size = new System.Drawing.Size(628, 31);
+            this.txtTitle.TabIndex = 15;
+            // 
             // frmTagModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(984, 631);
+            this.ClientSize = new System.Drawing.Size(984, 666);
+            this.Controls.Add(this.txtTitle);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.chkWriteBack);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.cboType);
@@ -218,5 +238,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.ComboBox cboType;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.CheckBox chkWriteBack;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtTitle;
     }
 }

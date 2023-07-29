@@ -1,4 +1,5 @@
 ﻿using RejectDetailsLib.Clients;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -7,15 +8,16 @@ namespace RejectDetailsLib
 {
     public class clsOutput
     {
-        public string ProductName { get; set; }
-        public string Description { get; set; }
+        //public string ProductName { get; set; }
+        //public string Description { get; set; }
 
         public List<(string, string)> m_tagValueList { get; set; }
 
-        public Dictionary<int, clsTagValue> m_tagValueDictionary {  get; set; }    
+        public IDictionary<int, clsTagValue> m_tagValueDictionary {  get; set; }    
 
         public string m_serialNumber { get; set; }
 
+        public int m_serialNumberId { get; set; }
         public string m_ipAddress { get; set; }
 
         public int m_controllerId { get; set; }
@@ -49,13 +51,14 @@ namespace RejectDetailsLib
             this.SaveToFileAndDatabase();
         }
 
-        public void SaveToFileAndDatabase(Dictionary<int, clsTagValue> tagValue, string serialNumber, string ipAddress, int controllerId)
+        public void SaveToFileAndDatabase(IDictionary<int, clsTagValue> tagValue, int serialNumberId, string ipAddress, int controllerId)
         {
             m_tagValueDictionary = tagValue;
-            m_serialNumber = serialNumber;
+            m_serialNumberId = serialNumberId;
             m_ipAddress = ipAddress;
             m_controllerId = controllerId;
-                        
+                      
+            // TODO
             this.SaveToFileAndDatabase();
         }
 
@@ -131,7 +134,7 @@ namespace RejectDetailsLib
 
                 foreach ((string, string) tv in tagValueList)
                 {
-                    sbField.Append(GetOutputTagName(tv.Item2)).Append(",");
+                    sbField.Append(tv.Item2).Append(",");
                 }
 
                 if (bAppendTimeStamp)
@@ -181,9 +184,9 @@ namespace RejectDetailsLib
             return new Database().GetSelectedTagIdOutput(this.m_controllerId);
         }
 
-        protected virtual string GetOutputTagName(string sTagName)
+        protected virtual string GetOutputTagName(clsTagValue tagValueObject)
         {
-            return sTagName;
+            return tagValueObject.GetOutputTitle();
         }
     }
 }

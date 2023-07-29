@@ -67,8 +67,6 @@ namespace RejectDetailsLib {
 
                     if(tag.Write == 1) {
                         tagWrite.Add(tag);
-                        //} else {
-                        //    listTags.Add(tag);
                     }
 
                     this.tagClass.AddTag(tag.plcTag);

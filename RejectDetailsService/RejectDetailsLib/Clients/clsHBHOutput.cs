@@ -10,7 +10,7 @@ namespace RejectDetailsLib.Clients
     internal class clsHBHOutput : clsOutput
     {
         private const string fileNamePre = "RejectDetails-";
-        private string[] titles = new string[] { "DATE", "TIME", "REJECT#", "PARTTYPE", "CAVITY", "STN#", "NUT#", "LIMITS", "HI/LOW", "VALUE" };
+        private string[] titles = new string[] { "DATE", "TIME", "REJECT#", "MODEL", "CAVITY", "STN#", "NUT#", "LIMITS", "HI/LOW", "VALUE" };
 
         private string[] partType = new string[] { "", "CIVIC", "ILX", "ILX-S" };
         private HashSet<string> rejectFields = new HashSet<string>(new string[] { "RejectDetail1", "RejectDetail2", "RejectDetail3", "RejectDetail4", "RejectDetail5", "RejectDetail6", "RejectDetail7", "RejectDetail8", "RejectDetail9", "RejectDetail10" });
@@ -47,11 +47,7 @@ namespace RejectDetailsLib.Clients
 
         private void SaveRejectInfo(string rejecrValue)
         {
-            //if (!string.IsNullOrWhiteSpace(svalue) && ( m_serialNumber != m_lastSerialNumber || svalue != m_lastRejectDetail ))
             clsLog.addLog($@"rejectvalue : {rejecrValue}");
-
-            //m_lastRejectDetail = rejecrValue;
-            //m_lastSerialNumber = m_serialNumber;
 
             List<(string, string)> list = new List<(string, string)>();
             string[] valueArry = rejecrValue.Split(DELIMITER);
@@ -108,7 +104,6 @@ namespace RejectDetailsLib.Clients
             base.CopyFileToTarget();
 
             string lsSource = this.GetFileName();
-            //clsLog.addLog($@"source file: {lsSource}");
 
             if (File.Exists(lsSource))
             {
@@ -121,10 +116,10 @@ namespace RejectDetailsLib.Clients
             return new Database().GetSelectedTagIdOutputOriginal(this.m_controllerId);
         }
 
-        protected override string GetOutputTagName(string sTagName)
-        {
-            return clsTagValue.GetTagOutputName(sTagName);
-        }
+        //protected override string GetOutputTagName(string sTagName)
+        //{
+        //    return clsTagValue.GetTagOutputName(sTagName);
+        //}
 
         private string GetFileName() 
         {

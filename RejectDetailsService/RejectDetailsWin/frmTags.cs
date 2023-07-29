@@ -119,13 +119,14 @@ namespace RejectDetailsWin
                 string sDescription = dgvTags.CurrentRow.Cells["colTagDesc"].Value.ToString();
                 short iRead = (short)dgvTags.CurrentRow.Cells["colTagRead"].Value;
                 short iWrite = (short)dgvTags.CurrentRow.Cells["colTagWrite"].Value;
-                //short iOutput = (short)dgvTags.CurrentRow.Cells["colTagOutput"].Value;
+                short iOutput = (short)dgvTags.CurrentRow.Cells["colTagOutput"].Value;
+                string sTitle = dgvTags.CurrentRow.Cells["colTagTitle"].Value.ToString();
 
                 if (colindex > -1)
                 {
                     if (dgvTags.Columns[colindex].Name == "colTagEdit")
                     {
-                        frmTagModify tagModify = new frmTagModify(controllerId, ipAddress, sTagName, iTagType, iRead, iWrite, sDescription);
+                        frmTagModify tagModify = new frmTagModify(controllerId, id, ipAddress, sTagName, iTagType, iRead, iWrite, sDescription, iOutput, sTitle);
                         tagModify.ShowDialog();
 
                         if (tagModify.DialogResult == DialogResult.OK)
@@ -146,7 +147,7 @@ namespace RejectDetailsWin
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnAddController_Click(object sender, EventArgs e)
         {
             frmIPModify mod = new frmIPModify();
             mod.ShowDialog();
@@ -188,7 +189,7 @@ namespace RejectDetailsWin
             int controllerId = (int)cboIPAddress.SelectedValue;
             string ipAddress = cboIPAddress.Text;
 
-            frmTagModify tagform = new frmTagModify(controllerId, ipAddress);
+            frmTagModify tagform = new frmTagModify(controllerId, -1, ipAddress);
             tagform.ShowDialog();
 
             if (tagform.DialogResult == DialogResult.OK)
