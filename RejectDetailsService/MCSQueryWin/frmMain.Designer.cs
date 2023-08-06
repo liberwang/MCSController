@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanelTitle = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExport = new System.Windows.Forms.Button();
             this.txtSerialNumber = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtTagValue = new System.Windows.Forms.TextBox();
@@ -47,16 +47,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnQuery = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.btnExport = new System.Windows.Forms.Button();
+            this.tableLayoutPanelTitle = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cboDatabase = new System.Windows.Forms.ComboBox();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.tableLayoutPanelMain.SuspendLayout();
-            this.tableLayoutPanelTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.tableLayoutPanelTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelMain
@@ -76,33 +77,23 @@
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(1839, 1307);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
-            // tableLayoutPanelTitle
+            // dataGridView
             // 
-            this.tableLayoutPanelTitle.BackColor = System.Drawing.Color.Blue;
-            this.tableLayoutPanelTitle.ColumnCount = 3;
-            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 360F));
-            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 467F));
-            this.tableLayoutPanelTitle.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanelTitle.Controls.Add(this.label7, 1, 0);
-            this.tableLayoutPanelTitle.Controls.Add(this.cboDatabase, 2, 0);
-            this.tableLayoutPanelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelTitle.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanelTitle.Name = "tableLayoutPanelTitle";
-            this.tableLayoutPanelTitle.RowCount = 1;
-            this.tableLayoutPanelTitle.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelTitle.Size = new System.Drawing.Size(1833, 94);
-            this.tableLayoutPanelTitle.TabIndex = 0;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::MCSQueryWin.Properties.Resources.logo_final;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(354, 88);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToOrderColumns = true;
+            this.dataGridView.AutoGenerateColumns = false;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.DataSource = this.bindingSource;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(4, 305);
+            this.dataGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.RowHeadersWidth = 51;
+            this.dataGridView.RowTemplate.Height = 24;
+            this.dataGridView.Size = new System.Drawing.Size(1831, 997);
+            this.dataGridView.TabIndex = 4;
             // 
             // panel1
             // 
@@ -129,6 +120,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1831, 190);
             this.panel1.TabIndex = 3;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(1519, 11);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(184, 59);
+            this.btnExport.TabIndex = 13;
+            this.btnExport.Text = "Export to CSV";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // txtSerialNumber
             // 
@@ -255,33 +257,33 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Start Time:";
             // 
-            // dataGridView
+            // tableLayoutPanelTitle
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToOrderColumns = true;
-            this.dataGridView.AutoGenerateColumns = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.DataSource = this.bindingSource;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(4, 305);
-            this.dataGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.RowHeadersWidth = 51;
-            this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(1831, 997);
-            this.dataGridView.TabIndex = 4;
+            this.tableLayoutPanelTitle.BackColor = System.Drawing.Color.Blue;
+            this.tableLayoutPanelTitle.ColumnCount = 3;
+            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 360F));
+            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 467F));
+            this.tableLayoutPanelTitle.Controls.Add(this.pictureBox1, 0, 0);
+            this.tableLayoutPanelTitle.Controls.Add(this.label7, 1, 0);
+            this.tableLayoutPanelTitle.Controls.Add(this.cboDatabase, 2, 0);
+            this.tableLayoutPanelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelTitle.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanelTitle.Name = "tableLayoutPanelTitle";
+            this.tableLayoutPanelTitle.RowCount = 1;
+            this.tableLayoutPanelTitle.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelTitle.Size = new System.Drawing.Size(1833, 94);
+            this.tableLayoutPanelTitle.TabIndex = 0;
             // 
-            // btnExport
+            // pictureBox1
             // 
-            this.btnExport.Location = new System.Drawing.Point(1519, 11);
-            this.btnExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(184, 59);
-            this.btnExport.TabIndex = 13;
-            this.btnExport.Text = "Export";
-            this.btnExport.UseVisualStyleBackColor = true;
+            this.pictureBox1.Image = global::MCSQueryWin.Properties.Resources.logo_final;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(354, 88);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // label7
             // 
@@ -297,11 +299,13 @@
             // cboDatabase
             // 
             this.cboDatabase.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cboDatabase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboDatabase.FormattingEnabled = true;
             this.cboDatabase.Location = new System.Drawing.Point(1369, 30);
             this.cboDatabase.Name = "cboDatabase";
             this.cboDatabase.Size = new System.Drawing.Size(322, 33);
             this.cboDatabase.TabIndex = 2;
+            this.cboDatabase.SelectedIndexChanged += new System.EventHandler(this.cboDatabase_SelectedIndexChanged);
             // 
             // frmMain
             // 
@@ -314,13 +318,13 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
-            this.tableLayoutPanelTitle.ResumeLayout(false);
-            this.tableLayoutPanelTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.tableLayoutPanelTitle.ResumeLayout(false);
+            this.tableLayoutPanelTitle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -349,6 +353,7 @@
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cboDatabase;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

@@ -123,3 +123,83 @@ BEGIN
 END
 
 GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetTagQuery'))
+	DROP PROCEDURE [dbo].[spGetTagQuery]
+GO
+
+CREATE PROCEDURE [dbo].[spGetTagQuery] 
+	-- Add the parameters for the stored procedure here
+	@pStartTime DATETIME,
+	@pEndTime DATETIME,
+	@pipAddress VARCHAR(15) = NULL,
+	@ptagName VARCHAR(512) = NULL,
+	@ptagValue VARCHAR(512) = NULL,
+	@pserialNumber VARCHAR(256) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT tagName, tagTitle
+	INTO #tmp_title
+	FROM tblFullTag ft WITH(NOLOCK)
+	JOIN tblOutput ot WITH(NOLOCK) ON ft.tagId = ot.tagId
+	WHERE LEFT(ft.tagName,13) != '.SerialNumber'
+	ORDER BY ot.byOrder;
+
+	CREATE INDEX idx_tmp_title ON #tmp_title (tagName, tagTitle);
+
+	IF OBJECT_ID( 'tempdb..##tmp_result') IS NOT NULL
+		DROP TABLE ##tmp_result;
+
+	DECLARE @sqlString VARCHAR(MAX) = 'create table ##tmp_result ( [SerialNumber] varchar(256), ';
+
+	SELECT @sqlString = @sqlString + '[' + tagTitle + '] varchar(512),'
+	FROM #tmp_title
+	ORDER BY tagTitle;
+
+	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
+
+	EXEC (@sqlString);
+
+	DECLARE @tag_Cont VARCHAR(MAX);
+	DECLARE @controller_Ip VARCHAR(15);
+	DECLARE @tag_Name VARCHAR(512);
+	DECLARE @serial_number VARCHAR(256);
+	DECLARE @tag_title VARCHAR(512);
+
+	DECLARE cursor_content CURSOR FOR 
+	SELECT tag_cont, controller_ip, tag_name, serial_number
+	FROM tblTagContent WITH(NOLOCK)
+	WHERE tag_add_dt BETWEEN @pstartTime AND @pendTime 
+	AND ( @pipAddress IS NULL OR controller_ip = @pipAddress ) 
+	AND ( @ptagName IS NULL OR tag_name like '%' + @ptagName +'%' )
+	AND ( @ptagValue IS NULL OR tag_cont like '%' + @ptagValue + '%')
+	AND ( @pserialNumber IS NULL OR serial_number like '%' + @pserialNumber + '%' );
+
+	OPEN cursor_content
+	FETCH NEXT FROM cursor_content INTO @tag_cont, @controller_ip, @tag_name, @serial_number
+
+	WHILE @@FETCH_STATUS = 0 
+	BEGIN
+		IF NOT EXISTS ( SELECT 1 FROM ##tmp_result WHERE serialNumber = @serial_number ) 
+			INSERT INTO ##tmp_result (serialNumber) VALUES (@serial_number);
+		
+		IF EXISTS( SELECT 1 FROM #tmp_title WHERE tagName = @tag_name ) 
+		BEGIN 
+			SELECT @tag_title = tagTitle FROM #tmp_title WHERE tagName = @tag_name;
+			SET @sqlString = 'update ##tmp_result set [' + @tag_title + '] = ''' + @tag_cont + ''' where serialNumber = ''' + @serial_number + ''''; 
+			EXEC (@sqlString);
+		END 
+
+		FETCH NEXT FROM cursor_content INTO @tag_cont, @controller_ip, @tag_name, @serial_number
+	END 
+	CLOSE cursor_content;
+	DEALLOCATE cursor_content;
+
+	SELECT * FROM ##tmp_result;
+
+	DROP TABLE ##tmp_result;
+END
+
+GO

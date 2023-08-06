@@ -49,35 +49,49 @@ namespace RejectDetailsLib
                 using (SqlCommand com = conn.CreateCommand())
                 {
                     conn.Open();
-                    string sqlString = $@"SELECT Serial_number as SerialNumber, tag_add_dt AS tagTime, tag_name AS tagName, tag_cont AS tagValue, isnull( co.description, tc.controller_ip) AS IPAddress  
-FROM tblTagContent tc WITH(NOLOCK)
-LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
-                    sqlString += $@" WHERE tag_add_dt between '{startTime}' AND '{endTime}'";
-                    if (ipAddress != "All")
-                    {
-                        sqlString += $@" AND controller_ip = '{ipAddress}'";
-                    }
-                    if (!string.IsNullOrWhiteSpace(tagName))
-                    {
-                        sqlString += $@" AND tag_name LIKE '%{tagName}%'";
-                    }
-                    if (!string.IsNullOrWhiteSpace(tagValue))
-                    {
-                        sqlString += $@" AND tag_cont LIKE '%{tagValue}%'";
-                    }
-                    if (!string.IsNullOrWhiteSpace(serialNo))
-                    {
-                        sqlString += $@" AND serial_number LIKE '%{serialNo}%'";
-                    }
-                    com.CommandText = sqlString;
+                    //                    string sqlString = $@"SELECT Serial_number as SerialNumber, tag_add_dt AS tagTime, tag_name AS tagName, tag_cont AS tagValue, isnull( co.description, tc.controller_ip) AS IPAddress  
+                    //FROM tblTagContent tc WITH(NOLOCK)
+                    //LEFT JOIN tblController co WITH(NOLOCK) on tc.controller_ip = co.ip_address";
+                    //                    sqlString += $@" WHERE tag_add_dt between '{startTime}' AND '{endTime}'";
+                    //                    if (ipAddress != "All")
+                    //                    {
+                    //                        sqlString += $@" AND controller_ip = '{ipAddress}'";
+                    //                    }
+                    //                    if (!string.IsNullOrWhiteSpace(tagName))
+                    //                    {
+                    //                        sqlString += $@" AND tag_name LIKE '%{tagName}%'";
+                    //                    }
+                    //                    if (!string.IsNullOrWhiteSpace(tagValue))
+                    //                    {
+                    //                        sqlString += $@" AND tag_cont LIKE '%{tagValue}%'";
+                    //                    }
+                    //                    if (!string.IsNullOrWhiteSpace(serialNo))
+                    //                    {
+                    //                        sqlString += $@" AND serial_number LIKE '%{serialNo}%'";
+                    //                    }
+                    //                    com.CommandText = sqlString;
+
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.CommandText = "dbo.spGetTagQuery";
+
+                    com.Parameters.Add(new SqlParameter("@pStartTime", startTime));
+                    com.Parameters.Add(new SqlParameter("@pEndTime", endTime));
+                    if (ipAddress != clsController.ALL_STRING_CONTROLLER)
+                        com.Parameters.Add(new SqlParameter("@pipAddress", ipAddress));
+                    if (!string.IsNullOrWhiteSpace(tagName)) 
+                        com.Parameters.Add(new SqlParameter("@ptagName", tagName));
+                    if (!string.IsNullOrWhiteSpace (tagValue))
+                        com.Parameters.Add(new SqlParameter("@ptagValue", tagValue));
+                    if (!string.IsNullOrWhiteSpace(serialNo)) 
+                        com.Parameters.Add(new SqlParameter("@pserialNumber", serialNo));
 
                     SqlDataAdapter adapter = new SqlDataAdapter();
                     adapter.SelectCommand = com;
 
-                    DataSet controller = new DataSet();
-                    adapter.Fill(controller, "Customers");
+                    DataSet queryDS = new DataSet();
+                    adapter.Fill(queryDS, "query");
 
-                    return controller;
+                    return queryDS;
                 }
             }
         }

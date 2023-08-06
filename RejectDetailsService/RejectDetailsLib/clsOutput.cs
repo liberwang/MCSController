@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.AccessControl;
 using System.Text;
 
 namespace RejectDetailsLib
@@ -48,6 +49,7 @@ namespace RejectDetailsLib
             m_serialNumber = serialNumber;
             m_ipAddress = ipAddress;
 
+            //clsLog.addLog("enter savetofileanddatabase...");
             this.SaveToFileAndDatabase();
         }
 
@@ -125,7 +127,7 @@ namespace RejectDetailsLib
             //}
         }
 
-        protected void SaveToFile(string fileName, List<(string, string)> tagValueList, bool bAppendTimeStamp )
+        public void SaveToFile(string fileName, List<(string, string)> tagValueList, bool bAppendTimeStamp )
         {
             if (!File.Exists(fileName))
             {

@@ -44,7 +44,7 @@ namespace RejectDetailsWin {
             // btnTest
             // 
             this.btnTest.Image = ((System.Drawing.Image)(resources.GetObject("btnTest.Image")));
-            this.btnTest.Location = new System.Drawing.Point(642, 417);
+            this.btnTest.Location = new System.Drawing.Point(653, 210);
             this.btnTest.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(188, 195);
@@ -57,7 +57,7 @@ namespace RejectDetailsWin {
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-            this.btnClose.Location = new System.Drawing.Point(1032, 645);
+            this.btnClose.Location = new System.Drawing.Point(994, 617);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(150, 156);
@@ -69,7 +69,7 @@ namespace RejectDetailsWin {
             // btnSetting
             // 
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
-            this.btnSetting.Location = new System.Drawing.Point(352, 417);
+            this.btnSetting.Location = new System.Drawing.Point(368, 210);
             this.btnSetting.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(188, 195);
@@ -81,7 +81,7 @@ namespace RejectDetailsWin {
             // btnTags
             // 
             this.btnTags.Image = ((System.Drawing.Image)(resources.GetObject("btnTags.Image")));
-            this.btnTags.Location = new System.Drawing.Point(52, 417);
+            this.btnTags.Location = new System.Drawing.Point(66, 210);
             this.btnTags.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTags.Name = "btnTags";
             this.btnTags.Size = new System.Drawing.Size(188, 195);
@@ -93,25 +93,27 @@ namespace RejectDetailsWin {
             // btnQuery
             // 
             this.btnQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnQuery.Image")));
-            this.btnQuery.Location = new System.Drawing.Point(52, 162);
+            this.btnQuery.Location = new System.Drawing.Point(57, 578);
             this.btnQuery.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(188, 195);
             this.btnQuery.TabIndex = 4;
             this.toolTip.SetToolTip(this.btnQuery, "Query Tag Data");
             this.btnQuery.UseVisualStyleBackColor = true;
+            this.btnQuery.Visible = false;
             this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click);
             // 
             // btnChart
             // 
             this.btnChart.Image = ((System.Drawing.Image)(resources.GetObject("btnChart.Image")));
-            this.btnChart.Location = new System.Drawing.Point(352, 162);
+            this.btnChart.Location = new System.Drawing.Point(352, 578);
             this.btnChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnChart.Name = "btnChart";
             this.btnChart.Size = new System.Drawing.Size(188, 195);
             this.btnChart.TabIndex = 9;
             this.toolTip.SetToolTip(this.btnChart, "Tag Data Chart");
             this.btnChart.UseVisualStyleBackColor = true;
+            this.btnChart.Visible = false;
             // 
             // cboDB
             // 

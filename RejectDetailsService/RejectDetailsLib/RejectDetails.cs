@@ -171,7 +171,7 @@ namespace RejectDetailsLib
 
                 try
                 {
-                    Process2();
+                    Process();
                 }
                 catch (Exception e)
                 {

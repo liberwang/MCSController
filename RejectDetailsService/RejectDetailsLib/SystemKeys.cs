@@ -129,18 +129,18 @@ namespace RejectDetailsLib {
 
         public static string getLogName() {
             if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
-                return LOG_FILE + GetFileNameDateString() + ".txt";
+                return LOG_FILE + getLogFileNameDateString() + ".txt";
             } else {
-                return LOG_FILE.Substring(0, LOG_FILE.Length - 4) + GetFileNameDateString() + LOG_FILE.Substring(LOG_FILE.Length - 4);
+                return LOG_FILE.Substring(0, LOG_FILE.Length - 4) + getLogFileNameDateString() + LOG_FILE.Substring(LOG_FILE.Length - 4);
             }
         }
 
 
         #region Private Methods
-        //private static string getFileNameDateString()
-        //{
-        //    return DateTime.Now.ToString(FILE_NAME);
-        //}
+        private static string getLogFileNameDateString()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
+        }
 
         private static string getFileName()
         {

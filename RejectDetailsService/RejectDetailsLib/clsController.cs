@@ -6,6 +6,9 @@ namespace RejectDetailsLib
 {
     public class clsController
     {
+        public const string ALL_STRING_CONTROLLER = "All";
+        public const int ALL_VALUE_CONTROLLER = -1;
+
         public int Id { get; set; }
 
         public string IpAddress { get; set; }
@@ -32,9 +35,9 @@ namespace RejectDetailsLib
             ControllerList = null;
         }
 
-        public static List<clsController> GetControllerList()
+        public static List<clsController> GetControllerList(bool bRefresh = false)
         {
-            if (ControllerList == null)
+            if (ControllerList == null || bRefresh)
             {
                 ControllerList = new Database().GetControllerList(true);
             }
@@ -47,12 +50,12 @@ namespace RejectDetailsLib
         }
 
 
-        public static List<clsController> GetControllerItemDataSource(bool withAllOption = true)
+        public static List<clsController> GetControllerItemDataSource(bool withAllOption = true, bool bRefresh = false)
         {
-            List<clsController> list = GetControllerList();
+            List<clsController> list = GetControllerList(bRefresh);
             if (withAllOption)
             {
-                list.Insert(0, new clsController (-1, "All", "All" ));
+                list.Insert(0, new clsController (ALL_VALUE_CONTROLLER, ALL_STRING_CONTROLLER, ALL_STRING_CONTROLLER));
             }
 
 
