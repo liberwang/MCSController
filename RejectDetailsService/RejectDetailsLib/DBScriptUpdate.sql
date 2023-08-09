@@ -140,11 +140,12 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT tagName, tagTitle
+	SELECT tagName, tagTitle, byOrder
 	INTO #tmp_title
 	FROM tblFullTag ft WITH(NOLOCK)
 	JOIN tblOutput ot WITH(NOLOCK) ON ft.tagId = ot.tagId
-	WHERE LEFT(ft.tagName,13) != '.SerialNumber'
+	WHERE RIGHT(ft.tagName,13) != '.SerialNumber'
+	AND ( @ptagName IS NULL OR tagname LIKE '%' + @ptagName +'%' )
 	ORDER BY ot.byOrder;
 
 	CREATE INDEX idx_tmp_title ON #tmp_title (tagName, tagTitle);
@@ -156,7 +157,7 @@ BEGIN
 
 	SELECT @sqlString = @sqlString + '[' + tagTitle + '] varchar(512),'
 	FROM #tmp_title
-	ORDER BY tagTitle;
+	ORDER BY byOrder;
 
 	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
 
@@ -203,3 +204,27 @@ BEGIN
 END
 
 GO
+
+
+IF EXISTS(SELECT 1 FROM SYS.INDEXES WHERE NAME = 'uind_tagName_tblFullTag' )
+	DROP INDEX uind_tagName_tblFullTag ON tblFullTag;
+GO
+
+/****** Object:  Index [uind_tagName_tblFullTag]    Script Date: 8/7/2023 8:55:46 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [uind_tagName_tblFullTag] ON [dbo].[tblFullTag]
+(
+	[tagName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+IF EXISTS(SELECT 1 FROM SYS.INDEXES WHERE NAME = 'uind_tagTitle_tblFullTag' )
+	DROP INDEX uind_tagTitle_tblFullTag ON tblFullTag;
+GO
+
+/****** Object:  Index [uind_tagName_tblFullTag]    Script Date: 8/7/2023 8:55:46 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [uind_tagTitle_tblFullTag] ON [dbo].[tblFullTag]
+(
+	[tagTitle] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+

@@ -29,7 +29,7 @@ namespace MCSQueryWin
 
             if (start.CompareTo(end) > 0)
             {
-                MessageBox.Show("Start time should be less than end time.", "Query", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Start time should be early than end time.", "Query", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace MCSQueryWin
                         {
                             listValues.Add((dr[i].ToString(), this.m_dtSource.Columns[i].ColumnName));
                         }
-                        clsop.SaveToFile(fileName, listValues, true);
+                        clsop.SaveToFile(fileName, listValues, false);
                     }
                     MessageBox.Show($@"Export to {fileName} is done!", "MCS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

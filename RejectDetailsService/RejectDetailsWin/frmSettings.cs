@@ -32,6 +32,8 @@ namespace RejectDetailsWin {
             this.SaveToFileStatus(SystemKeys.SAVE_TO_FILE);
 
             this.cboTimeOfOutputFile.SelectedItem = SystemKeys.GENERATE_OUTPUT_FILE_TIME;
+
+            this.chkMultithread.Checked = SystemKeys.USE_MULTITHREADING_SERVICE;
         }
 
         private void btnOutputFileFolder_Click(object sender, EventArgs e) {
@@ -95,6 +97,8 @@ namespace RejectDetailsWin {
 
             string sGenerateOutputTime = this.cboTimeOfOutputFile.SelectedItem.ToString();
 
+            bool bUseMultithreading = this.chkMultithread.Checked;
+
             if(sOutputFileFolder != SystemKeys.FILE_FOLDER) {
                 SystemKeys.setKey(SystemKeys.FILE_FOLDER_KEY, sOutputFileFolder);
             }
@@ -139,7 +143,10 @@ namespace RejectDetailsWin {
             {
                 SystemKeys.setKey(SystemKeys.GENERATE_OUTPUT_FILE_TIME_KEY, sGenerateOutputTime);
             }
-
+            if(bUseMultithreading != SystemKeys.USE_MULTITHREADING_SERVICE)
+            {
+                SystemKeys.setKey(SystemKeys.USE_MULTITHREADING_SERVICE_KEY, bUseMultithreading.ToString());
+            }
             SystemKeys.initializeKey();
             this.Close();
         }
@@ -158,7 +165,9 @@ namespace RejectDetailsWin {
             this.txtOutputFilePrefix.Enabled = isEnabled;
             this.txtRejectFilePrefix.Enabled = isEnabled;
             this.btnOutputFileFolder.Enabled = isEnabled;
-            this.btnCopyFileFolder.Enabled = isEnabled; 
+            this.btnCopyFileFolder.Enabled = isEnabled;
+            this.opnCSV.Enabled = isEnabled;
+            this.opnExcel.Enabled = isEnabled;
         }
     }
 }

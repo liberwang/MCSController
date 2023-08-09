@@ -157,6 +157,7 @@
             this.txtTagValue.Name = "txtTagValue";
             this.txtTagValue.Size = new System.Drawing.Size(298, 31);
             this.txtTagValue.TabIndex = 10;
+            this.txtTagValue.Visible = false;
             // 
             // label5
             // 
@@ -167,6 +168,7 @@
             this.label5.Size = new System.Drawing.Size(116, 25);
             this.label5.TabIndex = 9;
             this.label5.Text = "Tag Value:";
+            this.label5.Visible = false;
             // 
             // txtTagName
             // 

@@ -29,6 +29,7 @@ namespace RejectDetailsLib {
         public static bool SAVE_TO_DB;
         public static string GENERATE_OUTPUT_FILE_TIME;
         public static bool GET_DATA_FROM_XML;
+        public static bool USE_MULTITHREADING_SERVICE;
 
         public const string PRODUCT_NAME_KEY = "ProductName";
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
@@ -48,6 +49,7 @@ namespace RejectDetailsLib {
         public const string SAVE_TO_DB_KEY = "SaveToDB";
         public const string GENERATE_OUTPUT_FILE_TIME_KEY = "GenerateOutputFileFrom";
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
+        public const string USE_MULTITHREADING_SERVICE_KEY = "UseMultiTreading";
 
         //static SystemKeys() {
         //    initializeKey();
@@ -74,10 +76,15 @@ namespace RejectDetailsLib {
             REJECT_FILE_PREFIX = keys.ContainsKey(REJECT_FILE_PREFIX_KEY) ? keys[REJECT_FILE_PREFIX_KEY] : "RejectDetails-";
             VISIT_INTERVAL = keys.ContainsKey(VISIT_INTERVAL_KEY) ? int.Parse(keys[VISIT_INTERVAL_KEY]) : 500;
             COPY_INTERVAL = keys.ContainsKey(COPY_INTERVAL_KEY) ? int.Parse(keys[COPY_INTERVAL_KEY]) : 31000;
-            LOG_FILE = keys.ContainsKey(LOG_FILE_KEY) ? keys[LOG_FILE_KEY] : @"c:\temp\log";
+            LOG_FILE = keys.ContainsKey(LOG_FILE_KEY) ? keys[LOG_FILE_KEY] : @"c:\temp\MCSLog";
 
-            if(keys.ContainsKey(SAVE_TO_FILE_KEY) && bool.TryParse(keys[SAVE_TO_FILE_KEY], out bool result1))
+            if (keys.ContainsKey(SAVE_TO_FILE_KEY) && bool.TryParse(keys[SAVE_TO_FILE_KEY], out bool result1))
+            {
                 SAVE_TO_FILE = result1;
+            } else
+            {
+                SAVE_TO_FILE = false;
+            }
 
             if(keys.ContainsKey(SAVE_TO_DB_KEY) && bool.TryParse(keys[SAVE_TO_DB_KEY], out bool result2)) {
                 SAVE_TO_DB = result2;
@@ -85,6 +92,11 @@ namespace RejectDetailsLib {
                 SAVE_TO_DB = true;
             }
             GENERATE_OUTPUT_FILE_TIME = keys.ContainsKey(GENERATE_OUTPUT_FILE_TIME_KEY) ? keys[GENERATE_OUTPUT_FILE_TIME_KEY] : "00";
+            if(keys.ContainsKey(USE_MULTITHREADING_SERVICE_KEY) && bool.TryParse(keys[USE_MULTITHREADING_SERVICE_KEY], out bool result3)) {
+                USE_MULTITHREADING_SERVICE = result3;
+            } else {
+                USE_MULTITHREADING_SERVICE = false;
+            }
         }
 
         public static void setKey(string appKey, string appValue) {
@@ -128,11 +140,17 @@ namespace RejectDetailsLib {
         }
 
         public static string getLogName() {
-            if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
+            if ( ! Directory.Exists(LOG_FILE))
+            {
+                Directory.CreateDirectory(LOG_FILE);
+            }
+
+            return Path.Combine(LOG_FILE, getLogFileNameDateString() + ".csv");
+            /*if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
                 return LOG_FILE + getLogFileNameDateString() + ".txt";
             } else {
                 return LOG_FILE.Substring(0, LOG_FILE.Length - 4) + getLogFileNameDateString() + LOG_FILE.Substring(LOG_FILE.Length - 4);
-            }
+            }*/
         }
 
 

@@ -58,10 +58,14 @@ namespace RejectDetailsWin {
             this.label11 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPageSaveFile = new System.Windows.Forms.TabPage();
-            this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
-            this.cboTimeOfOutputFile = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.cboTimeOfOutputFile = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tabPageLog = new System.Windows.Forms.TabPage();
+            this.chkMultithread = new System.Windows.Forms.CheckBox();
+            this.opnExcel = new System.Windows.Forms.RadioButton();
+            this.opnCSV = new System.Windows.Forms.RadioButton();
+            this.label15 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudVisitInterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCopyInterval)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -191,7 +195,7 @@ namespace RejectDetailsWin {
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(65, 61);
+            this.label8.Location = new System.Drawing.Point(56, 61);
             this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(135, 25);
@@ -317,7 +321,7 @@ namespace RejectDetailsWin {
             this.chkSaveToDB.AutoSize = true;
             this.chkSaveToDB.Checked = true;
             this.chkSaveToDB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveToDB.Location = new System.Drawing.Point(40, 491);
+            this.chkSaveToDB.Location = new System.Drawing.Point(40, 550);
             this.chkSaveToDB.Margin = new System.Windows.Forms.Padding(6);
             this.chkSaveToDB.Name = "chkSaveToDB";
             this.chkSaveToDB.Size = new System.Drawing.Size(152, 29);
@@ -385,6 +389,7 @@ namespace RejectDetailsWin {
             // 
             // tabPageService
             // 
+            this.tabPageService.Controls.Add(this.chkMultithread);
             this.tabPageService.Controls.Add(this.label11);
             this.tabPageService.Controls.Add(this.label7);
             this.tabPageService.Controls.Add(this.label8);
@@ -419,6 +424,9 @@ namespace RejectDetailsWin {
             // 
             // tabPageSaveFile
             // 
+            this.tabPageSaveFile.Controls.Add(this.label15);
+            this.tabPageSaveFile.Controls.Add(this.opnExcel);
+            this.tabPageSaveFile.Controls.Add(this.opnCSV);
             this.tabPageSaveFile.Controls.Add(this.label14);
             this.tabPageSaveFile.Controls.Add(this.cboTimeOfOutputFile);
             this.tabPageSaveFile.Controls.Add(this.label13);
@@ -446,26 +454,14 @@ namespace RejectDetailsWin {
             this.tabPageSaveFile.Text = "Output";
             this.tabPageSaveFile.UseVisualStyleBackColor = true;
             // 
-            // tabPageLog
+            // label14
             // 
-            this.tabPageLog.Controls.Add(this.label10);
-            this.tabPageLog.Controls.Add(this.btnLogFileFolder);
-            this.tabPageLog.Controls.Add(this.txtLogFolder);
-            this.tabPageLog.Location = new System.Drawing.Point(8, 39);
-            this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Size = new System.Drawing.Size(1340, 712);
-            this.tabPageLog.TabIndex = 2;
-            this.tabPageLog.Text = "Log";
-            this.tabPageLog.UseVisualStyleBackColor = true;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(40, 569);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(318, 25);
-            this.label13.TabIndex = 29;
-            this.label13.Text = "Generate a new output file from:";
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(511, 628);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(72, 25);
+            this.label14.TabIndex = 31;
+            this.label14.Text = ":00:00";
             // 
             // cboTimeOfOutputFile
             // 
@@ -496,19 +492,73 @@ namespace RejectDetailsWin {
             "21",
             "22",
             "23"});
-            this.cboTimeOfOutputFile.Location = new System.Drawing.Point(397, 566);
+            this.cboTimeOfOutputFile.Location = new System.Drawing.Point(397, 625);
             this.cboTimeOfOutputFile.Name = "cboTimeOfOutputFile";
             this.cboTimeOfOutputFile.Size = new System.Drawing.Size(107, 33);
             this.cboTimeOfOutputFile.TabIndex = 30;
             // 
-            // label14
+            // label13
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(511, 569);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(72, 25);
-            this.label14.TabIndex = 31;
-            this.label14.Text = ":00:00";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(40, 628);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(318, 25);
+            this.label13.TabIndex = 29;
+            this.label13.Text = "Generate a new output file from:";
+            // 
+            // tabPageLog
+            // 
+            this.tabPageLog.Controls.Add(this.label10);
+            this.tabPageLog.Controls.Add(this.btnLogFileFolder);
+            this.tabPageLog.Controls.Add(this.txtLogFolder);
+            this.tabPageLog.Location = new System.Drawing.Point(8, 39);
+            this.tabPageLog.Name = "tabPageLog";
+            this.tabPageLog.Size = new System.Drawing.Size(1340, 712);
+            this.tabPageLog.TabIndex = 2;
+            this.tabPageLog.Text = "Log";
+            this.tabPageLog.UseVisualStyleBackColor = true;
+            // 
+            // chkMultithread
+            // 
+            this.chkMultithread.AutoSize = true;
+            this.chkMultithread.Location = new System.Drawing.Point(61, 198);
+            this.chkMultithread.Name = "chkMultithread";
+            this.chkMultithread.Size = new System.Drawing.Size(404, 29);
+            this.chkMultithread.TabIndex = 27;
+            this.chkMultithread.Text = "Use multithreading method in service.";
+            this.chkMultithread.UseVisualStyleBackColor = true;
+            // 
+            // opnExcel
+            // 
+            this.opnExcel.AutoSize = true;
+            this.opnExcel.Location = new System.Drawing.Point(454, 476);
+            this.opnExcel.Name = "opnExcel";
+            this.opnExcel.Size = new System.Drawing.Size(96, 29);
+            this.opnExcel.TabIndex = 33;
+            this.opnExcel.Text = "Excel";
+            this.opnExcel.UseVisualStyleBackColor = true;
+            this.opnExcel.Visible = false;
+            // 
+            // opnCSV
+            // 
+            this.opnCSV.AutoSize = true;
+            this.opnCSV.Checked = true;
+            this.opnCSV.Location = new System.Drawing.Point(326, 476);
+            this.opnCSV.Name = "opnCSV";
+            this.opnCSV.Size = new System.Drawing.Size(86, 29);
+            this.opnCSV.TabIndex = 32;
+            this.opnCSV.TabStop = true;
+            this.opnCSV.Text = "CSV";
+            this.opnCSV.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(203, 476);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(107, 25);
+            this.label15.TabIndex = 34;
+            this.label15.Text = "File Type:";
             // 
             // frmSettings
             // 
@@ -582,6 +632,10 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox cboTimeOfOutputFile;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox chkMultithread;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.RadioButton opnExcel;
+        private System.Windows.Forms.RadioButton opnCSV;
     }
 }
 

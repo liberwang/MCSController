@@ -24,8 +24,8 @@ namespace RejectDetailsWin
             setIPAddressDatasource();
             //this.dgvIPAddress.AutoGenerateColumns = true;
 
-            if (!SystemKeys.SAVE_TO_FILE)
-                this.tabControl.TabPages.RemoveAt(2);
+            //if (!SystemKeys.SAVE_TO_FILE)
+            //    this.tabControl.TabPages.RemoveAt(2);
 
             this.btnUp.Text = "\u25B2";
             this.btnDown.Text = "\u25BC";
@@ -37,19 +37,6 @@ namespace RejectDetailsWin
 
         private void setIPAddressDatasource()
         {
-            //DataSet controller = db.GetIPAddressDataSet();
-            //this.bindingSource1.DataSource = controller.Tables[0];
-
-            //DataView dv = new DataView(controller.Tables[0]);
-            //dv.RowFilter = "isEnabled = True";
-
-            //this.bindingSource2.DataSource = dv;
-            //this.cboIPAddress.DisplayMember = "description";
-            //this.cboIPAddress.ValueMember = "id";
-
-            //this.cboOutputIP.DisplayMember = "description";
-            //this.cboOutputIP.ValueMember = "id";
-
             clsController.RefreshController();
 
             this.bindingSourceIPAddress.DataSource = clsController.GetControllerDataTable();
@@ -158,16 +145,6 @@ namespace RejectDetailsWin
             }
             mod.Close();
         }
-
-        //private void cboIPAddress_SelectedIndexChanged(object sender, EventArgs e) {
-        //    //this.refreshTags();
-        //    System.Diagnostics.Debug.WriteLine("selectedindexchanged");
-        //}
-
-        //private void cboIPAddress_SelectionChangeCommitted(object sender, EventArgs e) {
-        //    //this.refreshTags();
-        //    System.Diagnostics.Debug.WriteLine("selectioinchangedcommited");
-        //}
 
         private void refreshTags()
         {
