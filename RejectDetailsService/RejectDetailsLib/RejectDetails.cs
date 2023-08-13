@@ -266,7 +266,7 @@ namespace RejectDetailsLib
                                     }
 
                                     if (tagClass.Output == 1)
-                                        listReadValues.Add((readValue.ToString(), tagClass.Description));
+                                        listReadValues.Add((readValue.ToString(), tagClass.TagName));
 
                                     if (tag.Name.EndsWith("SerialNumber"))
                                     {
@@ -501,6 +501,7 @@ namespace RejectDetailsLib
 
         private void SaveToFile(List<(string, string)> tagValue, string serialNumber, string ipAddress)
         {
+            //clsLog.addLog("save to file start....");
             clsOutput op = clsOutput.GetOutputByProduceName();
 
             op.SaveToFileAndDatabase(tagValue, serialNumber, ipAddress);

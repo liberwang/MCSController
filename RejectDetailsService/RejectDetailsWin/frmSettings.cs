@@ -76,6 +76,7 @@ namespace RejectDetailsWin {
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
+            string sProductName = this.txtProductName.Text.Trim();
             string sOutputFileFolder = this.txtOutputFileFolder.Text.Trim();
             string sOutputFileName = this.txtOutputFileName.Text.Trim();
             string sOutputFilePrefix = this.txtOutputFilePrefix.Text.Trim();
@@ -99,6 +100,10 @@ namespace RejectDetailsWin {
 
             bool bUseMultithreading = this.chkMultithread.Checked;
 
+            if (sProductName != SystemKeys.PRODUCT_NAME)
+            {
+                SystemKeys.setKey(SystemKeys.PRODUCT_NAME_KEY, sProductName);
+            }
             if(sOutputFileFolder != SystemKeys.FILE_FOLDER) {
                 SystemKeys.setKey(SystemKeys.FILE_FOLDER_KEY, sOutputFileFolder);
             }

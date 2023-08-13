@@ -49,7 +49,7 @@ namespace RejectDetailsLib
             m_serialNumber = serialNumber;
             m_ipAddress = ipAddress;
 
-            //clsLog.addLog("enter savetofileanddatabase...");
+            //clsLog.addLog($@"enter savetofileanddatabase...{m_tagValueList.Count}, {m_serialNumber}, {m_ipAddress}");
             this.SaveToFileAndDatabase();
         }
 
@@ -177,6 +177,7 @@ namespace RejectDetailsLib
         {
             if (m_tagValueList?.Count > 0)
             {
+                //clsLog.addLog("send to database...");
                 new Database().SetContent(m_tagValueList, m_ipAddress, m_serialNumber);
             }
         }

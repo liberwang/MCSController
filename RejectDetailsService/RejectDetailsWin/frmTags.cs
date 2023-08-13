@@ -285,6 +285,7 @@ namespace RejectDetailsWin
 
             db.SetSelectedOutput(controllerId, idList);
 
+            MessageBox.Show("Save output setting is done!", "Output Setting", MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
     }
 }

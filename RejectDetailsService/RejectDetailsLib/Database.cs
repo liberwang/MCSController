@@ -203,9 +203,10 @@ ELSE
                 {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput, tagTitle
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
 WHERE (ft.tagRead IS NULL OR ft.tagRead != 1)
 AND controllerId = {ControllerID}
 ";
@@ -255,9 +256,10 @@ AND controllerId = {ControllerID}
                 {
                     conn.Open();
                     com.CommandText = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, ISNULL(ft.tagOutput, 0) AS tagOutput, tagTitle
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
 WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
 
                     SqlDataReader dr = com.ExecuteReader();

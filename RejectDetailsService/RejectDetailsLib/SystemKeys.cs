@@ -145,7 +145,7 @@ namespace RejectDetailsLib {
                 Directory.CreateDirectory(LOG_FILE);
             }
 
-            return Path.Combine(LOG_FILE, getLogFileNameDateString() + ".csv");
+            return Path.Combine(LOG_FILE, getLogFileNameDateString() + ".txt");
             /*if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
                 return LOG_FILE + getLogFileNameDateString() + ".txt";
             } else {
