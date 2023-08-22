@@ -28,7 +28,6 @@ D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\LibplctagWr
 D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\libplctag.NativeImport.dll
 D:\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsLib.pdb
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.csproj.AssemblyReference.cache
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.csproj.SuggestedBindingRedirects.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.ProjectInstaller.resources
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.csproj.GenerateResource.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\obj\Debug\RejectDetailsService.csproj.CoreCompileInputs.cache

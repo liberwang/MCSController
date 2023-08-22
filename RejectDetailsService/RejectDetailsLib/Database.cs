@@ -234,8 +234,8 @@ AND controllerId = {ControllerID}
                             TagType = dr.GetString(2),
                             Read = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
                             Description = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
-                            Write = dr.GetInt16(5),
-                            Output = dr.GetInt16(6),
+                            Write = System.Convert.ToInt32(dr.GetValue(5)),
+                            Output = System.Convert.ToInt32(dr.GetValue(6)),
                             TagTitle = dr.GetString(7),
                         };
                         listTags.Add(tag);
@@ -273,8 +273,8 @@ WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
                             TagType = dr.GetString(2),
                             Read = dr.GetInt16(3),
                             Description = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
-                            Write = dr.GetInt16(5),
-                            Output = dr.GetInt16(6),
+                            Write = System.Convert.ToInt32(dr.GetValue(5)),
+                            Output = System.Convert.ToInt32(dr.GetValue(6)),
                             TagTitle = dr.GetString(7),
                         };
                         listTags.Add(tag);

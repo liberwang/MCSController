@@ -30,6 +30,7 @@ namespace RejectDetailsLib {
         public static string GENERATE_OUTPUT_FILE_TIME;
         public static bool GET_DATA_FROM_XML;
         public static bool USE_MULTITHREADING_SERVICE;
+        public static bool IN_DEBUGING;
 
         public const string PRODUCT_NAME_KEY = "ProductName";
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
@@ -50,6 +51,8 @@ namespace RejectDetailsLib {
         public const string GENERATE_OUTPUT_FILE_TIME_KEY = "GenerateOutputFileFrom";
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
         public const string USE_MULTITHREADING_SERVICE_KEY = "UseMultiTreading";
+        public const string IN_DEBUGING_KEY = "InDebuging";
+
 
         //static SystemKeys() {
         //    initializeKey();
@@ -97,6 +100,15 @@ namespace RejectDetailsLib {
             } else {
                 USE_MULTITHREADING_SERVICE = false;
             }
+
+            if(keys.ContainsKey(IN_DEBUGING_KEY) && bool.TryParse(keys[IN_DEBUGING_KEY], out bool debugResult))
+            {
+                IN_DEBUGING = debugResult;
+            } else
+            {
+                IN_DEBUGING = false;
+            }
+            
         }
 
         public static void setKey(string appKey, string appValue) {

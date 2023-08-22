@@ -1,5 +1,4 @@
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.AssemblyReference.cache
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.SuggestedBindingRedirects.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.frmIPModify.resources
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.frmQuery.resources
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.frmSettings.resources

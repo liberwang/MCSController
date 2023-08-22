@@ -34,6 +34,8 @@ namespace RejectDetailsWin {
             this.cboTimeOfOutputFile.SelectedItem = SystemKeys.GENERATE_OUTPUT_FILE_TIME;
 
             this.chkMultithread.Checked = SystemKeys.USE_MULTITHREADING_SERVICE;
+
+            this.chkDebug.Checked = SystemKeys.IN_DEBUGING;
         }
 
         private void btnOutputFileFolder_Click(object sender, EventArgs e) {
@@ -99,6 +101,7 @@ namespace RejectDetailsWin {
             string sGenerateOutputTime = this.cboTimeOfOutputFile.SelectedItem.ToString();
 
             bool bUseMultithreading = this.chkMultithread.Checked;
+            bool isDebug = this.chkDebug.Checked;
 
             if (sProductName != SystemKeys.PRODUCT_NAME)
             {
@@ -151,6 +154,10 @@ namespace RejectDetailsWin {
             if(bUseMultithreading != SystemKeys.USE_MULTITHREADING_SERVICE)
             {
                 SystemKeys.setKey(SystemKeys.USE_MULTITHREADING_SERVICE_KEY, bUseMultithreading.ToString());
+            }
+            if (isDebug != SystemKeys.IN_DEBUGING)
+            {
+                SystemKeys.setKey(SystemKeys.IN_DEBUGING_KEY, isDebug.ToString());
             }
             SystemKeys.initializeKey();
             this.Close();

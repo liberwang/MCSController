@@ -7,7 +7,6 @@ C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\libplctag.Na
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\RejectDetailsLib.pdb
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Release\libplctag.NativeImport.xml
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.AssemblyReference.cache
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.SuggestedBindingRedirects.cache
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.frmMain.resources
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.Properties.Resources.resources
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Release\MCSQueryWin.csproj.GenerateResource.cache

@@ -18,10 +18,6 @@ namespace RejectDetailsLib
 
         private static RejectDetails instance = null;
 
-        //private static string lastSerialNumber = string.Empty;
-
-        //private DataSource ds = null;
-
         private List<clsController> listController = new List<clsController>();
         private Dictionary<int, List<clsTagGroup>> dicTagGroup = new Dictionary<int, List<clsTagGroup>>();
 
@@ -110,47 +106,6 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            /*
-            if (SystemKeys.GET_DATA_FROM_XML)
-            {
-                this.ds = new DataXML();
-            }
-            else
-            {
-                this.ds = new Database();
-            }
-
-
-            this.listController = ds.GetController();
-
-            // 192.168.1.10 -> 10, 20, 30, 40
-            foreach(clsController clsCon in this.listController) {
-                clsCon.GetStationList();
-
-                // 10 ->  Header.State.OK, Header.CycleStart
-                foreach(clsStation clsStat in clsCon.StationList) {
-                    clsStat.GetTagList();
-
-                    Libplctag tagClass = new Libplctag();
-
-                    foreach(clsTag tag in clsStat.TagList) {
-                        tag.GenerateTag(clsCon.IpAddress);
-
-                        if(!dictTagInfo.ContainsKey(tag.TagFullName)) {
-                            dictTagInfo.Add(tag.TagFullName, tag);
-                            tagClass.AddTag(tag.plcTag);
-                        }
-                    }
-
-                    ListStationLibplctag.Add((clsStat, tagClass));
-                }
-            }
-
-            dictReadWrite = ds.GetReadWriteTag();
-
-
-            this.ds = new Database();
-            */
             this.listController = clsController.GetControllerList();
 
             foreach (clsController clsCon in this.listController)
@@ -195,7 +150,13 @@ namespace RejectDetailsLib
                     {
                         // no tag for this ip address 
                         if (tagGroup.listTags.Count == 0)
+                        {
+                            if (SystemKeys.IN_DEBUGING)
+                            {
+                                clsLog.addLog($@"{tagGroup.tagRead.TagName} count is 0.");
+                            }
                             continue;
+                        }
 
                         Libplctag client = tagGroup.tagClass;
 
@@ -208,7 +169,13 @@ namespace RejectDetailsLib
                         }
 
                         if (counter >= 100)
+                        {
+                            if (SystemKeys.IN_DEBUGING)
+                            {
+                                clsLog.addLog($@"{tagGroup.tagRead.TagName} is reading more than 100 times.");
+                            }
                             continue;
+                        }
 
                         // if read tag is ready, read all tags
                         if (client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_OK)
@@ -233,7 +200,7 @@ namespace RejectDetailsLib
                                     int tagStatus = client.GetStatus(tag);
                                     if (tagStatus != Libplctag.PLCTAG_STATUS_OK)
                                     {
-                                        Console.WriteLine($"Error setting up tag internal state. Error{client.DecodeError(tagStatus)}");
+                                        clsLog.addLog($"[{tagClass.TagName}] Error setting up tag internal state: {client.DecodeError(tagStatus)}");
                                         isOK = false;
                                         break;
                                     }
@@ -242,7 +209,7 @@ namespace RejectDetailsLib
 
                                     if (tagValue != Libplctag.PLCTAG_STATUS_OK)
                                     {
-                                        Console.WriteLine($"ERROR: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+                                        clsLog.addLog($"[{tagClass.TagName}]: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
                                         isOK = false;
                                         break;
                                     }
@@ -276,22 +243,38 @@ namespace RejectDetailsLib
 
                                 if (isOK)
                                 {
+                                    if (SystemKeys.IN_DEBUGING)
+                                    {
+                                        clsLog.addLog($@"{tagGroup.tagRead.TagName} group is OK.");
+                                    }
                                     // set read flag back first;
                                     if (tagGroup.tagRead.Write == 1)
                                     {
+                                        if (SystemKeys.IN_DEBUGING)
+                                        {
+                                            clsLog.addLog($@"{tagGroup.tagRead.TagName} is writing back.");
+                                        }
+
                                         client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
                                     }
 
                                     // set back to write tags. 
                                     foreach (clsTag tagWrite in tagGroup.tagWrite)
                                     {
-                                        // todo write value back;
-                                        // TODO
-                                        //clsLog.addLog($@"tagwrite: {tagWrite.plcTag.Name}");
+                                        if (SystemKeys.IN_DEBUGING)
+                                        {
+                                            clsLog.addLog($@"tagwrite:{tagWrite.plcTag.Name}.");
+                                        }
                                         client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
                                     }
 
                                     SaveToFile(listReadValues, tagSerialNoValue, clsCon.IpAddress);
+                                } else
+                                {
+                                    if (SystemKeys.IN_DEBUGING)
+                                    {
+                                        clsLog.addLog($@"{tagGroup.tagRead.TagName} group is failed.");
+                                    }
                                 }
                             }
                         }
@@ -352,7 +335,7 @@ namespace RejectDetailsLib
                                         int tagStatus = client.GetStatus(tag);
                                         if (tagStatus != Libplctag.PLCTAG_STATUS_OK)
                                         {
-                                            Console.WriteLine($"Error setting up tag internal state. Error{client.DecodeError(tagStatus)}");
+                                            clsLog.addLog($"[{tagClass.TagName}] error: setting up tag internal state: {client.DecodeError(tagStatus)}");
                                             cts.Cancel(true);
                                         }
 
@@ -360,7 +343,7 @@ namespace RejectDetailsLib
 
                                         if (tagValue != Libplctag.PLCTAG_STATUS_OK)
                                         {
-                                            Console.WriteLine($"ERROR: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+                                            Console.WriteLine($"[{tagClass.TagName}] error: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
                                             cts.Cancel(true);
                                         }
 
@@ -501,7 +484,10 @@ namespace RejectDetailsLib
 
         private void SaveToFile(List<(string, string)> tagValue, string serialNumber, string ipAddress)
         {
-            //clsLog.addLog("save to file start....");
+            if (SystemKeys.IN_DEBUGING)
+            {
+                clsLog.addLog($@"{serialNumber} is in SaveToFile process.");
+            }
             clsOutput op = clsOutput.GetOutputByProduceName();
 
             op.SaveToFileAndDatabase(tagValue, serialNumber, ipAddress);
