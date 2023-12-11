@@ -41,6 +41,20 @@ namespace RejectDetailsWin {
             this.tabPageTags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvTags = new System.Windows.Forms.DataGridView();
+            this.colTagId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTypeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagRWText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagRead = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagWriteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagWrite = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagOutputText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagOutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTagEdit = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colTagDelete = new System.Windows.Forms.DataGridViewImageColumn();
             this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddTag = new System.Windows.Forms.Button();
@@ -63,20 +77,10 @@ namespace RejectDetailsWin {
             this.cboOutputIP = new System.Windows.Forms.ComboBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.colTagId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTypeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagRWText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagRead = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagWriteText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagWrite = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagOutputText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagOutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTagEdit = new System.Windows.Forms.DataGridViewImageColumn();
-            this.colTagDelete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCleanUp = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tabControl.SuspendLayout();
             this.tabPageIPAddress.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -94,6 +98,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -294,15 +299,149 @@ namespace RejectDetailsWin {
             this.dgvTags.TabIndex = 2;
             this.dgvTags.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTags_CellClick);
             // 
+            // colTagId
+            // 
+            this.colTagId.DataPropertyName = "tagId";
+            this.colTagId.HeaderText = "Id";
+            this.colTagId.MinimumWidth = 6;
+            this.colTagId.Name = "colTagId";
+            this.colTagId.ReadOnly = true;
+            this.colTagId.Visible = false;
+            this.colTagId.Width = 125;
+            // 
+            // colTagName
+            // 
+            this.colTagName.DataPropertyName = "tagName";
+            this.colTagName.HeaderText = "Name";
+            this.colTagName.MinimumWidth = 6;
+            this.colTagName.Name = "colTagName";
+            this.colTagName.ReadOnly = true;
+            this.colTagName.Width = 180;
+            // 
+            // colTypeId
+            // 
+            this.colTypeId.DataPropertyName = "tagType";
+            this.colTypeId.HeaderText = "typeId";
+            this.colTypeId.MinimumWidth = 6;
+            this.colTypeId.Name = "colTypeId";
+            this.colTypeId.Visible = false;
+            this.colTypeId.Width = 125;
+            // 
+            // colTypeName
+            // 
+            this.colTypeName.DataPropertyName = "typeName";
+            this.colTypeName.HeaderText = "Type";
+            this.colTypeName.MinimumWidth = 6;
+            this.colTypeName.Name = "colTypeName";
+            this.colTypeName.ReadOnly = true;
+            this.colTypeName.Width = 50;
+            // 
+            // colTagDesc
+            // 
+            this.colTagDesc.DataPropertyName = "tagDescription";
+            this.colTagDesc.HeaderText = "Description";
+            this.colTagDesc.MinimumWidth = 6;
+            this.colTagDesc.Name = "colTagDesc";
+            this.colTagDesc.ReadOnly = true;
+            this.colTagDesc.Width = 260;
+            // 
+            // colTagTitle
+            // 
+            this.colTagTitle.DataPropertyName = "tagTitle";
+            this.colTagTitle.HeaderText = "Title";
+            this.colTagTitle.MinimumWidth = 10;
+            this.colTagTitle.Name = "colTagTitle";
+            this.colTagTitle.ReadOnly = true;
+            this.colTagTitle.Width = 200;
+            // 
+            // colTagRWText
+            // 
+            this.colTagRWText.DataPropertyName = "tagReadText";
+            this.colTagRWText.HeaderText = "Read";
+            this.colTagRWText.MinimumWidth = 6;
+            this.colTagRWText.Name = "colTagRWText";
+            this.colTagRWText.ReadOnly = true;
+            this.colTagRWText.Width = 50;
+            // 
+            // colTagRead
+            // 
+            this.colTagRead.DataPropertyName = "tagRead";
+            this.colTagRead.HeaderText = "Column1";
+            this.colTagRead.MinimumWidth = 6;
+            this.colTagRead.Name = "colTagRead";
+            this.colTagRead.ReadOnly = true;
+            this.colTagRead.Visible = false;
+            this.colTagRead.Width = 125;
+            // 
+            // colTagWriteText
+            // 
+            this.colTagWriteText.DataPropertyName = "tagWriteText";
+            this.colTagWriteText.HeaderText = "Write";
+            this.colTagWriteText.MinimumWidth = 6;
+            this.colTagWriteText.Name = "colTagWriteText";
+            this.colTagWriteText.ReadOnly = true;
+            this.colTagWriteText.Width = 50;
+            // 
+            // colTagWrite
+            // 
+            this.colTagWrite.DataPropertyName = "tagWrite";
+            this.colTagWrite.HeaderText = "Column1";
+            this.colTagWrite.MinimumWidth = 6;
+            this.colTagWrite.Name = "colTagWrite";
+            this.colTagWrite.ReadOnly = true;
+            this.colTagWrite.Visible = false;
+            this.colTagWrite.Width = 125;
+            // 
+            // colTagOutputText
+            // 
+            this.colTagOutputText.DataPropertyName = "tagOutputText";
+            this.colTagOutputText.HeaderText = "Output";
+            this.colTagOutputText.MinimumWidth = 6;
+            this.colTagOutputText.Name = "colTagOutputText";
+            this.colTagOutputText.Width = 50;
+            // 
+            // colTagOutput
+            // 
+            this.colTagOutput.DataPropertyName = "tagOutput";
+            this.colTagOutput.HeaderText = "Column1";
+            this.colTagOutput.MinimumWidth = 6;
+            this.colTagOutput.Name = "colTagOutput";
+            this.colTagOutput.ReadOnly = true;
+            this.colTagOutput.Visible = false;
+            this.colTagOutput.Width = 125;
+            // 
+            // colTagEdit
+            // 
+            this.colTagEdit.HeaderText = "Edit";
+            this.colTagEdit.Image = ((System.Drawing.Image)(resources.GetObject("colTagEdit.Image")));
+            this.colTagEdit.MinimumWidth = 6;
+            this.colTagEdit.Name = "colTagEdit";
+            this.colTagEdit.ReadOnly = true;
+            this.colTagEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colTagEdit.ToolTipText = "Edit current Tag";
+            this.colTagEdit.Width = 40;
+            // 
+            // colTagDelete
+            // 
+            this.colTagDelete.HeaderText = "Delete";
+            this.colTagDelete.Image = ((System.Drawing.Image)(resources.GetObject("colTagDelete.Image")));
+            this.colTagDelete.MinimumWidth = 6;
+            this.colTagDelete.Name = "colTagDelete";
+            this.colTagDelete.ReadOnly = true;
+            this.colTagDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colTagDelete.ToolTipText = "Delete current Tag";
+            this.colTagDelete.Width = 40;
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.btnAddTag, 2, 0);
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel4.Controls.Add(this.cboIPAddress, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel10, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -314,10 +453,10 @@ namespace RejectDetailsWin {
             // btnAddTag
             // 
             this.btnAddTag.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnAddTag.Location = new System.Drawing.Point(1596, 20);
+            this.btnAddTag.Location = new System.Drawing.Point(54, 14);
             this.btnAddTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddTag.Name = "btnAddTag";
-            this.btnAddTag.Size = new System.Drawing.Size(180, 54);
+            this.btnAddTag.Size = new System.Drawing.Size(200, 60);
             this.btnAddTag.TabIndex = 3;
             this.btnAddTag.Text = "Add...";
             this.btnAddTag.UseVisualStyleBackColor = true;
@@ -586,138 +725,51 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1818, 1340);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
-            // colTagId
+            // tableLayoutPanel10
             // 
-            this.colTagId.DataPropertyName = "tagId";
-            this.colTagId.HeaderText = "Id";
-            this.colTagId.MinimumWidth = 6;
-            this.colTagId.Name = "colTagId";
-            this.colTagId.ReadOnly = true;
-            this.colTagId.Visible = false;
-            this.colTagId.Width = 125;
+            this.tableLayoutPanel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel10.ColumnCount = 3;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34F));
+            this.tableLayoutPanel10.Controls.Add(this.btnCleanUp, 1, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnAddTag, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnImport, 2, 0);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(993, 3);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(784, 88);
+            this.tableLayoutPanel10.TabIndex = 4;
             // 
-            // colTagName
+            // btnCleanUp
             // 
-            this.colTagName.DataPropertyName = "tagName";
-            this.colTagName.HeaderText = "Name";
-            this.colTagName.MinimumWidth = 6;
-            this.colTagName.Name = "colTagName";
-            this.colTagName.ReadOnly = true;
-            this.colTagName.Width = 180;
+            this.btnCleanUp.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnCleanUp.Location = new System.Drawing.Point(313, 14);
+            this.btnCleanUp.Name = "btnCleanUp";
+            this.btnCleanUp.Size = new System.Drawing.Size(200, 60);
+            this.btnCleanUp.TabIndex = 5;
+            this.btnCleanUp.Text = "CleanUp";
+            this.btnCleanUp.UseVisualStyleBackColor = true;
+            this.btnCleanUp.Click += new System.EventHandler(this.btnClearAll_Click);
             // 
-            // colTypeId
+            // btnImport
             // 
-            this.colTypeId.DataPropertyName = "tagType";
-            this.colTypeId.HeaderText = "typeId";
-            this.colTypeId.MinimumWidth = 6;
-            this.colTypeId.Name = "colTypeId";
-            this.colTypeId.Visible = false;
-            this.colTypeId.Width = 125;
+            this.btnImport.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnImport.Location = new System.Drawing.Point(581, 14);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(200, 60);
+            this.btnImport.TabIndex = 6;
+            this.btnImport.Text = "Upload";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
-            // colTypeName
+            // openFileDialog
             // 
-            this.colTypeName.DataPropertyName = "typeName";
-            this.colTypeName.HeaderText = "Type";
-            this.colTypeName.MinimumWidth = 6;
-            this.colTypeName.Name = "colTypeName";
-            this.colTypeName.ReadOnly = true;
-            this.colTypeName.Width = 50;
-            // 
-            // colTagDesc
-            // 
-            this.colTagDesc.DataPropertyName = "tagDescription";
-            this.colTagDesc.HeaderText = "Description";
-            this.colTagDesc.MinimumWidth = 6;
-            this.colTagDesc.Name = "colTagDesc";
-            this.colTagDesc.ReadOnly = true;
-            this.colTagDesc.Width = 260;
-            // 
-            // colTagTitle
-            // 
-            this.colTagTitle.DataPropertyName = "tagTitle";
-            this.colTagTitle.HeaderText = "Title";
-            this.colTagTitle.MinimumWidth = 10;
-            this.colTagTitle.Name = "colTagTitle";
-            this.colTagTitle.ReadOnly = true;
-            this.colTagTitle.Width = 200;
-            // 
-            // colTagRWText
-            // 
-            this.colTagRWText.DataPropertyName = "tagReadText";
-            this.colTagRWText.HeaderText = "Read";
-            this.colTagRWText.MinimumWidth = 6;
-            this.colTagRWText.Name = "colTagRWText";
-            this.colTagRWText.ReadOnly = true;
-            this.colTagRWText.Width = 50;
-            // 
-            // colTagRead
-            // 
-            this.colTagRead.DataPropertyName = "tagRead";
-            this.colTagRead.HeaderText = "Column1";
-            this.colTagRead.MinimumWidth = 6;
-            this.colTagRead.Name = "colTagRead";
-            this.colTagRead.ReadOnly = true;
-            this.colTagRead.Visible = false;
-            this.colTagRead.Width = 125;
-            // 
-            // colTagWriteText
-            // 
-            this.colTagWriteText.DataPropertyName = "tagWriteText";
-            this.colTagWriteText.HeaderText = "Write";
-            this.colTagWriteText.MinimumWidth = 6;
-            this.colTagWriteText.Name = "colTagWriteText";
-            this.colTagWriteText.ReadOnly = true;
-            this.colTagWriteText.Width = 50;
-            // 
-            // colTagWrite
-            // 
-            this.colTagWrite.DataPropertyName = "tagWrite";
-            this.colTagWrite.HeaderText = "Column1";
-            this.colTagWrite.MinimumWidth = 6;
-            this.colTagWrite.Name = "colTagWrite";
-            this.colTagWrite.ReadOnly = true;
-            this.colTagWrite.Visible = false;
-            this.colTagWrite.Width = 125;
-            // 
-            // colTagOutputText
-            // 
-            this.colTagOutputText.DataPropertyName = "tagOutputText";
-            this.colTagOutputText.HeaderText = "Output";
-            this.colTagOutputText.MinimumWidth = 6;
-            this.colTagOutputText.Name = "colTagOutputText";
-            this.colTagOutputText.Width = 50;
-            // 
-            // colTagOutput
-            // 
-            this.colTagOutput.DataPropertyName = "tagOutput";
-            this.colTagOutput.HeaderText = "Column1";
-            this.colTagOutput.MinimumWidth = 6;
-            this.colTagOutput.Name = "colTagOutput";
-            this.colTagOutput.ReadOnly = true;
-            this.colTagOutput.Visible = false;
-            this.colTagOutput.Width = 125;
-            // 
-            // colTagEdit
-            // 
-            this.colTagEdit.HeaderText = "Edit";
-            this.colTagEdit.Image = ((System.Drawing.Image)(resources.GetObject("colTagEdit.Image")));
-            this.colTagEdit.MinimumWidth = 6;
-            this.colTagEdit.Name = "colTagEdit";
-            this.colTagEdit.ReadOnly = true;
-            this.colTagEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colTagEdit.ToolTipText = "Edit current Tag";
-            this.colTagEdit.Width = 40;
-            // 
-            // colTagDelete
-            // 
-            this.colTagDelete.HeaderText = "Delete";
-            this.colTagDelete.Image = ((System.Drawing.Image)(resources.GetObject("colTagDelete.Image")));
-            this.colTagDelete.MinimumWidth = 6;
-            this.colTagDelete.Name = "colTagDelete";
-            this.colTagDelete.ReadOnly = true;
-            this.colTagDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colTagDelete.ToolTipText = "Delete current Tag";
-            this.colTagDelete.Width = 40;
+            this.openFileDialog.FileName = "openFileDialog1";
             // 
             // frmTags
             // 
@@ -751,6 +803,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -808,5 +861,9 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridViewTextBoxColumn colTagOutput;
         private System.Windows.Forms.DataGridViewImageColumn colTagEdit;
         private System.Windows.Forms.DataGridViewImageColumn colTagDelete;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Button btnCleanUp;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

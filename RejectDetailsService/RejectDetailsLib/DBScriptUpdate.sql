@@ -207,7 +207,7 @@ BEGIN
 	CLOSE cursor_content;
 	DEALLOCATE cursor_content;
 
-	SELECT * FROM ##tmp_result;
+	SELECT * FROM ##tmp_result ORDER BY [SerialNumber];
 
 	DROP TABLE ##tmp_result;
 	DROP TABLE #tmp_content;
@@ -238,3 +238,6 @@ CREATE UNIQUE NONCLUSTERED INDEX [uind_tagTitle_tblFullTag] ON [dbo].[tblFullTag
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
+IF NOT EXISTS( SELECT 1 FROM sys.objects where name = 'DF__tblFullTag_tagOutput' )
+	ALTER TABLE [dbo].[tblFullTag] ADD CONSTRAINT [DF__tblFullTag_tagOutput] DEFAULT ((0)) FOR [tagOutput]
+GO

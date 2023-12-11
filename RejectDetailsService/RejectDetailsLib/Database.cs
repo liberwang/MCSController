@@ -1,4 +1,5 @@
 ﻿using LibplctagWrapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -342,12 +343,54 @@ ELSE
                 using (SqlCommand com = conn.CreateCommand())
                 {
                     conn.Open();
-                    com.CommandText = $@"DELETE FROM tblFullTag WHERE tagId = {tagId}";
+                    com.CommandText = $@"DELETE FROM tblOutput WHERE tagId = {tagId}; DELETE FROM tblFullTag WHERE tagId = {tagId}";
                     com.ExecuteNonQuery();
                 }
             }
         }
 
+        public void CleanUpFallTag(int ipAddressID)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"DELETE FROM tblOutput WHERE tagId IN (SELECT tagID FROM tblFullTag WITH(NOLOCK) WHERE controllerID = {ipAddressID}); DELETE FROM tblFullTag WHERE controllerID = {ipAddressID}";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public string UploadFullTag(int ipAddressID, List<string[]> insertList)
+        {
+            string returnStr = "";
+            try
+            {
+                string insertStr = string.Empty;
+                foreach (string[] il in insertList)
+                {
+                    insertStr += $"({ipAddressID}," + string.Join(",", il) + "),";
+                }
+
+                insertStr = insertStr.Substring(0, insertStr.Length - 1);
+
+                using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+                {
+                    using (SqlCommand com = conn.CreateCommand())
+                    {
+                        conn.Open();
+                        com.CommandText = $@"INSERT INTO [dbo].[tblFullTag] ([controllerId],[tagName],[tagType],[tagDescription],[tagRead],[tagWrite],[tagTitle]) VALUES {insertStr}";
+                        com.ExecuteNonQuery();
+                    }
+                }
+            } catch (Exception e )
+            {
+                clsLog.addLog(e.Message);
+                returnStr = e.Message;
+            } 
+            return returnStr;
+        }
         #endregion
 
         #region System Keys
@@ -411,6 +454,29 @@ ELSE
                     return controller;
                 }
             }
+        }
+
+        public Dictionary<string, int> GetTagTypeDictionary()
+        {
+            Dictionary<string, int> dic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"SELECT typeName, typeId FROM tblTagType WITH(NOLOCK)";
+
+                    SqlDataReader dr = com.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        dic.Add(dr.GetString(0), dr.GetInt32(1));
+                    }
+                    dr.Close();
+
+                }
+            }
+            return dic;
         }
 
         #region Tag Output 

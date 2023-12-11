@@ -1,0 +1,5 @@
+-- Tag Name, Tag Type, Description, Read Flag, Write Flag, Output Title
+Station1.TagUnit1,Int,Station1.TagUnit1,0,0,Unit1
+Station1.TagUnit2,Bool,Station1.TagUnit2,1,0,Unit2
+Station1.TagUnit3,String,Station1.TagUnit3,0,1,Unit3
+Station1.TagUnit4,Real,Station1.TagUnit4,1,1,Unit4

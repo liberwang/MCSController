@@ -122,19 +122,25 @@ namespace RejectDetailsLib
         {
             if (!IsRunning)
             {
-                IsRunning = true;
+                lock (lockobject)
+                {
+                    if (!IsRunning)
+                    {
+                        IsRunning = true;
 
-                try
-                {
-                    Process();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-                finally
-                {
-                    IsRunning = false;
+                        try
+                        {
+                            Process();
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
+                        }
+                        finally
+                        {
+                            IsRunning = false;
+                        }
+                    }
                 }
             }
         }
@@ -275,6 +281,12 @@ namespace RejectDetailsLib
                                     {
                                         clsLog.addLog($@"{tagGroup.tagRead.TagName} group is failed.");
                                     }
+                                }
+                            } else
+                            {
+                                if (SystemKeys.IN_DEBUGING)
+                                {
+                                    clsLog.addLog($@"{tagGroup.tagRead.TagName} is not ready for DBRequest.");
                                 }
                             }
                         }

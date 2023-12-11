@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace MCSQueryWin
@@ -32,21 +34,30 @@ namespace MCSQueryWin
                 MessageBox.Show("Start time should be early than end time.", "Query", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-
+            this.bindingSource.DataSource = null;
 
             DataSet ds = new Database().GetContent(start, end, ipAddress, tagName, tagValue, serialNo);
             this.m_dtSource = ds.Tables[0];
 
             this.bindingSource.DataSource = this.m_dtSource;
+
+             this.lblTotal.Text = $@"Total: {ds.Tables[0].Rows.Count} records.";
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadDatabase();
 
-
-
             this.dataGridView.AutoGenerateColumns = true;
+
+            // Double buffering can make DGV slow in remote desktop
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dataGridView.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dataGridView, true, null);
+            }
         }
 
         private void LoadDatabase()
@@ -107,17 +118,28 @@ namespace MCSQueryWin
                 if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string fileName = this.saveFileDialog.FileName;
-                    clsOutput clsop = clsOutput.GetOutputByProduceName();
-                    foreach( DataRow dr in this.m_dtSource.Rows )
+                    if (!string.IsNullOrWhiteSpace(fileName))
                     {
-                        List<(string, string)> listValues = new List<(string, string)>();
-                        for( int i = 0; i < this.m_dtSource.Columns.Count; ++i )
+                        if (File.Exists(fileName))
                         {
-                            listValues.Add((dr[i].ToString(), this.m_dtSource.Columns[i].ColumnName));
+                            if (MessageBox.Show($"File {fileName} is existing. Do you want to delete this file, then create a new one?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            {
+                                File.Delete(fileName);
+                            }
                         }
-                        clsop.SaveToFile(fileName, listValues, false);
+
+                        clsOutput clsop = clsOutput.GetOutputByProduceName();
+                        foreach (DataRow dr in this.m_dtSource.Rows)
+                        {
+                            List<(string, string)> listValues = new List<(string, string)>();
+                            for (int i = 0; i < this.m_dtSource.Columns.Count; ++i)
+                            {
+                                listValues.Add((dr[i].ToString(), this.m_dtSource.Columns[i].ColumnName));
+                            }
+                            clsop.SaveToFile(fileName, listValues, false);
+                        }
+                        MessageBox.Show($@"Exporting data to {fileName} is successful!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    MessageBox.Show($@"Export to {fileName} is done!", "MCS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }

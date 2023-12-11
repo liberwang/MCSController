@@ -33,6 +33,7 @@
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblTotal = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.txtSerialNumber = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -82,6 +83,7 @@
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AllowUserToOrderColumns = true;
+            this.dataGridView.AllowUserToResizeRows = false;
             this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.DataSource = this.bindingSource;
@@ -92,6 +94,10 @@
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
+            this.dataGridView.ShowCellErrors = false;
+            this.dataGridView.ShowCellToolTips = false;
+            this.dataGridView.ShowEditingIcon = false;
+            this.dataGridView.ShowRowErrors = false;
             this.dataGridView.Size = new System.Drawing.Size(1831, 997);
             this.dataGridView.TabIndex = 4;
             // 
@@ -101,6 +107,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.lblTotal);
             this.panel1.Controls.Add(this.btnExport);
             this.panel1.Controls.Add(this.txtSerialNumber);
             this.panel1.Controls.Add(this.label6);
@@ -121,6 +128,16 @@
             this.panel1.Size = new System.Drawing.Size(1831, 190);
             this.panel1.TabIndex = 3;
             // 
+            // lblTotal
+            // 
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.ForeColor = System.Drawing.Color.Blue;
+            this.lblTotal.Location = new System.Drawing.Point(27, 165);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(66, 25);
+            this.lblTotal.TabIndex = 14;
+            this.lblTotal.Text = "Total:";
+            // 
             // btnExport
             // 
             this.btnExport.Location = new System.Drawing.Point(1519, 11);
@@ -134,7 +151,7 @@
             // 
             // txtSerialNumber
             // 
-            this.txtSerialNumber.Location = new System.Drawing.Point(1173, 106);
+            this.txtSerialNumber.Location = new System.Drawing.Point(1173, 101);
             this.txtSerialNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSerialNumber.Name = "txtSerialNumber";
             this.txtSerialNumber.Size = new System.Drawing.Size(258, 31);
@@ -143,7 +160,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(992, 111);
+            this.label6.Location = new System.Drawing.Point(992, 106);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(154, 25);
@@ -152,7 +169,7 @@
             // 
             // txtTagValue
             // 
-            this.txtTagValue.Location = new System.Drawing.Point(639, 108);
+            this.txtTagValue.Location = new System.Drawing.Point(639, 103);
             this.txtTagValue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTagValue.Name = "txtTagValue";
             this.txtTagValue.Size = new System.Drawing.Size(298, 31);
@@ -162,7 +179,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(514, 112);
+            this.label5.Location = new System.Drawing.Point(514, 107);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(116, 25);
@@ -172,7 +189,7 @@
             // 
             // txtTagName
             // 
-            this.txtTagName.Location = new System.Drawing.Point(152, 108);
+            this.txtTagName.Location = new System.Drawing.Point(152, 103);
             this.txtTagName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTagName.Name = "txtTagName";
             this.txtTagName.Size = new System.Drawing.Size(298, 31);
@@ -181,7 +198,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(26, 112);
+            this.label4.Location = new System.Drawing.Point(26, 107);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 25);
@@ -240,7 +257,7 @@
             // 
             // btnQuery
             // 
-            this.btnQuery.Location = new System.Drawing.Point(1519, 92);
+            this.btnQuery.Location = new System.Drawing.Point(1519, 87);
             this.btnQuery.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(184, 59);
@@ -356,6 +373,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cboDatabase;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.Label lblTotal;
     }
 }
 

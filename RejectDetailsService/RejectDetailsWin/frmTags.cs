@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -163,17 +164,19 @@ namespace RejectDetailsWin
 
         private void btnAddTag_Click(object sender, EventArgs e)
         {
-            int controllerId = (int)cboIPAddress.SelectedValue;
-            string ipAddress = cboIPAddress.Text;
-
-            frmTagModify tagform = new frmTagModify(controllerId, -1, ipAddress);
-            tagform.ShowDialog();
-
-            if (tagform.DialogResult == DialogResult.OK)
+            if (this.cboIPAddress.SelectedIndex >= 0)
             {
-                refreshTags();
-            }
+                int controllerId = (int)cboIPAddress.SelectedValue;
+                string ipAddress = cboIPAddress.Text;
 
+                frmTagModify tagform = new frmTagModify(controllerId, -1, ipAddress);
+                tagform.ShowDialog();
+
+                if (tagform.DialogResult == DialogResult.OK)
+                {
+                    refreshTags();
+                }
+            }
             //tagform.Close();
         }
 
@@ -242,7 +245,7 @@ namespace RejectDetailsWin
         private void btnUp_Click(object sender, EventArgs e)
         {
             if (lstOutput.SelectedItems.Count > 0)
-            {               
+            {
                 int ind = lstOutput.SelectedIndex;
                 if (ind > 0)
                 {
@@ -257,10 +260,10 @@ namespace RejectDetailsWin
 
         private void btnDown_Click(object sender, EventArgs e)
         {
-            if ( lstOutput.SelectedItems.Count > 0)
+            if (lstOutput.SelectedItems.Count > 0)
             {
                 int ind = lstOutput.SelectedIndex;
-                if ( ind < lstOutput.Items.Count -1 )
+                if (ind < lstOutput.Items.Count - 1)
                 {
                     object obj = lstOutput.SelectedItem;
 
@@ -273,19 +276,145 @@ namespace RejectDetailsWin
 
         private void btnSaveOutput_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-
-            foreach( clsTag obj in lstOutput.Items )
+            if (this.cboOutputIP.SelectedIndex >= 0)
             {
-                sb.Append(obj.TagId).Append(",");
+                StringBuilder sb = new StringBuilder();
+
+                foreach (clsTag obj in lstOutput.Items)
+                {
+                    sb.Append(obj.TagId).Append(",");
+                }
+
+                string idList = sb.ToString();
+                int controllerId = (int)this.cboOutputIP.SelectedValue;
+
+                db.SetSelectedOutput(controllerId, idList);
+
+                MessageBox.Show("Save output setting is done!", "Output Setting", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
 
-            string idList = sb.ToString();
-            int controllerId = (int)this.cboOutputIP.SelectedValue;
+        private void btnClearAll_Click(object sender, EventArgs e)
+        {
 
-            db.SetSelectedOutput(controllerId, idList);
+            if (cboIPAddress.SelectedIndex >= 0 && MessageBox.Show("Are you sure to delete all tags?", "Clear up", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                int controllerId = (int)this.cboIPAddress.SelectedValue;
 
-            MessageBox.Show("Save output setting is done!", "Output Setting", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                db.CleanUpFallTag(controllerId);
+
+                refreshTags();
+            }
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            if (cboIPAddress.SelectedIndex >= 0)
+            {
+                this.openFileDialog.Filter = "txt files (*.txt)|*.txt|csv files (*.csv)|*.csv|All files (*.*)|*.*";
+                this.openFileDialog.FilterIndex = 2;
+                this.openFileDialog.RestoreDirectory = true;
+                this.openFileDialog.FileName = "";
+
+                if (this.openFileDialog.ShowDialog() == DialogResult.OK && this.openFileDialog.FileName != "")
+                {
+                    string sFileName = this.openFileDialog.FileName;
+
+                    Stream fileStream = openFileDialog.OpenFile();
+                    List<string[]> insertList = new List<string[]>();
+                    Dictionary<string, int> dicType = db.GetTagTypeDictionary();
+
+                    using (StreamReader  sr = new StreamReader(fileStream))
+                    {
+                        int lineNo = 0;
+                        string line;
+                        while( (line = sr.ReadLine()) != null )
+                        {
+                            ++lineNo;
+                            line = line.Trim();
+
+                            if (line.StartsWith("--"))
+                                continue;
+
+                            // tag name,tagType,description,read,write,title
+                            string[] strField = line.Split(new char[] { ',' });
+                            if ( strField.Length != 6 )
+                            {
+                                MessageBox.Show($"(#{lineNo}) Field in the file is not corrent. Fields are Name (string), Type (int), Description (string), Read (int), Write (int), and Title (string).", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            // 0: tag Name
+                            if (string.IsNullOrWhiteSpace(strField[0]))
+                            {
+                                MessageBox.Show($"(#{lineNo}) The name of Tag can not be empty!", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            } else
+                            {
+                                strField[0] = "'" + strField[0].Trim() + "'";
+                            }
+
+                            // 1: tag Type
+                            strField[1] = strField[1].Trim();   
+                            if (!dicType.ContainsKey(strField[1]))
+                            {
+                                MessageBox.Show($"(#{lineNo}) The type of Tag is not found!", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            } else
+                            {
+                                strField[1] = dicType[strField[1]].ToString();
+                            }
+
+                            // 2: tag Description 
+                            strField[2] = "'" + strField[2].Trim() + "'";
+
+                            // 3: read tag
+                            if (int.TryParse(strField[3].Trim(), out int iRead))
+                            {
+                                strField[3] = iRead > 0 ? "1" : "0";
+                            } else
+                            {
+                                strField[3] = "0";
+                            }
+
+                            // 4: write tag 
+                            if (int.TryParse(strField[4].Trim(),out int iWrite))
+                            {
+                                strField[4] = iWrite > 0 ? "1" : "0";   
+                            } else
+                            {
+                                strField[4] = "0";
+                            }
+
+                            // 5: tag title 
+                            strField[5] = "'" + strField[5].Trim() + "'";
+
+                            insertList.Add(strField);
+                        }
+                    }
+
+                    if (insertList.Count > 0)
+                    {
+                        string returnMsg = db.UploadFullTag((int)cboIPAddress.SelectedValue, insertList);
+                        if (string.IsNullOrWhiteSpace(returnMsg))
+                        {
+                            MessageBox.Show($@"Upload {sFileName} is successful.", "Upload", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            this.refreshTags(); 
+                        } else
+                        {
+                            MessageBox.Show($@"Error: {returnMsg}", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                    } else
+                    {
+                        MessageBox.Show($@"{sFileName} is empty.", "Upload", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    }
+
+                }
+
+            }
         }
     }
 }
