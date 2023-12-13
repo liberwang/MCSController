@@ -1,10 +1,10 @@
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.csproj.AssemblyReference.cache
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.csproj.CoreCompileInputs.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\bin\Debug\RejectDetailsLib.dll
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\bin\Debug\RejectDetailsLib.pdb
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\bin\Debug\libplctag.NativeImport.dll
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\bin\Debug\LibplctagWrapper.dll
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\bin\Debug\libplctag.NativeImport.xml
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.csproj.CoreCompileInputs.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.csproj.CopyComplete
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.dll
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsLib\obj\Debug\RejectDetailsLib.pdb

@@ -145,7 +145,7 @@ BEGIN
 	FROM tblFullTag ft WITH(NOLOCK)
 	JOIN tblOutput ot WITH(NOLOCK) ON ft.tagId = ot.tagId
 	WHERE RIGHT(ft.tagName,13) != '.SerialNumber'
-	AND ( @ptagName IS NULL OR tagname LIKE '%' + @ptagName +'%' )
+	AND ( @ptagName IS NULL OR ( ISNULL(tagTitle, tagName)  LIKE '%' + @ptagName +'%' ) )
 	ORDER BY ot.byOrder;
 
 	CREATE INDEX idx_tmp_title ON #tmp_title (tagName, tagTitle);
@@ -161,7 +161,7 @@ BEGIN
 
 	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
 
-	PRINT(@sqlString);
+	--PRINT(@sqlString);
 
 	EXEC (@sqlString);
 
@@ -170,7 +170,7 @@ BEGIN
 	FROM tblTagContent WITH(NOLOCK)
 	WHERE tag_add_dt BETWEEN @pstartTime AND @pendTime 
 	AND ( @pipAddress IS NULL OR controller_ip = @pipAddress ) 
-	AND ( @ptagName IS NULL OR tag_name like '%' + @ptagName +'%' )
+	--AND ( @ptagName IS NULL OR tag_name like '%' + @ptagName +'%' )
 	AND ( @ptagValue IS NULL OR tag_cont like '%' + @ptagValue + '%')
 	AND ( @pserialNumber IS NULL OR serial_number like '%' + @pserialNumber + '%' );
 

@@ -1,3 +1,11 @@
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.exe.config
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.exe
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.pdb
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsLib.dll
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\LibplctagWrapper.dll
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\libplctag.NativeImport.dll
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsLib.pdb
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\libplctag.NativeImport.xml
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.AssemblyReference.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.frmIPModify.resources
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.frmQuery.resources
@@ -9,14 +17,6 @@ C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDet
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.Properties.Resources.resources
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.GenerateResource.cache
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.CoreCompileInputs.cache
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.exe.config
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.exe
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsWin.pdb
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsLib.dll
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\LibplctagWrapper.dll
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\libplctag.NativeImport.dll
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\RejectDetailsLib.pdb
-C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\bin\Debug\libplctag.NativeImport.xml
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.csproj.CopyComplete
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.exe
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Debug\RejectDetailsWin.pdb

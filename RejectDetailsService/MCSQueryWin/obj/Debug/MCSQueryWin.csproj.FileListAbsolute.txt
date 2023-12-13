@@ -1,8 +1,3 @@
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.AssemblyReference.cache
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.frmMain.resources
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.Properties.Resources.resources
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.GenerateResource.cache
-C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.CoreCompileInputs.cache
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\MCSQueryWin.exe.config
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\MCSQueryWin.exe
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\MCSQueryWin.pdb
@@ -11,6 +6,11 @@ C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\LibplctagWrapp
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\libplctag.NativeImport.dll
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\RejectDetailsLib.pdb
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\bin\Debug\libplctag.NativeImport.xml
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.frmMain.resources
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.Properties.Resources.resources
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.GenerateResource.cache
+C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.CoreCompileInputs.cache
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.csproj.CopyComplete
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.exe
 C:\Repos\MCSController\RejectDetailsService\MCSQueryWin\obj\Debug\MCSQueryWin.pdb
