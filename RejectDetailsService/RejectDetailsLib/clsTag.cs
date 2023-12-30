@@ -1,4 +1,6 @@
 ﻿using LibplctagWrapper;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace RejectDetailsLib {
     public class clsTag {
@@ -52,7 +54,12 @@ namespace RejectDetailsLib {
                 dataType = DataType.INT;
             }
 
-            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1, 1);
+            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1);
+        }
+
+        public static Dictionary<string, string> GetTagNameTitlePair()
+        {
+            return new Database().GetTagOutputNamePair();
         }
     }
 }

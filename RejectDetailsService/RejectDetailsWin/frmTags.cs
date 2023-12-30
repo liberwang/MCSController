@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,12 @@ namespace RejectDetailsWin
     public partial class frmTags : Form
     {
         private Database db = new Database();
+
+        // for dragdrop of output 
+        private int indexOfItemUnderMouseToDrag;
+        private int indexOfItemUnderMouseToDrop;
+        private Rectangle dragBoxFromMouseDown;
+
         public frmTags()
         {
             InitializeComponent();
@@ -254,33 +261,47 @@ namespace RejectDetailsWin
 
         private void btnUp_Click(object sender, EventArgs e)
         {
-            if (lstOutput.SelectedItems.Count > 0)
+            if (lstOutput.SelectedIndices.Count > 0)
             {
-                int ind = lstOutput.SelectedIndex;
-                if (ind > 0)
-                {
-                    object obj = lstOutput.SelectedItem;
+                lstOutput.BeginUpdate();
+                List<int> listIndex = lstOutput.SelectedIndices.Cast<int>().ToList();
 
-                    lstOutput.Items.RemoveAt(ind);
-                    lstOutput.Items.Insert(ind - 1, obj);
-                    lstOutput.SelectedIndex = ind - 1;
+                if (listIndex[0] > 0)
+                {
+                    foreach (int ind in listIndex)
+                    {
+                        object obj = lstOutput.Items[ind];
+
+                        lstOutput.Items.RemoveAt(ind);
+                        lstOutput.Items.Insert(ind - 1, obj);
+                        lstOutput.SetSelected(ind - 1, true);
+                    }
                 }
+                lstOutput.EndUpdate();
             }
         }
 
         private void btnDown_Click(object sender, EventArgs e)
         {
-            if (lstOutput.SelectedItems.Count > 0)
+            if( lstOutput.SelectedIndices.Count > 0 )
             {
-                int ind = lstOutput.SelectedIndex;
-                if (ind < lstOutput.Items.Count - 1)
-                {
-                    object obj = lstOutput.SelectedItem;
+                lstOutput.BeginUpdate();
+                List<int> listIndex = lstOutput.SelectedIndices.Cast<int>().ToList();
 
-                    lstOutput.Items.RemoveAt(ind);
-                    lstOutput.Items.Insert(ind + 1, obj);
-                    lstOutput.SelectedIndex = ind + 1;
+                int lastIndex = lstOutput.Items.Count - 1;
+
+                if (listIndex[listIndex.Count - 1 ] < lastIndex)
+                {
+                    for( int i = listIndex.Count - 1; i >= 0; -- i )
+                    {
+                        int ind = listIndex[i];
+                        object obj = lstOutput.Items[ind];
+                        lstOutput.Items.RemoveAt(ind);
+                        lstOutput.Items.Insert(ind + 1, obj);
+                        lstOutput.SetSelected(ind+1, true);
+                    }
                 }
+                lstOutput.EndUpdate();
             }
         }
 
@@ -300,7 +321,7 @@ namespace RejectDetailsWin
 
                 db.SetSelectedOutput(controllerId, idList);
 
-                MessageBox.Show("Save output setting is done!", "Output Setting", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Output setting saves successfully!", "Output Setting", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -334,21 +355,23 @@ namespace RejectDetailsWin
                     List<string[]> insertList = new List<string[]>();
                     Dictionary<string, int> dicType = db.GetTagTypeDictionary();
 
-                    using (StreamReader  sr = new StreamReader(fileStream))
+                    using (StreamReader sr = new StreamReader(fileStream))
                     {
                         int lineNo = 0;
                         string line;
-                        while( (line = sr.ReadLine()) != null )
+                        while ((line = sr.ReadLine()) != null)
                         {
                             ++lineNo;
                             line = line.Trim();
 
-                            if (line.StartsWith("--"))
+
+                            // ignore comment or empty line
+                            if (line.StartsWith("--") || string.IsNullOrWhiteSpace(line))
                                 continue;
 
                             // tag name,tagType,description,read,write,title
                             string[] strField = line.Split(new char[] { ',' });
-                            if ( strField.Length != 6 )
+                            if (strField.Length != 6)
                             {
                                 MessageBox.Show($"(#{lineNo}) Field in the file is not corrent. Fields are Name (string), Type (int), Description (string), Read (int), Write (int), and Title (string).", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
@@ -359,18 +382,20 @@ namespace RejectDetailsWin
                             {
                                 MessageBox.Show($"(#{lineNo}) The name of Tag can not be empty!", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
-                            } else
+                            }
+                            else
                             {
                                 strField[0] = "'" + strField[0].Trim() + "'";
                             }
 
                             // 1: tag Type
-                            strField[1] = strField[1].Trim();   
+                            strField[1] = strField[1].Trim();
                             if (!dicType.ContainsKey(strField[1]))
                             {
                                 MessageBox.Show($"(#{lineNo}) The type of Tag is not found!", "Upload error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
-                            } else
+                            }
+                            else
                             {
                                 strField[1] = dicType[strField[1]].ToString();
                             }
@@ -382,16 +407,18 @@ namespace RejectDetailsWin
                             if (int.TryParse(strField[3].Trim(), out int iRead))
                             {
                                 strField[3] = iRead > 0 ? "1" : "0";
-                            } else
+                            }
+                            else
                             {
                                 strField[3] = "0";
                             }
 
                             // 4: write tag 
-                            if (int.TryParse(strField[4].Trim(),out int iWrite))
+                            if (int.TryParse(strField[4].Trim(), out int iWrite))
                             {
-                                strField[4] = iWrite > 0 ? "1" : "0";   
-                            } else
+                                strField[4] = iWrite > 0 ? "1" : "0";
+                            }
+                            else
                             {
                                 strField[4] = "0";
                             }
@@ -410,13 +437,15 @@ namespace RejectDetailsWin
                         {
                             MessageBox.Show($@"Upload {sFileName} is successful.", "Upload", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            this.refreshTags(); 
-                        } else
+                            this.refreshTags();
+                        }
+                        else
                         {
                             MessageBox.Show($@"Error: {returnMsg}", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
 
-                    } else
+                    }
+                    else
                     {
                         MessageBox.Show($@"{sFileName} is empty.", "Upload", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -424,6 +453,119 @@ namespace RejectDetailsWin
 
                 }
 
+            }
+        }
+
+        private void lstTags_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Get the index of the item the mouse is below.
+            indexOfItemUnderMouseToDrag = lstTags.IndexFromPoint(e.X, e.Y);
+
+            if (indexOfItemUnderMouseToDrag != ListBox.NoMatches)
+            {
+                // Remember the point where the mouse down occurred. The DragSize indicates
+                // the size that the mouse can move before a drag event should be started.
+                Size dragSize = SystemInformation.DragSize;
+
+                // Create a rectangle using the DragSize, with the mouse position being
+                // at the center of the rectangle.
+                dragBoxFromMouseDown = new Rectangle(
+                    new Point(e.X - (dragSize.Width / 2),
+                              e.Y - (dragSize.Height / 2)),
+                    dragSize);
+            }
+            else
+            {
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
+                dragBoxFromMouseDown = Rectangle.Empty;
+            }
+        }
+
+        private void lstTags_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Reset the drag rectangle when the mouse button is raised.
+            dragBoxFromMouseDown = Rectangle.Empty;
+        }
+
+        private void lstTags_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                // If the mouse moves outside the rectangle, start the drag.
+                if (dragBoxFromMouseDown != Rectangle.Empty &&
+                    !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+                    // Create custom cursors for the drag-and-drop operation.
+                    // The screenOffset is used to account for any desktop bands 
+                    // that may be at the top or left side of the screen when 
+                    // determining when to cancel the drag drop operation.
+                    //screenOffset = SystemInformation.WorkingArea.Location;
+
+                    // Proceed with the drag-and-drop, passing in the list item.
+                    DragDropEffects dropEffect = lstTags.DoDragDrop(lstTags.Items[indexOfItemUnderMouseToDrag], DragDropEffects.Move);
+
+                    // If the drag operation was a move then remove the item.
+                    if (dropEffect == DragDropEffects.Move)
+                    {
+                        lstTags.Items.RemoveAt(indexOfItemUnderMouseToDrag);
+
+                        // Selects the previous item in the list as long as the list has an item.
+                        if (indexOfItemUnderMouseToDrag > 0)
+                            lstTags.SelectedIndex = indexOfItemUnderMouseToDrag - 1;
+
+                        else if (lstTags.Items.Count > 0)
+                            // Selects the first item.
+                            lstTags.SelectedIndex = 0;
+                    }
+                }
+
+            }
+        }
+
+        private void lstTags_DoubleClick(object sender, EventArgs e)
+        {
+            if (indexOfItemUnderMouseToDrag != ListBox.NoMatches)
+            {
+                this.btnRight_Click(lstTags, null);
+            }
+        }
+
+        private void lstOutput_DragOver(object sender, DragEventArgs e)
+        {
+            // Determine whether string data exists in the drop data. If not, then
+            // the drop effect reflects that the drop cannot occur.
+            if (!e.Data.GetDataPresent(typeof(clsTag)))
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            e.Effect = DragDropEffects.Move;
+
+            // Get the index of the item the mouse is below. 
+
+            // The mouse locations are relative to the screen, so they must be 
+            // converted to client coordinates.
+            indexOfItemUnderMouseToDrop =
+                lstOutput.IndexFromPoint(lstOutput.PointToClient(new Point(e.X, e.Y)));
+        }
+
+        private void lstOutput_DragDrop(object sender, DragEventArgs e)
+        {
+            // Ensure that the list item index is contained in the data.
+            if (e.Data.GetDataPresent(typeof(clsTag)))
+            {
+                Object item = e.Data.GetData(typeof(clsTag));
+
+                // Perform drag-and-drop, depending upon the effect.
+                if (e.Effect == DragDropEffects.Move)
+                {
+                    // Insert the item.
+                    if (indexOfItemUnderMouseToDrop != ListBox.NoMatches)
+                        lstOutput.Items.Insert(indexOfItemUnderMouseToDrop, item);
+                    else
+                        lstOutput.Items.Add(item);
+                }
             }
         }
     }

@@ -177,7 +177,10 @@ namespace RejectDetailsLib
         {
             if (m_tagValueList?.Count > 0)
             {
-                //clsLog.addLog("send to database...");
+                if (SystemKeys.IN_DEBUGING)
+                {
+                    clsLog.addLog("send to database...");
+                }
                 new Database().SetContent(m_tagValueList, m_ipAddress, m_serialNumber);
             }
         }

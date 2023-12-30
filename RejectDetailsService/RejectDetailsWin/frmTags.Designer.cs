@@ -134,7 +134,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2.Controls.Add(this.dgvIPAddress, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 6);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
@@ -247,7 +247,7 @@ namespace RejectDetailsWin {
             this.tabPageTags.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.tabPageTags.Name = "tabPageTags";
             this.tabPageTags.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.tabPageTags.Size = new System.Drawing.Size(1794, 1059);
+            this.tabPageTags.Size = new System.Drawing.Size(1794, 1058);
             this.tabPageTags.TabIndex = 1;
             this.tabPageTags.Text = "Tags";
             this.tabPageTags.UseVisualStyleBackColor = true;
@@ -260,12 +260,12 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 6);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1786, 1047);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1786, 1046);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // dgvTags
@@ -297,7 +297,7 @@ namespace RejectDetailsWin {
             this.dgvTags.Name = "dgvTags";
             this.dgvTags.RowHeadersWidth = 25;
             this.dgvTags.RowTemplate.Height = 24;
-            this.dgvTags.Size = new System.Drawing.Size(1778, 935);
+            this.dgvTags.Size = new System.Drawing.Size(1778, 934);
             this.dgvTags.TabIndex = 2;
             this.dgvTags.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTags_CellClick);
             // 
@@ -446,7 +446,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel10, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -491,11 +491,11 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel10.Controls.Add(this.btnAddTag, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnImport, 2, 0);
             this.tableLayoutPanel10.Location = new System.Drawing.Point(993, 4);
-            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanel10.Size = new System.Drawing.Size(781, 84);
             this.tableLayoutPanel10.TabIndex = 4;
             // 
@@ -503,7 +503,7 @@ namespace RejectDetailsWin {
             // 
             this.btnCleanUp.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnCleanUp.Location = new System.Drawing.Point(310, 12);
-            this.btnCleanUp.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCleanUp.Margin = new System.Windows.Forms.Padding(4);
             this.btnCleanUp.Name = "btnCleanUp";
             this.btnCleanUp.Size = new System.Drawing.Size(200, 60);
             this.btnCleanUp.TabIndex = 5;
@@ -527,7 +527,7 @@ namespace RejectDetailsWin {
             // 
             this.btnImport.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnImport.Location = new System.Drawing.Point(577, 12);
-            this.btnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnImport.Margin = new System.Windows.Forms.Padding(4);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(200, 60);
             this.btnImport.TabIndex = 6;
@@ -539,7 +539,7 @@ namespace RejectDetailsWin {
             // 
             this.tabPageOutput.Controls.Add(this.tableLayoutPanel8);
             this.tabPageOutput.Location = new System.Drawing.Point(8, 39);
-            this.tabPageOutput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageOutput.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageOutput.Name = "tabPageOutput";
             this.tabPageOutput.Size = new System.Drawing.Size(1794, 1058);
             this.tabPageOutput.TabIndex = 2;
@@ -554,7 +554,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
@@ -576,7 +576,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel7, 3, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(4, 104);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -592,7 +592,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel6.Controls.Add(this.btnLeft, 0, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(746, 4);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 4;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -610,7 +610,7 @@ namespace RejectDetailsWin {
             this.btnRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRight.Location = new System.Drawing.Point(10, 330);
-            this.btnRight.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.btnRight.Margin = new System.Windows.Forms.Padding(10);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(172, 80);
             this.btnRight.TabIndex = 0;
@@ -624,7 +624,7 @@ namespace RejectDetailsWin {
             this.btnLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLeft.Location = new System.Drawing.Point(10, 430);
-            this.btnLeft.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.btnLeft.Margin = new System.Windows.Forms.Padding(10);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(172, 80);
             this.btnLeft.TabIndex = 1;
@@ -634,6 +634,7 @@ namespace RejectDetailsWin {
             // 
             // lstTags
             // 
+            this.lstTags.AllowDrop = true;
             this.lstTags.DisplayMember = "TagName";
             this.lstTags.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstTags.FormattingEnabled = true;
@@ -645,12 +646,16 @@ namespace RejectDetailsWin {
             this.lstTags.Size = new System.Drawing.Size(682, 788);
             this.lstTags.TabIndex = 1;
             this.lstTags.ValueMember = "TagId";
+            this.lstTags.DoubleClick += new System.EventHandler(this.lstTags_DoubleClick);
+            this.lstTags.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstTags_MouseDown);
+            this.lstTags.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lstTags_MouseMove);
+            this.lstTags.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lstTags_MouseUp);
             // 
             // btnSaveOutput
             // 
             this.btnSaveOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveOutput.Location = new System.Drawing.Point(1500, 886);
-            this.btnSaveOutput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveOutput.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveOutput.Name = "btnSaveOutput";
             this.btnSaveOutput.Size = new System.Drawing.Size(180, 60);
             this.btnSaveOutput.TabIndex = 2;
@@ -660,6 +665,7 @@ namespace RejectDetailsWin {
             // 
             // lstOutput
             // 
+            this.lstOutput.AllowDrop = true;
             this.lstOutput.DisplayMember = "TagName";
             this.lstOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstOutput.FormattingEnabled = true;
@@ -671,6 +677,8 @@ namespace RejectDetailsWin {
             this.lstOutput.Size = new System.Drawing.Size(682, 788);
             this.lstOutput.TabIndex = 3;
             this.lstOutput.ValueMember = "TagName";
+            this.lstOutput.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstOutput_DragDrop);
+            this.lstOutput.DragOver += new System.Windows.Forms.DragEventHandler(this.lstOutput_DragOver);
             // 
             // tableLayoutPanel7
             // 
@@ -694,7 +702,7 @@ namespace RejectDetailsWin {
             this.btnUp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnUp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUp.Location = new System.Drawing.Point(4, 4);
-            this.btnUp.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnUp.Margin = new System.Windows.Forms.Padding(4);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(86, 73);
             this.btnUp.TabIndex = 0;
@@ -707,7 +715,7 @@ namespace RejectDetailsWin {
             this.btnDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDown.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDown.Location = new System.Drawing.Point(4, 85);
-            this.btnDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDown.Margin = new System.Windows.Forms.Padding(4);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(86, 73);
             this.btnDown.TabIndex = 1;
@@ -724,7 +732,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel9.Controls.Add(this.cboOutputIP, 1, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -749,7 +757,7 @@ namespace RejectDetailsWin {
             this.cboOutputIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboOutputIP.FormattingEnabled = true;
             this.cboOutputIP.Location = new System.Drawing.Point(324, 29);
-            this.cboOutputIP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboOutputIP.Margin = new System.Windows.Forms.Padding(4);
             this.cboOutputIP.Name = "cboOutputIP";
             this.cboOutputIP.Size = new System.Drawing.Size(344, 33);
             this.cboOutputIP.TabIndex = 1;
@@ -776,7 +784,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel1.Controls.Add(this.tabControl, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));

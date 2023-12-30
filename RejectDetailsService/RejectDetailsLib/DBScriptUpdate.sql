@@ -188,7 +188,8 @@ BEGIN
 
 	DECLARE cursor_content CURSOR FOR 
 	SELECT tag_cont, controller_ip, tag_name, serial_number
-	FROM #tmp_content;
+	FROM #tmp_content
+	ORDER BY tag_add_dt;
 
 	OPEN cursor_content
 	FETCH NEXT FROM cursor_content INTO @tag_cont, @controller_ip, @tag_name, @serial_number

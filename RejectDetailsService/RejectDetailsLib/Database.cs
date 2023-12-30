@@ -248,6 +248,57 @@ AND controllerId = {ControllerID}
             return listTags;
         }
 
+        public List<string> GetFirstLevelGroup(int ControllerID)
+        {
+            List<string> listGroup = new List<string>();
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = 
+$@"SELECT DISTINCT LEFT( tagName, IIF(position > 0, position -1, LEN( tagName)) ) AS StationName
+FROM tblFullTag ft WITH(NOLOCK)
+JOIN (SELECT tagId, CHARINDEX( '.', tagName) AS position FROM tblFullTag WITH(NOLOCK)) tmp ON ft.tagid = tmp.tagId 
+WHERE controllerId = {ControllerID}
+ORDER BY 1 ";
+
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        listGroup.Add(dr.GetString(0));
+                    }
+
+                    dr.Close();
+                }
+            }
+            return listGroup;
+        }
+
+        public Dictionary<string, string> GetTagOutputNamePair()
+        {
+            Dictionary<string, string> dicTagOutputPair = new Dictionary<string, string>();
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = "SELECT tagName, ISNULL(tagTitle, tagName) AS tagTitle FROM tblFullTag WITH(NOLOCK)";
+
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        dicTagOutputPair.Add( dr.GetString(1), dr.GetString(0));
+                    }
+
+                    dr.Close();
+                }
+            }
+            return dicTagOutputPair;
+        }
+
         public List<clsTag> GetReadTags(int ControllerID)
         {
             List<clsTag> listTags = new List<clsTag>();

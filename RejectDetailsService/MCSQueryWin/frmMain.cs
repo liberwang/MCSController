@@ -5,17 +5,105 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+//using static System.Net.WebRequestMethods;
 
 namespace MCSQueryWin
 {
     public partial class frmMain : Form
     {
         private DataTable m_dtSource = null;
+        private HashSet<string> fixedColumns = new HashSet<string>(new string[] { "SerialNumber", "startTime", "endTime" });
+        private Dictionary<string, string> tagTitleNameDict;
 
         public frmMain()
         {
             InitializeComponent();
         }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            LoadDatabase();
+
+            this.dataGridView.AutoGenerateColumns = true;
+
+            // Double buffering can make DGV slow in remote desktop
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dataGridView.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dataGridView, true, null);
+            }
+
+            this.treeViewStation.ExpandAll();
+
+            this.dtpStart.Value = DateTime.Now.AddHours(-12);
+        }
+
+        private void LoadStationToTreeView()
+        {
+            int controllerId = ((clsController)this.cboIPAddress.SelectedItem).Id;
+
+            this.treeViewStation.BeginUpdate();
+            bool bChecked = this.treeViewStation.Nodes[0].Checked;
+
+            this.treeViewStation.Nodes[0].Nodes.Clear();
+            List<string> listFirstLevel = clsStation.GetStationList(controllerId);
+            foreach (string level in listFirstLevel)
+            {
+                TreeNode tn = new TreeNode(level);
+                tn.Checked = bChecked;
+                this.treeViewStation.Nodes[0].Nodes.Add(tn);
+            }
+            this.treeViewStation.EndUpdate();
+        }
+
+        private void LoadDatabase()
+        {
+            if (clsKeys.DB_LIST != null && clsKeys.DB_LIST.Length > 0)
+                this.cboDatabase.Items.AddRange(clsKeys.DB_LIST);
+
+            if (this.cboDatabase.Items.Count > 0)
+                this.cboDatabase.SelectedIndex = 0;
+            else
+            {
+                this.EnabledFunctions();
+            }
+
+            this.tagTitleNameDict = clsTag.GetTagNameTitlePair();
+        }
+
+        private void EnabledFunctions(bool bEnabled = false)
+        {
+            this.btnExport.Enabled = bEnabled;
+            this.btnQuery.Enabled = bEnabled;
+        }
+
+        private void LoadIpAddress()
+        {
+            this.cboIPAddress.DisplayMember = "Description";
+            this.cboIPAddress.ValueMember = "IpAddress";
+
+            this.cboIPAddress.DataSource = clsController.GetControllerItemDataSource(withAllOption: false, bRefresh: true);
+            this.cboIPAddress.SelectedIndex = 0;
+        }
+
+        private void cboDatabase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string dbName = this.cboDatabase.SelectedItem.ToString();
+
+            try
+            {
+                SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
+                EnabledFunctions(true);
+                LoadIpAddress();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($@"Cannot connect to database '{dbName}'. Please double check if this database is running!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EnabledFunctions(false);
+            }
+        }
+
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
@@ -41,68 +129,7 @@ namespace MCSQueryWin
 
             this.bindingSource.DataSource = this.m_dtSource;
 
-             this.lblTotal.Text = $@"Total: {ds.Tables[0].Rows.Count} records.";
-        }
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-            LoadDatabase();
-
-            this.dataGridView.AutoGenerateColumns = true;
-
-            // Double buffering can make DGV slow in remote desktop
-            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
-            {
-                Type dgvType = dataGridView.GetType();
-                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
-                  BindingFlags.Instance | BindingFlags.NonPublic);
-                pi.SetValue(dataGridView, true, null);
-            }
-        }
-
-        private void LoadDatabase()
-        {
-            if (clsKeys.DB_LIST != null && clsKeys.DB_LIST.Length > 0)
-                this.cboDatabase.Items.AddRange(clsKeys.DB_LIST);
-
-            if (this.cboDatabase.Items.Count > 0)
-                this.cboDatabase.SelectedIndex = 0;
-            else
-            {
-                this.EnabledFunctions();
-            }
-        }
-
-        private void EnabledFunctions(bool bEnabled = false)
-        {
-            this.btnExport.Enabled = bEnabled;
-            this.btnQuery.Enabled = bEnabled;
-        }
-
-        private void LoadIpAddress()
-        {
-            this.cboIPAddress.DisplayMember = "Description";
-            this.cboIPAddress.ValueMember = "IpAddress";
-
-            this.cboIPAddress.DataSource = clsController.GetControllerItemDataSource(bRefresh: true);
-            this.cboIPAddress.SelectedIndex = 0;
-        }
-
-        private void cboDatabase_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string dbName = this.cboDatabase.SelectedItem.ToString();
-
-            try
-            {
-                SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
-                EnabledFunctions(true);
-                LoadIpAddress();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($@"Cannot connect to database '{dbName}'. Please double check if this database is running!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                EnabledFunctions(false);
-            }
+            this.lblTotal.Text = $@"Total: {ds.Tables[0].Rows.Count} records.";
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -142,6 +169,62 @@ namespace MCSQueryWin
                     }
                 }
             }
+        }
+
+        private void cboIPAddress_TextChanged(object sender, EventArgs e)
+        {
+            LoadStationToTreeView();
+        }
+
+        private void treeViewStation_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (e.Action != TreeViewAction.Unknown)
+            {
+                if (e.Node.Nodes.Count > 0)
+                {
+                    foreach (TreeNode tn in e.Node.Nodes)
+                    {
+                        tn.Checked = e.Node.Checked;
+                    }
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            HashSet<string> stationHs = new HashSet<string>();
+            foreach (TreeNode tn in this.treeViewStation.Nodes[0].Nodes)
+            {
+                if (tn.Checked)
+                {
+                    stationHs.Add(tn.Text);
+                }
+            }
+
+            foreach (DataGridViewColumn col in this.dataGridView.Columns)
+            {
+                string columnName = col.HeaderText;
+                if (fixedColumns.Contains(columnName))
+                    continue;
+
+                bool bfound = false;
+
+                if (this.tagTitleNameDict.TryGetValue(columnName, out string val))
+                {
+                    columnName = val;
+                }
+
+                foreach (string filter in stationHs)
+                {
+                    if (columnName.StartsWith(filter))
+                    {
+                        bfound = true;
+                        break;
+                    }
+                }
+                col.Visible = bfound;
+            }
+
         }
     }
 }
