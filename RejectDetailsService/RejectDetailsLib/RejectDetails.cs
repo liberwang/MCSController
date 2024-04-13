@@ -423,15 +423,30 @@ namespace RejectDetailsLib
 
                                     if (isOK)
                                     {
+                                        if (SystemKeys.IN_DEBUGING)
+                                        {
+                                            clsLog.addLog($@"{tagGroup.tagRead.TagName} group is OK.");
+                                        }
+
                                         // set read flag back first;
                                         if (tagGroup.tagRead.Write == 1)
                                         {
+                                            if (SystemKeys.IN_DEBUGING)
+                                            {
+                                                clsLog.addLog($@"{tagGroup.tagRead.TagName} is writing back.");
+                                            }
+
                                             client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
                                         }
 
                                         // set back to write tags. 
                                         foreach (clsTag tagWrite in tagGroup.tagWrite)
                                         {
+                                            if (SystemKeys.IN_DEBUGING)
+                                            {
+                                                clsLog.addLog($@"{tagWrite.plcTag.Name} is writing back.");
+                                            }
+
                                             client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
                                         }
 
