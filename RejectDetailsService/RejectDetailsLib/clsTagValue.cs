@@ -30,6 +30,10 @@ namespace RejectDetailsLib
             return TagValue.ToString();
         }
 
+        public string GetTagName()
+        {
+            return TagObject.TagName;
+        }
         public string GetOutputTitle()
         {
             return String.IsNullOrWhiteSpace(TagObject.TagTitle) ? TagObject.TagName : TagObject.TagTitle;    

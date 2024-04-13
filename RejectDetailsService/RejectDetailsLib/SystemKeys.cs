@@ -8,7 +8,6 @@ namespace RejectDetailsLib {
     public class SystemKeys {
         public static string DB_CONNECT = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
         public static readonly string DB_REMOTE = @"Server={0},1433\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
-        //public static readonly string DB_LOCAL = @"Server=.\SQLExpress;Database=MCS;User Id=mcs;Password=mcs";
 
         public const string PRODUCE_NAME_HONDA_BULKHEAD = "HONDA-BULKHEAD";
 
@@ -23,7 +22,7 @@ namespace RejectDetailsLib {
         public static string REJECT_FILE_PREFIX;
         public static int VISIT_INTERVAL;
         public static int COPY_INTERVAL;
-        public static string LOG_FILE;
+        public static string LOG_FILE = @"c:\temp\MCSLog";
         public static string IP_ADDRESS_THIS;
         public static bool SAVE_TO_FILE;
         public static bool SAVE_TO_DB;
@@ -31,6 +30,8 @@ namespace RejectDetailsLib {
         public static bool GET_DATA_FROM_XML;
         public static bool USE_MULTITHREADING_SERVICE;
         public static bool IN_DEBUGING;
+        public static int HEARTBEAT_INTERVAL;
+        public static string HEARTBEAT_TAG_NAME;
 
         public const string PRODUCT_NAME_KEY = "ProductName";
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
@@ -52,8 +53,8 @@ namespace RejectDetailsLib {
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
         public const string USE_MULTITHREADING_SERVICE_KEY = "UseMultiTreading";
         public const string IN_DEBUGING_KEY = "InDebuging";
-
-
+        public const string HEARTBEAT_INTERVAL_KEY = "HeartBeatInterval";
+        public const string HEARTBEAT_TAG_NAME_KEY = "HeartBeatTagName";
         //static SystemKeys() {
         //    initializeKey();
         //}
@@ -80,6 +81,8 @@ namespace RejectDetailsLib {
             VISIT_INTERVAL = keys.ContainsKey(VISIT_INTERVAL_KEY) ? int.Parse(keys[VISIT_INTERVAL_KEY]) : 500;
             COPY_INTERVAL = keys.ContainsKey(COPY_INTERVAL_KEY) ? int.Parse(keys[COPY_INTERVAL_KEY]) : 31000;
             LOG_FILE = keys.ContainsKey(LOG_FILE_KEY) ? keys[LOG_FILE_KEY] : @"c:\temp\MCSLog";
+            HEARTBEAT_INTERVAL = keys.ContainsKey(HEARTBEAT_INTERVAL_KEY) ? int.Parse(keys[HEARTBEAT_INTERVAL_KEY]) : 500;
+            HEARTBEAT_TAG_NAME = keys.ContainsKey(HEARTBEAT_TAG_NAME_KEY) ? keys[HEARTBEAT_TAG_NAME_KEY] : "dbconnection";
 
             if (keys.ContainsKey(SAVE_TO_FILE_KEY) && bool.TryParse(keys[SAVE_TO_FILE_KEY], out bool result1))
             {

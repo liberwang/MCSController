@@ -75,13 +75,14 @@ namespace RejectDetailsWin
         private void cboDB_SelectedIndexChanged(object sender, EventArgs e)
         {
             string dbName = this.cboDB.SelectedItem.ToString();
-
+            string dbConnectStr = string.Format(SystemKeys.DB_REMOTE, dbName);
             try
             {
-                SystemKeys.SetDBConnect(string.Format(SystemKeys.DB_REMOTE, dbName));
+                SystemKeys.SetDBConnect(dbConnectStr);
                 EnabledFunctions(true);
             } catch (Exception ex )
             {
+                clsLog.addLog(dbConnectStr + ":" + ex.Message);
                 MessageBox.Show( $@"Cannot connect to database '{dbName}'. Please double check if this database is running!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 EnabledFunctions(false);
             }

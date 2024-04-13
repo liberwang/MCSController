@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 
@@ -59,8 +60,9 @@ namespace RejectDetailsLib
             m_serialNumberId = serialNumberId;
             m_ipAddress = ipAddress;
             m_controllerId = controllerId;
-                      
-            // TODO
+            if (tagValue.ContainsKey(serialNumberId))    
+                m_serialNumber = tagValue[serialNumberId].ToString();
+
             this.SaveToFileAndDatabase();
         }
 
@@ -97,34 +99,6 @@ namespace RejectDetailsLib
 
                 SaveToFile(fileName, m_tagValueList, true);
             }
-            //if (!File.Exists(fileName))
-            //{
-            //    // if csv file is not in the path, create a header to it first.
-            //    StringBuilder sbField = new StringBuilder();
-
-            //    foreach ((string, string) tv in m_tagValueList)
-            //    {
-            //        sbField.Append(tv.Item2).Append(",");
-            //    }
-            //    sbField.Append("TimeStamp");
-
-            //    using (StreamWriter sw = File.AppendText(fileName))
-            //    {
-            //        sw.WriteLine(sbField.ToString());
-            //    }
-            //}
-
-            //StringBuilder sb = new StringBuilder();
-            //foreach ((string, string) tv in m_tagValueList)
-            //{
-            //    sb.Append(tv.Item1).Append(",");
-            //}
-            //sb.Append(SystemKeys.getCurrentDateTime());
-
-            //using (StreamWriter sw = File.AppendText(fileName))
-            //{
-            //    sw.WriteLine(sb.ToString());
-            //}
         }
 
         public void SaveToFile(string fileName, List<(string, string)> tagValueList, bool bAppendTimeStamp )
@@ -182,6 +156,15 @@ namespace RejectDetailsLib
                     clsLog.addLog("send to database...");
                 }
                 new Database().SetContent(m_tagValueList, m_ipAddress, m_serialNumber);
+            } else if ( m_tagValueDictionary != null && m_tagValueDictionary.Any() )
+            {
+                List<(string, string)> list = new List<(string, string)>();
+                foreach( int key in m_tagValueDictionary.Keys)
+                {
+                    clsTagValue tv = m_tagValueDictionary[key];
+                    list.Add((tv.ToString(), tv.GetTagName()));
+                }
+                new Database().SetContent(list, m_ipAddress, m_serialNumber);
             }
         }
 

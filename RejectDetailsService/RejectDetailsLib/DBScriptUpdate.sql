@@ -242,3 +242,19 @@ GO
 IF NOT EXISTS( SELECT 1 FROM sys.objects where name = 'DF__tblFullTag_tagOutput' )
 	ALTER TABLE [dbo].[tblFullTag] ADD CONSTRAINT [DF__tblFullTag_tagOutput] DEFAULT ((0)) FOR [tagOutput]
 GO
+
+IF NOT EXISTS( SELECT 1 FROM dbo.tblTagType WHERE typeName = 'DINT' ) 
+	INSERT INTO dbo.tblTagType (typeName) VALUES ('DINT' );
+GO 
+
+IF NOT EXISTS( SELECT 1 FROM dbo.tblTagType WHERE typeName = 'SINT' ) 
+	INSERT INTO dbo.tblTagType (typeName) VALUES ('SINT' );
+GO 
+
+IF NOT EXISTS( SELECT 1 FROM dbo.tblTagType WHERE typeName = 'LINT' ) 
+	INSERT INTO dbo.tblTagType (typeName) VALUES ('LINT' );
+GO 
+
+IF NOT EXISTS( SELECT 1 FROM dbo.tblTagType WHERE typeName = 'FLOAT64' ) 
+	INSERT INTO dbo.tblTagType (typeName) VALUES ('FLOAT64' );
+GO 

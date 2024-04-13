@@ -1,18 +1,24 @@
 ﻿using LibplctagWrapper;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Net.Http.Headers;
 
-namespace RejectDetailsLib {
-    public class clsTag {
-        public const string BOOL_TYPE_STR = "Bool";
-        public const string REAL_TYPE_STR = "Real";
-        public const string STRING_TYPE_STR = "String";
-        public const string INT_TYPE_STR = "Int";
+namespace RejectDetailsLib
+{
+    public class clsTag
+    {
+        public const string BOOL_TYPE_STR = "Bool";         // 1 byte
+        public const string REAL_TYPE_STR = "Real";         // 4 byte
+        public const string STRING_TYPE_STR = "String";     // 88
+        public const string INT_TYPE_STR = "Int";           // 2 byte, int16
+        public const string DINT_TYPE_STR = "DINT";         // 4 byte, int32
+        public const string SINT_TYPE_STR = "SINT";         // 1 byte
+        public const string LINT_TYPE_STR = "LINT";        // 8 byte, long
+        public const string FLOAT_TYPE_STR = "FLOAT64";      // 8 byte, float 
 
         public const string SERIAL_NUMBER_STR = "SerialNumber";
         public clsTag()
         {
-
         }
 
         public clsTag(int id, string name) : this()
@@ -21,8 +27,10 @@ namespace RejectDetailsLib {
             TagName = name;
         }
 
+        public string IPAddress { get; set; }
+
         public int TagId { get; set; }
-        
+
         public string TagName { get; set; }
 
         public string TagType { get; set; }
@@ -37,22 +45,55 @@ namespace RejectDetailsLib {
 
         public int RejectType { get; set; }
 
-        public string TagTitle { get; set; }    
+        public string TagTitle { get; set; }
 
         public Tag plcTag { get; set; }
 
-        public void GenerateTag(string IpAddress) {
-
+        public void GenerateTag(string IpAddress)
+        {
             int dataType = DataType.INT;
-            if(TagType == BOOL_TYPE_STR) {
-                dataType = DataType.SINT;
-            } else if(TagType == REAL_TYPE_STR) {
-                dataType = DataType.REAL;
-            } else if(TagType == STRING_TYPE_STR) {
-                dataType = DataType.String;
-            } else if(TagType == INT_TYPE_STR) {
-                dataType = DataType.INT;
+            switch (TagType)
+            {
+                case BOOL_TYPE_STR:
+                    dataType = DataType.SINT;
+                    break;
+                case REAL_TYPE_STR:
+                    dataType = DataType.REAL;
+                    break;
+                case STRING_TYPE_STR:
+                    dataType = DataType.String;
+                    break;
+                case INT_TYPE_STR:
+                    dataType = DataType.INT;
+                    break;
+                case DINT_TYPE_STR:
+                    dataType = DataType.DINT;
+                    break;
+                case SINT_TYPE_STR:
+                    dataType = DataType.SINT;
+                    break;
+                case LINT_TYPE_STR:
+                    dataType = DataType.LINT;
+                    break;
+                case FLOAT_TYPE_STR:
+                    dataType = DataType.Float64;
+                    break;
+                default:
+                    dataType = DataType.INT;
+                    break;
             }
+
+            //if(TagType == BOOL_TYPE_STR) {
+            //    dataType = DataType.SINT;
+            //} else if(TagType == REAL_TYPE_STR) {
+            //    dataType = DataType.REAL;
+            //} else if(TagType == STRING_TYPE_STR) {
+            //    dataType = DataType.String;
+            //} else if(TagType == INT_TYPE_STR) {
+            //    dataType = DataType.INT;
+            //}
+
+            this.IPAddress = IpAddress;
 
             this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1);
         }

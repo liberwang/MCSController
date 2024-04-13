@@ -20,11 +20,23 @@ namespace RejectDetailsWin {
         }
 
         private void btnStart_Click(object sender, EventArgs e) {
-            try {
-                timer.Interval = 500;
-                timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
+            //try {
+            //    timer.Interval = 500;
+            //    timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
+            //    timer.Start();
+            //} catch(Exception ex) {
+            //    clsLog.addLog(ex.ToString());
+            //    MessageBox.Show(ex.ToString(), "MCS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+
+            try
+            {
+                //Timer timer = new Timer();
+                timer.Interval = SystemKeys.HEARTBEAT_INTERVAL; //  31000; // 60 seconds
+                timer.Elapsed += new ElapsedEventHandler(this.OnTimerHeartBeat);
                 timer.Start();
-            } catch(Exception ex) {
+            } catch (Exception ex)
+            {
                 clsLog.addLog(ex.ToString());
                 MessageBox.Show(ex.ToString(), "MCS", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -40,6 +52,18 @@ namespace RejectDetailsWin {
 
         private void btnSingle_Click(object sender, EventArgs e) {
             RejectDetails.Instance.Start();
+        }
+
+        public void OnTimerHeartBeat(object sender, ElapsedEventArgs args)
+        {
+            try
+            {
+                HeartBeat.Instance.Start();
+            }
+            catch (Exception e)
+            {
+                clsLog.addLog(e.Message);
+            }
         }
     }
 }

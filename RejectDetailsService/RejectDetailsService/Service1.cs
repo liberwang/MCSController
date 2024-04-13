@@ -7,9 +7,14 @@ using RejectDetailsLib;
 namespace RejectDetailsService {
     public partial class Service1 : ServiceBase {
         public Service1() {
-            InitializeComponent();
-            //SystemKeys.DB_CONNECT = SystemKeys.DB_LOCAL;
-            SystemKeys.initializeKey();
+            try
+            {
+                InitializeComponent();
+                SystemKeys.initializeKey();
+            } catch (Exception ex)
+            {
+                clsLog.addLog( ex.Message );
+            }
         }
 
         protected override void OnStart(string[] args) {
@@ -22,12 +27,29 @@ namespace RejectDetailsService {
             } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
-            try {
+            if (SystemKeys.SAVE_TO_FILE)
+            {
+                try
+                {
+                    Timer timer = new Timer();
+                    timer.Interval = SystemKeys.COPY_INTERVAL; //  31000; // 60 seconds
+                    timer.Elapsed += new ElapsedEventHandler(this.OnTimerCopy);
+                    timer.Start();
+                }
+                catch (Exception e)
+                {
+                    clsLog.addLog(e.Message);
+                }
+            }
+            try
+            {
                 Timer timer = new Timer();
-                timer.Interval = SystemKeys.COPY_INTERVAL; //  31000; // 60 seconds
-                timer.Elapsed += new ElapsedEventHandler(this.OnTimerCopy);
+                timer.Interval = SystemKeys.HEARTBEAT_INTERVAL; //  31000; // 60 seconds
+                timer.Elapsed += new ElapsedEventHandler(this.OnTimerHeartBeat);
                 timer.Start();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 clsLog.addLog(e.Message);
             }
         }
@@ -46,12 +68,6 @@ namespace RejectDetailsService {
 
         public void OnTimerCopy(object sender, ElapsedEventArgs args) {
             try {
-                //if(SystemKeys.SAVE_TO_FILE) {
-                //    string lsSource = SystemKeys.getFullFileName();
-                //    if(File.Exists(lsSource)) {
-                //        File.Copy(lsSource, SystemKeys.getCopyFileName(), true);
-                //    }
-                //}
                 clsOutput op = clsOutput.GetOutputByProduceName();
                 if (op != null)
                 {
@@ -66,6 +82,17 @@ namespace RejectDetailsService {
             }
         }
 
+        public void OnTimerHeartBeat(object sender, ElapsedEventArgs args )
+        {
+            try
+            {
+                HeartBeat.Instance.Start();
+            }
+            catch (Exception e)
+            {
+                clsLog.addLog(e.Message);
+            }
+        }
     }
 }
 

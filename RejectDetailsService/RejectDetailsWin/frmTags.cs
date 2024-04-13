@@ -366,14 +366,14 @@ namespace RejectDetailsWin
 
 
                             // ignore comment or empty line
-                            if (line.StartsWith("--") || string.IsNullOrWhiteSpace(line))
+                            if (line.StartsWith("--") || string.IsNullOrWhiteSpace(line) || line.StartsWith(",,,,,"))
                                 continue;
 
                             // tag name,tagType,description,read,write,title
                             string[] strField = line.Split(new char[] { ',' });
-                            if (strField.Length != 6)
+                            if (strField.Length < 6)
                             {
-                                MessageBox.Show($"(#{lineNo}) Field in the file is not corrent. Fields are Name (string), Type (int), Description (string), Read (int), Write (int), and Title (string).", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show($"(#{lineNo}) Field in the file is not correct. Fields are Name (string), Type (int), Description (string), Read (int), Write (int), and Title (string).", "Upload Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
 
