@@ -42,10 +42,11 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT ISNULL(serial_number, '') AS serial_number 
+	SELECT ISNULL(serial_number, '') AS serial_number, tag_cont 
 	INTO #tag_temp 
 	FROM dbo.tblTagContent WITH(NOLOCK)
-	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd;
+	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd
+	AND ( @prodName != 'BOXSTEP' OR tag_name LIKE 'Station60_Data.Header.State.OK') ;
 
 	DECLARE @tag_pass INT;
 	DECLARE	@tag_reject INT;
@@ -53,7 +54,9 @@ BEGIN
 	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != '' AND LEFT(serial_number,7) != 'Reject:' );
 	IF @prodName = 'Honda-BulkHead' 
 		SET @tag_reject = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number = '' OR LEFT(serial_number, 7) = 'Reject:' );
-	ELSE 
+	ELSE IF @prodName = 'BOXSTEP'
+		SET @tag_reject = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE tag_cont = 'False'  );
+	ELSE
 		SET @tag_reject = (SELECT COUNT(*) FROM #tag_temp WHERE serial_number = '' );
 
 	SELECT @prodName AS prod_name,  
@@ -161,8 +164,6 @@ BEGIN
 
 	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
 
-	--PRINT(@sqlString);
-
 	EXEC (@sqlString);
 
 	SELECT tag_cont, controller_ip, tag_name, serial_number, tag_add_dt
@@ -177,39 +178,36 @@ BEGIN
 	INSERT INTO ##tmp_result ([SerialNumber], [startTime], [endTime]) 
 	SELECT serial_number, MIN(tag_add_dt), MAX(tag_add_dt)
 	FROM #tmp_content
+	WHERE serial_number != ''
 	GROUP BY serial_number
 	ORDER BY serial_number;
 
-	DECLARE @tag_Cont VARCHAR(MAX);
-	DECLARE @controller_Ip VARCHAR(15);
 	DECLARE @tag_Name VARCHAR(512);
-	DECLARE @serial_number VARCHAR(256);
 	DECLARE @tag_title VARCHAR(512);
 
-	DECLARE cursor_content CURSOR FOR 
-	SELECT tag_cont, controller_ip, tag_name, serial_number
-	FROM #tmp_content
-	ORDER BY tag_add_dt;
+	DECLARE cursor_content CURSOR FOR
+	SELECT tagName, tagTitle 
+	FROM #tmp_title
 
-	OPEN cursor_content
-	FETCH NEXT FROM cursor_content INTO @tag_cont, @controller_ip, @tag_name, @serial_number
-
+	OPEN cursor_content 
+	FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
 	WHILE @@FETCH_STATUS = 0 
 	BEGIN
-		IF EXISTS( SELECT 1 FROM #tmp_title WHERE tagName = @tag_name ) 
-		BEGIN 
-			SELECT @tag_title = tagTitle FROM #tmp_title WHERE tagName = @tag_name;
-			SET @sqlString = 'update ##tmp_result set [' + @tag_title + '] = ''' + @tag_cont + ''' where serialNumber = ''' + @serial_number + ''''; 
-			EXEC (@sqlString);
-		END 
+		SET @sqlString = 'update tr set [' + @tag_title + '] = tc.tag_cont 
+			from ##tmp_result tr 
+			join #tmp_content tc on tr.SerialNumber = tc.serial_number 
+			where tc.tag_name = ''' + @tag_Name + ''';'; 
 
-		FETCH NEXT FROM cursor_content INTO @tag_cont, @controller_ip, @tag_name, @serial_number
+		EXEC (@sqlString);
+
+		FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
 	END 
 	CLOSE cursor_content;
 	DEALLOCATE cursor_content;
-
+	
 	SELECT * FROM ##tmp_result ORDER BY [SerialNumber];
 
+	DROP TABLE #tmp_title;
 	DROP TABLE ##tmp_result;
 	DROP TABLE #tmp_content;
 END
@@ -258,3 +256,67 @@ GO
 IF NOT EXISTS( SELECT 1 FROM dbo.tblTagType WHERE typeName = 'FLOAT64' ) 
 	INSERT INTO dbo.tblTagType (typeName) VALUES ('FLOAT64' );
 GO 
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetSumFaultTimeByStations'))
+	DROP PROCEDURE [dbo].[spGetSumFaultTimeByStations]
+GO
+
+CREATE PROCEDURE [dbo].[spGetSumFaultTimeByStations]
+@dtStart DATETIME,
+@dtEnd DATETIME 
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT tag_name, SUM( TRY_CAST(tag_cont AS INT) ) AS SumFaultTime 
+	INTO #tmpFault
+	FROM tblTagContent WITH(NOLOCK) 
+	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd
+	AND RIGHT( tag_name, 10 ) = '.FaultTime'
+	GROUP BY tag_name
+	
+	SELECT tag_name, SUM (SumFaultTime) AS SumFaultTime
+	FROM ( 
+		SELECT CASE RIGHT(LEFT(tag_name, 10 ), 1) 
+			WHEN 'L' THEN LEFT(tag_name, 10)
+			WHEN 'R' THEN LEFT(tag_name, 10)
+			ELSE LEFT( tag_name, 9 ) END AS tag_name, SumFaultTime
+		FROM #tmpFault ) A 
+	GROUP BY A.tag_name 
+	ORDER BY 1
+
+	DROP TABLE #tmpFault
+END
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetAverageCycleTimeByStations'))
+	DROP PROCEDURE [dbo].[spGetAverageCycleTimeByStations]
+GO
+
+CREATE PROCEDURE [dbo].[spGetAverageCycleTimeByStations]
+@dtStart DATETIME,
+@dtEnd DATETIME 
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT tag_name, AVG( TRY_CAST(tag_cont AS INT) ) AS avgCycleTime 
+	INTO #tmpCycle
+	FROM tblTagContent WITH(NOLOCK) 
+	WHERE [tag_add_dt] BETWEEN @dtStart AND @dtEnd
+	AND RIGHT( tag_name, 10 ) = '.TotalTime'
+	GROUP BY tag_name
+	
+	SELECT tag_name, AVG (avgCycleTime) AS avgCycleTime
+	FROM ( 
+		SELECT CASE RIGHT(LEFT(tag_name, 10 ), 1) 
+			WHEN 'L' THEN LEFT(tag_name, 10)
+			WHEN 'R' THEN LEFT(tag_name, 10)
+			ELSE LEFT( tag_name, 9 ) END AS tag_name, avgCycleTime
+		FROM #tmpCycle ) A 
+	GROUP BY A.tag_name 
+	ORDER BY 1
+
+	DROP TABLE #tmpCycle
+END
+GO
