@@ -195,7 +195,7 @@ BEGIN
 	BEGIN
 		SET @sqlString = 'update tr set [' + @tag_title + '] = tc.tag_cont 
 			from ##tmp_result tr 
-			join #tmp_content tc on tr.SerialNumber = tc.serial_number 
+			join #tmp_content tc on tr.SerialNumber COLLATE DATABASE_DEFAULT = tc.serial_number COLLATE DATABASE_DEFAULT 
 			where tc.tag_name = ''' + @tag_Name + ''';'; 
 
 		EXEC (@sqlString);
