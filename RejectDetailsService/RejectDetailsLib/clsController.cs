@@ -19,6 +19,8 @@ namespace RejectDetailsLib
 
         public bool IsEnabled { get; set; }
 
+        public bool IsStatistics { get; set; }
+
         private static List<clsController> ControllerList { get; set; }
 
         public clsController() { }
@@ -42,6 +44,11 @@ namespace RejectDetailsLib
                 ControllerList = new Database().GetControllerList(true);
             }
             return ControllerList;
+        }
+
+        public static List<clsController> GetAllControllerList()
+        {
+            return new Database().GetAllControllerList();
         }
 
         public static DataTable GetControllerDataTable()

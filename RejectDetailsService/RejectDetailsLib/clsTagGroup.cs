@@ -74,6 +74,32 @@ namespace RejectDetailsLib {
             }
         }
 
+        public void GetTagsNoStation(string IpAddress)
+        {
+            if (tagRead != null && !string.IsNullOrWhiteSpace(tagRead.TagName))
+            {
+                tagRead.GenerateTag(IpAddress);
+                this.tagClass.AddTag(tagRead.plcTag);
+
+                List<clsTag> tagList = new Database().GetTagGroup(this.controllerId);
+
+                tagWrite = new List<clsTag>();
+                listTags = new List<clsTag>();
+
+                foreach (clsTag tag in tagList)
+                {
+                    tag.GenerateTag(IpAddress);
+                    listTags.Add(tag);
+
+                    if (tag.Write == 1)
+                    {
+                        tagWrite.Add(tag);
+                    }
+
+                    this.tagClass.AddTag(tag.plcTag);
+                }
+            } 
+        }
         public static List<clsTagGroup> GetGroup(int ControllerID, string IpAddress) {
             List<clsTagGroup> list = new List<clsTagGroup>();
 
@@ -86,6 +112,43 @@ namespace RejectDetailsLib {
                 list.Add(group);
             }
 
+            return list;
+        }
+
+        public static List<clsTagGroup> GetGroup(int ControllerID, clsController clsCon)
+        {
+            List<clsTagGroup> list = new List<clsTagGroup>();
+
+            List<clsTag> listReadTags = new Database().GetReadTags(ControllerID);
+
+            if (listReadTags != null && listReadTags.Any())
+            {
+
+                if (clsCon.IsStatistics)
+                {
+                    foreach (clsTag readTag in listReadTags)
+                    {
+                        clsTagGroup group = new clsTagGroup(readTag, ControllerID);
+                        group.GetTagsNoStation(clsCon.IpAddress);
+
+                        list.Add(group);
+                    }
+                }
+                else
+                {
+                    foreach (clsTag readTag in listReadTags)
+                    {
+                        clsTagGroup group = new clsTagGroup(readTag, ControllerID);
+                        group.GetTags(clsCon.IpAddress);
+
+                        list.Add(group);
+                    }
+                }
+            }
+            else
+            {
+                clsLog.addLog("no read tag setup.......");
+            }
             return list;
         }
     }

@@ -65,5 +65,10 @@ namespace RejectDetailsWin {
                 clsLog.addLog(e.Message);
             }
         }
+
+        private void btnStatistics_Click(object sender, EventArgs e)
+        {
+            StatisticsDetails.Instance.Start();
+        }
     }
 }

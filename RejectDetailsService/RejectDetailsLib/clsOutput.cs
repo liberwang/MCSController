@@ -24,7 +24,7 @@ namespace RejectDetailsLib
 
         public int m_controllerId { get; set; }
 
-        protected static List<int> m_OutputTagIdList = null;
+        //protected static List<int> m_OutputTagIdList = null;
 
         public static clsOutput GetOutputByProduceName()
         {
@@ -40,8 +40,7 @@ namespace RejectDetailsLib
 
         public clsOutput()
         {
-            //TODO
-            //m_OutputTagIdList = this.GetOutputTagListByOrder();
+
         }
 
         public void SaveToFileAndDatabase(List<(string, string)> tagValue, string serialNumber, string ipAddress)

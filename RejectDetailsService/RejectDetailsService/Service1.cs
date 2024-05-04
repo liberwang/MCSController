@@ -52,6 +52,17 @@ namespace RejectDetailsService {
             {
                 clsLog.addLog(e.Message);
             }
+            try
+            {
+                Timer timer = new Timer();
+                timer.Interval = SystemKeys.VISIT_INTERVAL; // 500; // 0.5 seconds
+                timer.Elapsed += new ElapsedEventHandler(this.OnTimerStatistics);
+                timer.Start();
+            }
+            catch (Exception e)
+            {
+                clsLog.addLog(e.Message);
+            }
         }
 
         protected override void OnStop() {
@@ -88,6 +99,18 @@ namespace RejectDetailsService {
             {
                 HeartBeat.Instance.Start();
             }
+            catch (Exception e)
+            {
+                clsLog.addLog(e.Message);
+            }
+        }
+
+        public void OnTimerStatistics(object sender, ElapsedEventArgs args)
+        {
+            try
+            {
+                StatisticsDetails.Instance.Start();
+            } 
             catch (Exception e)
             {
                 clsLog.addLog(e.Message);

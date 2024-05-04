@@ -43,6 +43,24 @@ namespace RejectDetailsLib
             }
         }
 
+        public void SetStatisticsContent( List<(string, string)> tagValue, string ipAddress )
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string sScript = $@"INSERT INTO dbo.tblStatisticsContent (tag_cont, tag_name, controller_ip) VALUES";
+                    foreach ((string, string) tv in tagValue)
+                    {
+                        sScript += $"('{tv.Item1}', '{tv.Item2}','{ipAddress}'),";
+                    }
+                    com.CommandText = sScript.Substring(0, sScript.Length - 1);
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
         public DataSet GetContent(string startTime, string endTime, string ipAddress, string tagName, string tagValue, string serialNo)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -109,12 +127,12 @@ namespace RejectDetailsLib
                 using (SqlCommand com = conn.CreateCommand())
                 {
                     conn.Open();
-                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK)";
+                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK) WHERE isStatistics = 0";
                     if (OnlyEnabled)
                     {
-                        sqlString += " WHERE isEnabled = 1";
+                        sqlString += " AND isEnabled = 1";
                     }
-                    sqlString += " ORDER BY description";
+                    sqlString += $" ORDER BY description";
 
                     com.CommandText = sqlString;
                     SqlDataReader dr = com.ExecuteReader();
@@ -138,6 +156,79 @@ namespace RejectDetailsLib
             return listCont;
         }
 
+        public List<clsController> GetAllControllerList()
+        {
+            List<clsController> listCont = new List<clsController>();
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK) ORDER BY description";
+
+                    com.CommandText = sqlString;
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        clsController clsCon = new clsController()
+                        {
+                            Id = dr.GetInt32(0),
+                            IpAddress = dr.GetString(1),
+                            Description = dr.GetString(2),
+                            CpuTypeId = dr.GetInt32(3),
+                            IsEnabled = dr.GetBoolean(4),
+                            IsStatistics = dr.GetBoolean(5)
+                        };
+                        listCont.Add(clsCon);
+                    }
+                    dr.Close();
+                }
+            }
+
+            return listCont;
+        }
+
+        //public List<clsController> GetStatisticsControllerList(bool OnlyEnabled)
+        //{
+        //    List<clsController> listCont = new List<clsController>();
+
+        //    using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+        //    {
+        //        using (SqlCommand com = conn.CreateCommand())
+        //        {
+        //            conn.Open();
+        //            string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK) WHERE isStatistics = 1";
+        //            if (OnlyEnabled)
+        //            {
+        //                sqlString += " AND isEnabled = 1";
+        //            }
+        //            sqlString += $" ORDER BY description";
+
+        //            com.CommandText = sqlString;
+        //            SqlDataReader dr = com.ExecuteReader();
+
+        //            while (dr.Read())
+        //            {
+        //                clsController clsCon = new clsController()
+        //                {
+        //                    Id = dr.GetInt32(0),
+        //                    IpAddress = dr.GetString(1),
+        //                    Description = dr.GetString(2),
+        //                    CpuTypeId = dr.GetInt32(3),
+        //                    IsEnabled = dr.GetBoolean(4),
+        //                    IsStatistics = dr.GetBoolean(5)
+        //                };
+        //                listCont.Add(clsCon);
+        //            }
+        //            dr.Close();
+        //        }
+        //    }
+
+        //    return listCont;
+        //}
+
         public DataSet GetControllerDataSet()
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -145,7 +236,7 @@ namespace RejectDetailsLib
                 using (SqlCommand com = conn.CreateCommand())
                 {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK)";
+                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK)";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(com);
                     DataSet controller = new DataSet();
@@ -221,6 +312,49 @@ AND controllerId = {ControllerID}
                     {
                         strSql += $@"AND LEFT(ft.tagName, {prefix.Length}) = '{prefix}'";
                     }
+
+                    com.CommandText = strSql;
+
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        clsTag tag = new clsTag()
+                        {
+                            TagId = dr.GetInt32(0),
+                            TagName = dr.GetString(1),
+                            TagType = dr.GetString(2),
+                            Read = dr.IsDBNull(3) ? 0 : dr.GetInt16(3),
+                            Description = dr.IsDBNull(4) ? string.Empty : dr.GetString(4),
+                            Write = System.Convert.ToInt32(dr.GetValue(5)),
+                            Output = System.Convert.ToInt32(dr.GetValue(6)),
+                            TagTitle = dr.GetString(7),
+                        };
+                        listTags.Add(tag);
+                    }
+
+                    dr.Close();
+                }
+            }
+            return listTags;
+        }
+
+        public List<clsTag> GetTagGroup(int ControllerID)
+        {
+            List<clsTag> listTags = new List<clsTag>();
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string strSql = $@"
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
+FROM dbo.tblFullTag ft WITH(NOLOCK) 
+JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
+WHERE (ft.tagRead IS NULL OR ft.tagRead != 1)
+AND controllerId = {ControllerID}
+";
 
                     com.CommandText = strSql;
 

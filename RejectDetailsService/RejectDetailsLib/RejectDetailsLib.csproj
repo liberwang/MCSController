@@ -51,6 +51,7 @@
     <Compile Include="Clients\clsHBHOutput.cs" />
     <Compile Include="clsController.cs" />
     <Compile Include="clsLog.cs" />
+    <Compile Include="clsOutputStatistics.cs" />
     <Compile Include="clsStation.cs" />
     <Compile Include="clsTag.cs" />
     <Compile Include="clsTagGroup.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="HeartBeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RejectDetails.cs" />
+    <Compile Include="StatisticsDetails.cs" />
     <Compile Include="SystemKeys.cs" />
   </ItemGroup>
   <ItemGroup>

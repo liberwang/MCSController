@@ -320,3 +320,21 @@ BEGIN
 	DROP TABLE #tmpCycle
 END
 GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.columns WHERE NAME = 'isStatistics' AND OBJECT_NAME(object_id) = 'tblController') 
+BEGIN 
+	ALTER TABLE tblController ADD isStatistics BIT NOT NULL DEFAULT 0;
+END 
+GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.tables WHERE NAME = 'tblStatisticsContent' ) 
+BEGIN 
+	CREATE TABLE [dbo].[tblStatisticsContent](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[tag_cont] [varchar](max) NULL,
+		[tag_add_dt] [datetime] NULL DEFAULT getdate(),
+		[controller_ip] [varchar](15) NULL,
+		[tag_name] [varchar](512) NULL
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END 
+GO
