@@ -31,12 +31,6 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddController = new System.Windows.Forms.Button();
             this.dgvIPAddress = new System.Windows.Forms.DataGridView();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colEdit = new System.Windows.Forms.DataGridViewImageColumn();
-            this.colDelete = new System.Windows.Forms.DataGridViewImageColumn();
             this.bindingSourceIPAddress = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -81,6 +75,13 @@ namespace RejectDetailsWin {
             this.btnClose = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colStatistics = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colEdit = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colDelete = new System.Windows.Forms.DataGridViewImageColumn();
             this.tabControl.SuspendLayout();
             this.tabPageIPAddress.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -166,6 +167,7 @@ namespace RejectDetailsWin {
             this.colIP,
             this.colDescription,
             this.colEnabled,
+            this.colStatistics,
             this.colEdit,
             this.colDelete});
             this.dgvIPAddress.DataSource = this.bindingSourceIPAddress;
@@ -178,67 +180,6 @@ namespace RejectDetailsWin {
             this.dgvIPAddress.Size = new System.Drawing.Size(1778, 934);
             this.dgvIPAddress.TabIndex = 0;
             this.dgvIPAddress.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvIPAddress_CellClick);
-            // 
-            // colID
-            // 
-            this.colID.DataPropertyName = "id";
-            this.colID.HeaderText = "ID";
-            this.colID.MinimumWidth = 6;
-            this.colID.Name = "colID";
-            this.colID.ReadOnly = true;
-            this.colID.Visible = false;
-            this.colID.Width = 125;
-            // 
-            // colIP
-            // 
-            this.colIP.DataPropertyName = "ip_address";
-            this.colIP.HeaderText = "IP Address";
-            this.colIP.MinimumWidth = 6;
-            this.colIP.Name = "colIP";
-            this.colIP.ReadOnly = true;
-            this.colIP.Width = 125;
-            // 
-            // colDescription
-            // 
-            this.colDescription.DataPropertyName = "description";
-            this.colDescription.HeaderText = "Description";
-            this.colDescription.MinimumWidth = 6;
-            this.colDescription.Name = "colDescription";
-            this.colDescription.ReadOnly = true;
-            this.colDescription.Width = 250;
-            // 
-            // colEnabled
-            // 
-            this.colEnabled.DataPropertyName = "isEnabled";
-            this.colEnabled.HeaderText = "Enabled";
-            this.colEnabled.MinimumWidth = 6;
-            this.colEnabled.Name = "colEnabled";
-            this.colEnabled.ReadOnly = true;
-            this.colEnabled.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.colEnabled.Width = 50;
-            // 
-            // colEdit
-            // 
-            this.colEdit.HeaderText = "Edit";
-            this.colEdit.Image = ((System.Drawing.Image)(resources.GetObject("colEdit.Image")));
-            this.colEdit.MinimumWidth = 6;
-            this.colEdit.Name = "colEdit";
-            this.colEdit.ReadOnly = true;
-            this.colEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colEdit.ToolTipText = "Edit current IP address";
-            this.colEdit.Width = 40;
-            // 
-            // colDelete
-            // 
-            this.colDelete.HeaderText = "Delete";
-            this.colDelete.Image = ((System.Drawing.Image)(resources.GetObject("colDelete.Image")));
-            this.colDelete.MinimumWidth = 6;
-            this.colDelete.Name = "colDelete";
-            this.colDelete.ReadOnly = true;
-            this.colDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colDelete.ToolTipText = "Delete current IP address";
-            this.colDelete.Width = 40;
             // 
             // tabPageTags
             // 
@@ -796,6 +737,77 @@ namespace RejectDetailsWin {
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
+            // colID
+            // 
+            this.colID.DataPropertyName = "id";
+            this.colID.HeaderText = "ID";
+            this.colID.MinimumWidth = 6;
+            this.colID.Name = "colID";
+            this.colID.ReadOnly = true;
+            this.colID.Visible = false;
+            this.colID.Width = 125;
+            // 
+            // colIP
+            // 
+            this.colIP.DataPropertyName = "ip_address";
+            this.colIP.HeaderText = "IP Address";
+            this.colIP.MinimumWidth = 6;
+            this.colIP.Name = "colIP";
+            this.colIP.ReadOnly = true;
+            this.colIP.Width = 125;
+            // 
+            // colDescription
+            // 
+            this.colDescription.DataPropertyName = "description";
+            this.colDescription.HeaderText = "Description";
+            this.colDescription.MinimumWidth = 6;
+            this.colDescription.Name = "colDescription";
+            this.colDescription.ReadOnly = true;
+            this.colDescription.Width = 250;
+            // 
+            // colEnabled
+            // 
+            this.colEnabled.DataPropertyName = "isEnabled";
+            this.colEnabled.HeaderText = "Enabled";
+            this.colEnabled.MinimumWidth = 6;
+            this.colEnabled.Name = "colEnabled";
+            this.colEnabled.ReadOnly = true;
+            this.colEnabled.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colEnabled.Width = 50;
+            // 
+            // colStatistics
+            // 
+            this.colStatistics.DataPropertyName = "isStatistics";
+            this.colStatistics.HeaderText = "Statistics";
+            this.colStatistics.MinimumWidth = 10;
+            this.colStatistics.Name = "colStatistics";
+            this.colStatistics.ReadOnly = true;
+            this.colStatistics.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colStatistics.Width = 50;
+            // 
+            // colEdit
+            // 
+            this.colEdit.HeaderText = "Edit";
+            this.colEdit.Image = ((System.Drawing.Image)(resources.GetObject("colEdit.Image")));
+            this.colEdit.MinimumWidth = 6;
+            this.colEdit.Name = "colEdit";
+            this.colEdit.ReadOnly = true;
+            this.colEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colEdit.ToolTipText = "Edit current IP address";
+            this.colEdit.Width = 40;
+            // 
+            // colDelete
+            // 
+            this.colDelete.HeaderText = "Delete";
+            this.colDelete.Image = ((System.Drawing.Image)(resources.GetObject("colDelete.Image")));
+            this.colDelete.MinimumWidth = 6;
+            this.colDelete.Name = "colDelete";
+            this.colDelete.ReadOnly = true;
+            this.colDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colDelete.ToolTipText = "Delete current IP address";
+            this.colDelete.Width = 40;
+            // 
             // frmTags
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -842,12 +854,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.TabPage tabPageTags;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.BindingSource bindingSourceIPAddress;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIP;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colEnabled;
-        private System.Windows.Forms.DataGridViewImageColumn colEdit;
-        private System.Windows.Forms.DataGridViewImageColumn colDelete;
         private System.Windows.Forms.Button btnAddTag;
         private System.Windows.Forms.DataGridView dgvTags;
         private System.Windows.Forms.ComboBox cboIPAddress;
@@ -890,5 +896,12 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnCleanUp;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colEnabled;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colStatistics;
+        private System.Windows.Forms.DataGridViewImageColumn colEdit;
+        private System.Windows.Forms.DataGridViewImageColumn colDelete;
     }
 }

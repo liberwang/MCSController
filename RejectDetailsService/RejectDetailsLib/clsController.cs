@@ -1,6 +1,7 @@
 ﻿using LibplctagWrapper;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace RejectDetailsLib
 {
@@ -37,13 +38,14 @@ namespace RejectDetailsLib
             ControllerList = null;
         }
 
-        public static List<clsController> GetControllerList(bool bRefresh = false)
+        public static List<clsController> GetControllerList(bool bRefresh = false, bool bEnabled = true)
         {
             if (ControllerList == null || bRefresh)
             {
-                ControllerList = new Database().GetControllerList(true);
+                ControllerList = GetAllControllerList(); //.Where(x => x.IsEnabled && ! x.IsStatistics).ToList();   //new Database().GetControllerList(true);
             }
-            return ControllerList;
+
+            return ControllerList.Where( x => x.IsEnabled == bEnabled).ToList();
         }
 
         public static List<clsController> GetAllControllerList()
@@ -71,7 +73,7 @@ namespace RejectDetailsLib
 
         public void SaveController()
         {
-            new Database().SetIPAddress(this.IpAddress, this.Description,(int)CpuType.LGX, this.IsEnabled ? 1 : 0);
+            new Database().SetIPAddress(this.Id, this.IpAddress, this.Description,(int)CpuType.LGX, this.IsEnabled ? 1 : 0, this.IsStatistics ? 1 : 0);
         }
     }
 }

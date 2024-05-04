@@ -32,20 +32,24 @@ namespace RejectDetailsWin {
             this.label3 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.chkStatistics = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtIPAddress
             // 
-            this.txtIPAddress.Location = new System.Drawing.Point(148, 52);
+            this.txtIPAddress.Location = new System.Drawing.Point(222, 81);
+            this.txtIPAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIPAddress.Name = "txtIPAddress";
-            this.txtIPAddress.Size = new System.Drawing.Size(428, 22);
+            this.txtIPAddress.Size = new System.Drawing.Size(640, 31);
             this.txtIPAddress.TabIndex = 0;
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(148, 97);
+            this.txtDescription.Location = new System.Drawing.Point(222, 152);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(428, 22);
+            this.txtDescription.Size = new System.Drawing.Size(640, 31);
             this.txtDescription.TabIndex = 1;
             // 
             // chkEnable
@@ -53,44 +57,49 @@ namespace RejectDetailsWin {
             this.chkEnable.AutoSize = true;
             this.chkEnable.Checked = true;
             this.chkEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEnable.Location = new System.Drawing.Point(148, 146);
+            this.chkEnable.Location = new System.Drawing.Point(222, 228);
+            this.chkEnable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkEnable.Name = "chkEnable";
-            this.chkEnable.Size = new System.Drawing.Size(18, 17);
+            this.chkEnable.Size = new System.Drawing.Size(28, 27);
             this.chkEnable.TabIndex = 2;
             this.chkEnable.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 55);
+            this.label1.Location = new System.Drawing.Point(80, 86);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 17);
+            this.label1.Size = new System.Drawing.Size(130, 25);
             this.label1.TabIndex = 3;
             this.label1.Text = "IP Address*:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(55, 100);
+            this.label2.Location = new System.Drawing.Point(82, 156);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 17);
+            this.label2.Size = new System.Drawing.Size(126, 25);
             this.label2.TabIndex = 4;
             this.label2.Text = "Description:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(74, 145);
+            this.label3.Location = new System.Drawing.Point(111, 227);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 17);
+            this.label3.Size = new System.Drawing.Size(97, 25);
             this.label3.TabIndex = 5;
             this.label3.Text = "Enabled:";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(337, 211);
+            this.btnSave.Location = new System.Drawing.Point(551, 360);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 40);
+            this.btnSave.Size = new System.Drawing.Size(180, 62);
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -99,19 +108,40 @@ namespace RejectDetailsWin {
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(463, 211);
+            this.btnCancel.Location = new System.Drawing.Point(739, 360);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(120, 40);
+            this.btnCancel.Size = new System.Drawing.Size(180, 62);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(103, 292);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(105, 25);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Statistics:";
+            // 
+            // chkStatistics
+            // 
+            this.chkStatistics.AutoSize = true;
+            this.chkStatistics.Location = new System.Drawing.Point(222, 292);
+            this.chkStatistics.Name = "chkStatistics";
+            this.chkStatistics.Size = new System.Drawing.Size(28, 27);
+            this.chkStatistics.TabIndex = 9;
+            this.chkStatistics.UseVisualStyleBackColor = true;
+            // 
             // frmIPModify
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(634, 273);
+            this.ClientSize = new System.Drawing.Size(951, 452);
+            this.Controls.Add(this.chkStatistics);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label3);
@@ -121,6 +151,7 @@ namespace RejectDetailsWin {
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.txtIPAddress);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmIPModify";
@@ -141,5 +172,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkStatistics;
     }
 }

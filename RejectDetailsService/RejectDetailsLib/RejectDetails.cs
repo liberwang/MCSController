@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -106,7 +107,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            this.listController = clsController.GetControllerList();
+            this.listController = clsController.GetControllerList().Where( x => ! x.IsStatistics ).ToList();
 
             foreach (clsController clsCon in this.listController)
             {

@@ -83,12 +83,13 @@ namespace RejectDetailsWin
                 string ipAddress = dgvIPAddress.CurrentRow.Cells["colIP"].Value.ToString();
                 string description = dgvIPAddress.CurrentRow.Cells["colDescription"].Value.ToString();
                 bool enabled = dgvIPAddress.CurrentRow.Cells["colEnabled"].Value.ToString() == bool.TrueString;
+                bool statistics = dgvIPAddress.CurrentRow.Cells["colStatistics"].Value.ToString() == bool.TrueString;
 
                 if (colindex > -1)
                 {
                     if (dgvIPAddress.Columns[colindex].Name == "colEdit")
                     {
-                        frmIPModify mod = new frmIPModify(ipAddress, description, enabled);
+                        frmIPModify mod = new frmIPModify(id, ipAddress, description, enabled, statistics);
                         mod.ShowDialog();
 
                         if (mod.DialogResult == DialogResult.OK)

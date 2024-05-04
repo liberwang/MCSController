@@ -12,14 +12,18 @@ using System.Windows.Forms;
 
 namespace RejectDetailsWin {
     public partial class frmIPModify : Form {
+        private int id {  get; set; }
+
         public frmIPModify() {
             InitializeComponent();
         }
 
-        public frmIPModify( string ipAddress, string desc, bool enabled ) : this() {
+        public frmIPModify(int id, string ipAddress, string desc, bool enabled, bool statistics) : this() {
+            this.id = id;
             this.txtIPAddress.Text = ipAddress;
             this.txtDescription.Text = desc;
             this.chkEnable.Checked = enabled;
+            this.chkStatistics.Checked = statistics;
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
@@ -27,6 +31,7 @@ namespace RejectDetailsWin {
             string sIPAddress = this.txtIPAddress.Text.Trim();
             string sDescription = this.txtDescription.Text.Trim();
             bool isEnabled = this.chkEnable.Checked;
+            bool isStatistics = this.chkStatistics.Checked;
 
             if ( string.IsNullOrWhiteSpace(sIPAddress)) {
                 MessageBox.Show("Please input IP Address.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -40,13 +45,13 @@ namespace RejectDetailsWin {
 
             clsController con = new clsController()
             {
+                Id = this.id,
                 IpAddress = sIPAddress, 
                 Description = sDescription,
-                IsEnabled = isEnabled
+                IsEnabled = isEnabled,
+                IsStatistics = isStatistics
             };
             con.SaveController();
-            //Database db = new Database();
-            //db.SetIPAddress(sIPAddress, sDescription, isEnabled ? 1 : 0);
 
             this.DialogResult = DialogResult.OK;
             this.Visible = false;

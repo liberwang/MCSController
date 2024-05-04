@@ -265,7 +265,7 @@ COMMIT TRANSACTION;
             }
         }
 
-        public void SetIPAddress(string ipAddress, string description, int cupTypeId, int isEnabled)
+        public void SetIPAddress(int id, string ipAddress, string description, int cupTypeId, int isEnabled, int isStatistics)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
             {
@@ -274,9 +274,9 @@ COMMIT TRANSACTION;
                     conn.Open();
                     com.CommandText = $@"
 IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE ip_address = '{ipAddress}' ) 
-    UPDATE tblController SET description = '{description}', isEnabled = {isEnabled} WHERE ip_address = '{ipAddress}' 
+    UPDATE tblController SET ip_address = '{ipAddress}', description = '{description}', isEnabled = {isEnabled}, isStatistics = {isStatistics} WHERE id = {id}
 ELSE 
-    INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled} );
+    INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled, isStatistics) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled}, {isStatistics} );
 ";
                     com.ExecuteNonQuery();
                 }
