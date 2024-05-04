@@ -273,7 +273,7 @@ COMMIT TRANSACTION;
                 {
                     conn.Open();
                     com.CommandText = $@"
-IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE ip_address = '{ipAddress}' ) 
+IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE id = '{id}' ) 
     UPDATE tblController SET ip_address = '{ipAddress}', description = '{description}', isEnabled = {isEnabled}, isStatistics = {isStatistics} WHERE id = {id}
 ELSE 
     INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled, isStatistics) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled}, {isStatistics} );
