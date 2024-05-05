@@ -127,94 +127,6 @@ END
 
 GO
 
-IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetTagQuery'))
-	DROP PROCEDURE [dbo].[spGetTagQuery]
-GO
-
-CREATE PROCEDURE [dbo].[spGetTagQuery] 
-	-- Add the parameters for the stored procedure here
-	@pStartTime DATETIME,
-	@pEndTime DATETIME,
-	@pipAddress VARCHAR(15) = NULL,
-	@ptagName VARCHAR(512) = NULL,
-	@ptagValue VARCHAR(512) = NULL,
-	@pserialNumber VARCHAR(256) = NULL
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	SELECT tagName, ISNULL(tagTitle, tagName) AS tagTitle, byOrder
-	INTO #tmp_title
-	FROM tblFullTag ft WITH(NOLOCK)
-	JOIN tblOutput ot WITH(NOLOCK) ON ft.tagId = ot.tagId
-	WHERE RIGHT(ft.tagName,13) != '.SerialNumber'
-	AND ( @ptagName IS NULL OR ( ISNULL(tagTitle, tagName)  LIKE '%' + @ptagName +'%' ) )
-	ORDER BY ot.byOrder;
-
-	CREATE INDEX idx_tmp_title ON #tmp_title (tagName, tagTitle);
-
-	IF OBJECT_ID( 'tempdb..##tmp_result') IS NOT NULL
-		DROP TABLE ##tmp_result;
-
-	DECLARE @sqlString VARCHAR(MAX) = 'create table ##tmp_result ( [SerialNumber] varchar(256), [startTime] datetime, [endTime] datetime,';
-
-	SELECT @sqlString = @sqlString + '[' + tagTitle + '] varchar(512),'
-	FROM #tmp_title
-	ORDER BY byOrder;
-
-	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
-
-	EXEC (@sqlString);
-
-	SELECT tag_cont, controller_ip, tag_name, serial_number, tag_add_dt
-	INTO #tmp_content
-	FROM tblTagContent WITH(NOLOCK)
-	WHERE tag_add_dt BETWEEN @pstartTime AND @pendTime 
-	AND ( @pipAddress IS NULL OR controller_ip = @pipAddress ) 
-	--AND ( @ptagName IS NULL OR tag_name like '%' + @ptagName +'%' )
-	AND ( @ptagValue IS NULL OR tag_cont like '%' + @ptagValue + '%')
-	AND ( @pserialNumber IS NULL OR serial_number like '%' + @pserialNumber + '%' );
-
-	INSERT INTO ##tmp_result ([SerialNumber], [startTime], [endTime]) 
-	SELECT serial_number, MIN(tag_add_dt), MAX(tag_add_dt)
-	FROM #tmp_content
-	WHERE serial_number != ''
-	GROUP BY serial_number
-	ORDER BY serial_number;
-
-	DECLARE @tag_Name VARCHAR(512);
-	DECLARE @tag_title VARCHAR(512);
-
-	DECLARE cursor_content CURSOR FOR
-	SELECT tagName, tagTitle 
-	FROM #tmp_title
-
-	OPEN cursor_content 
-	FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
-	WHILE @@FETCH_STATUS = 0 
-	BEGIN
-		SET @sqlString = 'update tr set [' + @tag_title + '] = tc.tag_cont 
-			from ##tmp_result tr 
-			join #tmp_content tc on tr.SerialNumber COLLATE DATABASE_DEFAULT = tc.serial_number COLLATE DATABASE_DEFAULT 
-			where tc.tag_name = ''' + @tag_Name + ''';'; 
-
-		EXEC (@sqlString);
-
-		FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
-	END 
-	CLOSE cursor_content;
-	DEALLOCATE cursor_content;
-	
-	SELECT * FROM ##tmp_result ORDER BY [SerialNumber];
-
-	DROP TABLE #tmp_title;
-	DROP TABLE ##tmp_result;
-	DROP TABLE #tmp_content;
-END
-
-GO
-
-
 IF EXISTS(SELECT 1 FROM SYS.INDEXES WHERE NAME = 'uind_tagName_tblFullTag' )
 	DROP INDEX uind_tagName_tblFullTag ON tblFullTag;
 GO
@@ -337,4 +249,92 @@ BEGIN
 		[tag_name] [varchar](512) NULL
 	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END 
+GO
+
+--IF EXISTS (SELECT 1 FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.spGetTagQuery'))
+--	DROP PROCEDURE [dbo].[spGetTagQuery]
+--GO
+
+CREATE OR ALTER PROCEDURE [dbo].[spGetTagQuery] 
+	-- Add the parameters for the stored procedure here
+	@pStartTime DATETIME,
+	@pEndTime DATETIME,
+	@pipAddress VARCHAR(15) = NULL,
+	@ptagName VARCHAR(512) = NULL,
+	@ptagValue VARCHAR(512) = NULL,
+	@pserialNumber VARCHAR(256) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT tagName, ISNULL(tagTitle, tagName) AS tagTitle, byOrder
+	INTO #tmp_title
+	FROM tblFullTag ft WITH(NOLOCK)
+	JOIN tblController con WITH(NOLOCK) ON ft.controllerId = con.id AND con.isStatistics = 0
+	JOIN tblOutput ot WITH(NOLOCK) ON ft.tagId = ot.tagId
+	WHERE RIGHT(ft.tagName,13) != '.SerialNumber'
+	AND ( @ptagName IS NULL OR ( ISNULL(tagTitle, tagName)  LIKE '%' + @ptagName +'%' ) )
+	ORDER BY ot.byOrder;
+
+	CREATE INDEX idx_tmp_title ON #tmp_title (tagName, tagTitle);
+
+	IF OBJECT_ID( 'tempdb..##tmp_result') IS NOT NULL
+		DROP TABLE ##tmp_result;
+
+	DECLARE @sqlString VARCHAR(MAX) = 'create table ##tmp_result ( [SerialNumber] varchar(256), [startTime] datetime, [endTime] datetime,';
+
+	SELECT @sqlString = @sqlString + '[' + tagTitle + '] varchar(512),'
+	FROM #tmp_title
+	ORDER BY byOrder;
+
+	SET @sqlString = LEFT( @sqlString, LEN(@sqlString) - 1) + '); create index idx_tmp_result on ##tmp_result (SerialNumber);';
+
+	EXEC (@sqlString);
+
+	SELECT tag_cont, controller_ip, tag_name, serial_number, tag_add_dt
+	INTO #tmp_content
+	FROM tblTagContent WITH(NOLOCK)
+	WHERE tag_add_dt BETWEEN @pstartTime AND @pendTime 
+	AND ( @pipAddress IS NULL OR controller_ip = @pipAddress ) 
+	--AND ( @ptagName IS NULL OR tag_name like '%' + @ptagName +'%' )
+	AND ( @ptagValue IS NULL OR tag_cont like '%' + @ptagValue + '%')
+	AND ( @pserialNumber IS NULL OR serial_number like '%' + @pserialNumber + '%' );
+
+	INSERT INTO ##tmp_result ([SerialNumber], [startTime], [endTime]) 
+	SELECT serial_number, MIN(tag_add_dt), MAX(tag_add_dt)
+	FROM #tmp_content
+	WHERE serial_number != ''
+	GROUP BY serial_number
+	ORDER BY serial_number;
+
+	DECLARE @tag_Name VARCHAR(512);
+	DECLARE @tag_title VARCHAR(512);
+
+	DECLARE cursor_content CURSOR FOR
+	SELECT tagName, tagTitle 
+	FROM #tmp_title
+
+	OPEN cursor_content 
+	FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
+	WHILE @@FETCH_STATUS = 0 
+	BEGIN
+		SET @sqlString = 'update tr set [' + @tag_title + '] = tc.tag_cont 
+			from ##tmp_result tr 
+			join #tmp_content tc on tr.SerialNumber COLLATE DATABASE_DEFAULT = tc.serial_number COLLATE DATABASE_DEFAULT 
+			where tc.tag_name = ''' + @tag_Name + ''';'; 
+
+		EXEC (@sqlString);
+
+		FETCH NEXT FROM cursor_content INTO @tag_name, @tag_title 
+	END 
+	CLOSE cursor_content;
+	DEALLOCATE cursor_content;
+	
+	SELECT * FROM ##tmp_result ORDER BY [SerialNumber];
+
+	DROP TABLE #tmp_title;
+	DROP TABLE ##tmp_result;
+	DROP TABLE #tmp_content;
+END
+
 GO
