@@ -18,7 +18,8 @@ namespace RejectDetailsLib
 
         private static StatisticsDetails instance = null;
 
-        private Dictionary<string,List<clsTagGroup>> dicTagGroup = new Dictionary<string, List<clsTagGroup>>();
+        private List<List<clsTagGroup>> listTagGroup = new List<List<clsTagGroup>>();
+        private List<clsController> listController = null;
         private StatisticsDetails() { }
 
         //Read String
@@ -79,7 +80,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            List<clsController> listController = clsController.GetControllerList().Where(x => x.IsStatistics).ToList();
+            listController = clsController.GetControllerList().Where(x => x.IsStatistics).ToList();
 
             if (listController == null || listController.Count == 0)
             {
@@ -89,7 +90,7 @@ namespace RejectDetailsLib
             {
                 foreach (clsController clsCon in listController)
                 {
-                    this.dicTagGroup.Add(clsCon.IpAddress, clsTagGroup.GetGroup(clsCon.Id, clsCon));
+                    this.listTagGroup.Add(clsTagGroup.GetGroup(clsCon.Id, clsCon));
                 }
             }
         }
@@ -123,10 +124,8 @@ namespace RejectDetailsLib
 
         public void Process()
         {
-            foreach (string ipAddress in dicTagGroup.Keys)
+            foreach (List<clsTagGroup> groupList in listTagGroup)
             {
-                List<clsTagGroup> groupList = dicTagGroup[ipAddress];
-
                 foreach (clsTagGroup tagGroup in groupList)
                 {
                     // no tag for this ip address 
@@ -258,7 +257,7 @@ namespace RejectDetailsLib
 
                                     new Thread(() =>
                                     {
-                                        SaveToFile(ReadValuesDictionary, ipAddress);
+                                        SaveToFile(ReadValuesDictionary, tagGroup.controllerId);
                                     }).Start();
                                 }
                             }
@@ -290,11 +289,26 @@ namespace RejectDetailsLib
 
         }
 
-        private void SaveToFile(IDictionary<int, clsTagValue> tagValue, string ipAddress)
+        private void SaveToFile(IDictionary<int, clsTagValue> tagValue, int controllerId)
         {
             clsOutput op = new clsOutputStatistics();
-
-            op.SaveToFileAndDatabase(tagValue, -99, ipAddress, 0);
+            string ipAddress = string.Empty;
+            foreach( clsController clsCon in listController)
+            {
+                if ( clsCon.Id == controllerId )
+                {
+                    ipAddress = clsCon.GetIPAddressAndDescription();
+                    break;
+                }
+            }
+            if (string.IsNullOrWhiteSpace(ipAddress))
+            {
+                clsLog.addLog($"StaticsDetails.SaveToFile: Cannot find ipAddress of {controllerId}");
+            }
+            else
+            {
+                op.SaveToFileAndDatabase(tagValue, -99, ipAddress, 0);
+            }
         }
     }
 }

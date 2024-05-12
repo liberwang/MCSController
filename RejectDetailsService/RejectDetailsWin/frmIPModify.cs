@@ -35,8 +35,16 @@ namespace RejectDetailsWin {
 
             if ( string.IsNullOrWhiteSpace(sIPAddress)) {
                 MessageBox.Show("Please input IP Address.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.txtIPAddress.Focus();
                 return;
             }
+            if (string.IsNullOrWhiteSpace(sDescription))
+            {
+                MessageBox.Show("Please input description.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.txtDescription.Focus();
+                return;
+            }
+
             Match m = Regex.Match(sIPAddress, ipAddressReg, RegexOptions.IgnoreCase);
             if (!m.Success) {
                 MessageBox.Show("The format of IP Address is not valid!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -51,6 +59,11 @@ namespace RejectDetailsWin {
                 IsEnabled = isEnabled,
                 IsStatistics = isStatistics
             };
+            if (con.IsDuplicate())
+            {
+                MessageBox.Show("The IP address and description are duplicated with another controller.");
+                return;
+            }
             con.SaveController();
 
             this.DialogResult = DialogResult.OK;

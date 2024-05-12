@@ -75,5 +75,15 @@ namespace RejectDetailsLib
         {
             new Database().SetIPAddress(this.Id, this.IpAddress, this.Description,(int)CpuType.LGX, this.IsEnabled ? 1 : 0, this.IsStatistics ? 1 : 0);
         }
+
+        public bool IsDuplicate()
+        {
+            return new Database().CheckIPAddressDuplicate(this.Id, this.IpAddress, this.Description);
+        }
+
+        public string GetIPAddressAndDescription()
+        {
+            return this.IpAddress + ":" + this.Description;
+        }
     }
 }

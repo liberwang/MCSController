@@ -67,7 +67,7 @@ namespace RejectDetailsWin {
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(80, 86);
+            this.label1.Location = new System.Drawing.Point(75, 84);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(130, 25);
@@ -77,17 +77,17 @@ namespace RejectDetailsWin {
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(82, 156);
+            this.label2.Location = new System.Drawing.Point(71, 155);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(126, 25);
+            this.label2.Size = new System.Drawing.Size(134, 25);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Description:";
+            this.label2.Text = "Description*:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(111, 227);
+            this.label3.Location = new System.Drawing.Point(108, 228);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 25);
@@ -119,7 +119,7 @@ namespace RejectDetailsWin {
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(103, 292);
+            this.label4.Location = new System.Drawing.Point(100, 292);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 25);
             this.label4.TabIndex = 8;

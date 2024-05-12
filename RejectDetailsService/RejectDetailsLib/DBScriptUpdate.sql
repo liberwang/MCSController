@@ -546,3 +546,20 @@ BEGIN
         MAX(tag_add_dt) ASC -- Order the results by the latest update time in descending order
 END
 GO
+
+ALTER TABLE tblController ALTER COLUMN [description] VARCHAR(256) NOT NULL;
+GO
+
+/****** Object:  Index [unique_ipaddress_description_tblController]    Script Date: 5/11/2024 6:48:46 PM ******/
+IF NOT EXISTS( SELECT 1 FROM sys.indexes WHERE name = 'unique_ipaddress_description_tblController')
+	CREATE UNIQUE NONCLUSTERED INDEX [unique_ipaddress_description_tblController] ON [dbo].[tblController]
+	(
+		[ip_address] ASC,
+		[description] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+IF NOT EXISTS(SELECT 1 FROM SYS.COLUMNS WHERE [name] = 'controller_ip' AND OBJECT_NAME( object_id ) = 'tblStatisticsContent' AND max_length = 256) 
+	ALTER TABLE [dbo].[tblStatisticsContent] ALTER COLUMN controller_ip VARCHAR(256) NULL
+
+GO

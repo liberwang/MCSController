@@ -265,6 +265,26 @@ COMMIT TRANSACTION;
             }
         }
 
+        public bool CheckIPAddressDuplicate(int id, string ipAddress, string description )
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string sqlScript = $"SELECT id FROM tblController WITH(NOLOCK) WHERE ip_address = '{ipAddress}' AND description = '{description}'";
+                    if (id > 0)
+                    {
+                        sqlScript += $" AND id != {id}";
+                    }
+                    com.CommandText = sqlScript;
+
+                    object returnObj = com.ExecuteScalar();
+                    return returnObj != null;
+                }
+            }
+        }
+
         public void SetIPAddress(int id, string ipAddress, string description, int cupTypeId, int isEnabled, int isStatistics)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
