@@ -51,7 +51,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            List<clsController> listController = clsController.GetControllerList().Where(x => x.IsEnabled).ToList();
+            List<clsController> listController = clsController.GetControllerList().Where(x => !x.IsStatistics).ToList();
 
             if (listController == null || listController.Count == 0)
             {
