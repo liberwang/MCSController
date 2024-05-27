@@ -12,6 +12,7 @@ namespace RejectDetailsLib {
         public const string PRODUCE_NAME_HONDA_BULKHEAD = "HONDA-BULKHEAD";
 
         public static string PRODUCT_NAME;
+
         public static string FILE_FOLDER;
         public static string FILE_NAME_PREFIX;
         public static string FILE_NAME;
@@ -20,7 +21,7 @@ namespace RejectDetailsLib {
         public static string COPY_FILE_EXT;
         public static string COPY_FILE_PREFIX;
         public static string REJECT_FILE_PREFIX;
-        public static int VISIT_INTERVAL;
+
         public static int COPY_INTERVAL;
         public static string LOG_FILE = @"c:\temp\MCSLog";
         public static string IP_ADDRESS_THIS;
@@ -28,12 +29,21 @@ namespace RejectDetailsLib {
         public static bool SAVE_TO_DB;
         public static string GENERATE_OUTPUT_FILE_TIME;
         public static bool GET_DATA_FROM_XML;
+
+
+        public static int VISIT_INTERVAL;
+        public static bool STATISTICS_SERVICE_ENABLE;
+        public static int STATISTICS_SERVICE_INTERVAL;
+        public static bool HEARTBEAT_SERVICE_ENABLE;
+        public static int HEARTBEAT_SERVICE_INTERVAL;
+        public static string HEARTBEAT_SERVICE_TAGNAME;
+        public static bool ALARM_SERVICE_ENABLE;
+        public static int ALARM_SERVICE_INTERVAL;
         public static bool USE_MULTITHREADING_SERVICE;
         public static bool IN_DEBUGING;
-        public static int HEARTBEAT_INTERVAL;
-        public static string HEARTBEAT_TAG_NAME;
 
         public const string PRODUCT_NAME_KEY = "ProductName";
+
         public const string FILE_FOLDER_KEY = "OutputFileFolder";
         public const string FILE_NAME_PREFIX_KEY = "OutputFileNamePrefix";
         public const string FILE_NAME_KEY = "OutputFileName";
@@ -42,7 +52,6 @@ namespace RejectDetailsLib {
         public const string COPY_FILE_EXT_KEY = "CopyFileExt";
         public const string COPY_FILE_PREFIX_KEY = "CopyFilePrefix";
         public const string REJECT_FILE_PREFIX_KEY = "RejectFilePrefix";
-        public const string VISIT_INTERVAL_KEY = "VisitInterval";
         public const string COPY_INTERVAL_KEY = "CopyInterval";
         public const string LOG_FILE_KEY = "LogFileFolder";
         public const string DB_CONNECT_STRING_KEY = "DBConnect";
@@ -51,10 +60,19 @@ namespace RejectDetailsLib {
         public const string SAVE_TO_DB_KEY = "SaveToDB";
         public const string GENERATE_OUTPUT_FILE_TIME_KEY = "GenerateOutputFileFrom";
         public const string GET_DATA_FROM_XML_KEY = "GetDataFromXML";
+
+        public const string VISIT_INTERVAL_KEY = "VisitInterval";
+        public const string STATISTICS_SERVICE_ENABLE_KEY = "StatisticsServiceEnable";
+        public static string STATISTICS_SERVICE_INTERVAL_KEY = "StatisticsServiceInterval";
+        public static string HEARTBEAT_SERVICE_ENABLE_KEY = "HeartBeatServiceEnable";
+        public static string HEARTBEAT_SERVICE_INTERVAL_KEY = "HeartBeatServiceInterval";
+        public static string HEARTBEAT_SERVICE_TAGNAME_KEY = "HeartBeatServiceTagName";
+        public static string ALARM_SERVICE_ENABLE_KEY = "AlarmServiceEnable";
+        public static string ALARM_SERVICE_INTERVAL_KEY = "AlarmServiceInterval";
+
         public const string USE_MULTITHREADING_SERVICE_KEY = "UseMultiTreading";
         public const string IN_DEBUGING_KEY = "InDebuging";
-        public const string HEARTBEAT_INTERVAL_KEY = "HeartBeatInterval";
-        public const string HEARTBEAT_TAG_NAME_KEY = "HeartBeatTagName";
+
         //static SystemKeys() {
         //    initializeKey();
         //}
@@ -81,8 +99,6 @@ namespace RejectDetailsLib {
             VISIT_INTERVAL = keys.ContainsKey(VISIT_INTERVAL_KEY) ? int.Parse(keys[VISIT_INTERVAL_KEY]) : 500;
             COPY_INTERVAL = keys.ContainsKey(COPY_INTERVAL_KEY) ? int.Parse(keys[COPY_INTERVAL_KEY]) : 31000;
             LOG_FILE = keys.ContainsKey(LOG_FILE_KEY) ? keys[LOG_FILE_KEY] : @"c:\temp\MCSLog";
-            HEARTBEAT_INTERVAL = keys.ContainsKey(HEARTBEAT_INTERVAL_KEY) ? int.Parse(keys[HEARTBEAT_INTERVAL_KEY]) : 500;
-            HEARTBEAT_TAG_NAME = keys.ContainsKey(HEARTBEAT_TAG_NAME_KEY) ? keys[HEARTBEAT_TAG_NAME_KEY] : "dbconnection";
 
             if (keys.ContainsKey(SAVE_TO_FILE_KEY) && bool.TryParse(keys[SAVE_TO_FILE_KEY], out bool result1))
             {
@@ -111,7 +127,42 @@ namespace RejectDetailsLib {
             {
                 IN_DEBUGING = false;
             }
-            
+
+            // Heart Beat
+            if(keys.ContainsKey(HEARTBEAT_SERVICE_ENABLE_KEY) && bool.TryParse(keys[HEARTBEAT_SERVICE_ENABLE_KEY], out bool heartBeatEnable))
+            {
+                HEARTBEAT_SERVICE_ENABLE = heartBeatEnable;
+            } else
+            {
+                HEARTBEAT_SERVICE_ENABLE = false;
+            }
+
+            HEARTBEAT_SERVICE_INTERVAL = keys.ContainsKey(HEARTBEAT_SERVICE_INTERVAL_KEY) ? int.Parse(keys[HEARTBEAT_SERVICE_INTERVAL_KEY]) : 500;
+            HEARTBEAT_SERVICE_TAGNAME = keys.ContainsKey(HEARTBEAT_SERVICE_TAGNAME_KEY) ? keys[HEARTBEAT_SERVICE_TAGNAME_KEY] : "dbconnection";
+
+            // Statistics 
+            if (keys.ContainsKey(STATISTICS_SERVICE_ENABLE_KEY) && bool.TryParse(keys[STATISTICS_SERVICE_ENABLE_KEY], out bool StatisticsEnable))
+            {
+                STATISTICS_SERVICE_ENABLE = StatisticsEnable;
+            }
+            else
+            {
+                STATISTICS_SERVICE_ENABLE = false;
+            }
+
+            STATISTICS_SERVICE_INTERVAL = keys.ContainsKey(STATISTICS_SERVICE_INTERVAL_KEY) ? int.Parse(keys[STATISTICS_SERVICE_INTERVAL_KEY]) : 500;
+
+            // alarm service
+            if (keys.ContainsKey(ALARM_SERVICE_ENABLE_KEY) && bool.TryParse(keys[ALARM_SERVICE_ENABLE_KEY], out bool AlarmEnable))
+            {
+                ALARM_SERVICE_ENABLE = AlarmEnable;
+            }
+            else
+            {
+                ALARM_SERVICE_ENABLE = false;
+            }
+
+            ALARM_SERVICE_INTERVAL = keys.ContainsKey(ALARM_SERVICE_INTERVAL_KEY) ? int.Parse(keys[ALARM_SERVICE_INTERVAL_KEY]) : 500;
         }
 
         public static void setKey(string appKey, string appValue) {

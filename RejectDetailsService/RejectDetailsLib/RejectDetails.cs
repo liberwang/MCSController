@@ -107,7 +107,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            this.listController = clsController.GetControllerList().Where( x => ! x.IsStatistics ).ToList();
+            this.listController = clsController.GetControllerRejectList();
 
             foreach (clsController clsCon in this.listController)
             {

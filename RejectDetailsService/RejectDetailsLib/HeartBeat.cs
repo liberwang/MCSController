@@ -51,7 +51,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            List<clsController> listController = clsController.GetControllerList().Where(x => !x.IsStatistics).ToList();
+            List<clsController> listController = clsController.GetControllerRejectList();
 
             if (listController == null || listController.Count == 0)
             {
@@ -59,10 +59,11 @@ namespace RejectDetailsLib
             }
             else
             {
-                foreach (clsController clsCon in listController)
+                HashSet<string> hs = new HashSet<string>(listController.Select(x => x.IpAddress));
+                foreach (string ipAddress in hs)
                 {
-                    clsTag hbTag = new clsTag() { TagName = SystemKeys.HEARTBEAT_TAG_NAME, TagType = clsTag.BOOL_TYPE_STR };
-                    hbTag.GenerateTag(clsCon.IpAddress);
+                    clsTag hbTag = new clsTag() { TagName = SystemKeys.HEARTBEAT_SERVICE_TAGNAME, TagType = clsTag.BOOL_TYPE_STR };
+                    hbTag.GenerateTag(ipAddress);
                     this.listTag.Add(hbTag);
                 }
             }

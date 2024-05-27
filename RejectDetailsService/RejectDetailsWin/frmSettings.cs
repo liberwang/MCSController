@@ -11,8 +11,30 @@ namespace RejectDetailsWin {
         }
 
         private void frmSettings_Load(object sender, EventArgs e) {
+            // first tab
             this.txtProductName.Text = SystemKeys.PRODUCT_NAME;
 
+            // second tab 
+
+            this.nudVisitInterval.Value = SystemKeys.VISIT_INTERVAL;
+
+            this.chkHeartBeat.Checked = SystemKeys.HEARTBEAT_SERVICE_ENABLE;
+            this.txtHeartBeatTag.Text = SystemKeys.HEARTBEAT_SERVICE_TAGNAME;
+            this.nudHeartBeat.Value = SystemKeys.HEARTBEAT_SERVICE_INTERVAL;
+            chkHeartBeat_CheckedChanged(null, null);
+
+            this.chkStatistics.Checked = SystemKeys.STATISTICS_SERVICE_ENABLE;
+            this.nudStatistics.Value = SystemKeys.STATISTICS_SERVICE_INTERVAL;
+            chkStatistics_CheckedChanged(null, null);   
+
+            this.chkAlarm.Checked = SystemKeys.ALARM_SERVICE_ENABLE;
+            this.nudAlarm.Value = SystemKeys.ALARM_SERVICE_INTERVAL;
+            chkAlarm_CheckedChanged(null, null);
+
+            this.chkMultithread.Checked = SystemKeys.USE_MULTITHREADING_SERVICE;
+            this.chkDebug.Checked = SystemKeys.IN_DEBUGING;
+
+            // save file/db tab
             this.chkSaveToDB.Checked = SystemKeys.SAVE_TO_DB;
             this.chkSaveToFile.Checked = SystemKeys.SAVE_TO_FILE;
             this.txtOutputFileFolder.Text = SystemKeys.FILE_FOLDER;
@@ -22,20 +44,15 @@ namespace RejectDetailsWin {
 
             this.txtCopyFileFolder.Text = SystemKeys.COPY_FOLDER;
             this.txtRejectFilePrefix.Text = SystemKeys.REJECT_FILE_PREFIX;
-            //this.txtCopyFileExt.Text = SystemKeys.COPY_FILE_EXT;
-
             this.nudCopyInterval.Value = SystemKeys.COPY_INTERVAL;
-            this.nudVisitInterval.Value = SystemKeys.VISIT_INTERVAL;
-
-            this.txtLogFolder.Text = SystemKeys.LOG_FILE;
-
+            //this.txtCopyFileExt.Text = SystemKeys.COPY_FILE_EXT;
             this.SaveToFileStatus(SystemKeys.SAVE_TO_FILE);
 
             this.cboTimeOfOutputFile.SelectedItem = SystemKeys.GENERATE_OUTPUT_FILE_TIME;
 
-            this.chkMultithread.Checked = SystemKeys.USE_MULTITHREADING_SERVICE;
+            // Log tab 
+            this.txtLogFolder.Text = SystemKeys.LOG_FILE;
 
-            this.chkDebug.Checked = SystemKeys.IN_DEBUGING;
         }
 
         private void btnOutputFileFolder_Click(object sender, EventArgs e) {
@@ -103,6 +120,17 @@ namespace RejectDetailsWin {
             bool bUseMultithreading = this.chkMultithread.Checked;
             bool isDebug = this.chkDebug.Checked;
 
+            bool isHeartBeatEnable = this.chkHeartBeat.Checked;
+            int nHeartBeatInterval = (int)this.nudHeartBeat.Value;
+            string sHeartBeatTag = this.txtHeartBeatTag.Text.Trim();
+
+            bool isStatisticsEnable = this.chkStatistics.Checked;
+            int nStatisticsInterval = (int)this.nudStatistics.Value;
+
+            bool isAlarmEnabled = this.chkAlarm.Checked;
+            int nAlarmInterval =(int)this.nudAlarm.Value;
+            
+
             if (sProductName != SystemKeys.PRODUCT_NAME)
             {
                 SystemKeys.setKey(SystemKeys.PRODUCT_NAME_KEY, sProductName);
@@ -159,6 +187,37 @@ namespace RejectDetailsWin {
             {
                 SystemKeys.setKey(SystemKeys.IN_DEBUGING_KEY, isDebug.ToString());
             }
+            // heartbeat
+            if( isHeartBeatEnable != SystemKeys.HEARTBEAT_SERVICE_ENABLE)
+            {
+                SystemKeys.setKey(SystemKeys.HEARTBEAT_SERVICE_ENABLE_KEY, isHeartBeatEnable.ToString());
+            }
+            if (sHeartBeatTag != SystemKeys.HEARTBEAT_SERVICE_TAGNAME)
+            {
+                SystemKeys.setKey(SystemKeys.HEARTBEAT_SERVICE_TAGNAME_KEY, sHeartBeatTag);
+            }
+            if (nHeartBeatInterval != SystemKeys.HEARTBEAT_SERVICE_INTERVAL)
+            {
+                SystemKeys.setKey(SystemKeys.HEARTBEAT_SERVICE_INTERVAL_KEY, nHeartBeatInterval.ToString());
+            }
+            //statistics
+            if (isStatisticsEnable != SystemKeys.STATISTICS_SERVICE_ENABLE)
+            {
+                SystemKeys.setKey(SystemKeys.STATISTICS_SERVICE_ENABLE_KEY, isStatisticsEnable.ToString());
+            }
+            if (nStatisticsInterval != SystemKeys.STATISTICS_SERVICE_INTERVAL)
+            {
+                SystemKeys.setKey(SystemKeys.STATISTICS_SERVICE_INTERVAL_KEY, nStatisticsInterval.ToString());
+            }
+            // alarm
+            if (isAlarmEnabled != SystemKeys.ALARM_SERVICE_ENABLE)
+            {
+                SystemKeys.setKey(SystemKeys.ALARM_SERVICE_ENABLE_KEY, isAlarmEnabled.ToString());
+            }
+            if (nAlarmInterval != SystemKeys.ALARM_SERVICE_INTERVAL)
+            {
+                SystemKeys.setKey(SystemKeys.ALARM_SERVICE_INTERVAL_KEY, nAlarmInterval.ToString());
+            }
             SystemKeys.initializeKey();
             this.Close();
         }
@@ -180,6 +239,23 @@ namespace RejectDetailsWin {
             this.btnCopyFileFolder.Enabled = isEnabled;
             this.opnCSV.Enabled = isEnabled;
             this.opnExcel.Enabled = isEnabled;
+            this.nudCopyInterval.Enabled = isEnabled;
+        }
+
+        private void chkStatistics_CheckedChanged(object sender, EventArgs e)
+        {
+            this.nudStatistics.Enabled = this.chkStatistics.Checked;
+        }
+
+        private void chkHeartBeat_CheckedChanged(object sender, EventArgs e)
+        {
+            this.nudHeartBeat.Enabled = this.chkHeartBeat.Checked;
+            this.txtHeartBeatTag.Enabled = this.chkHeartBeat.Checked;
+        }
+
+        private void chkAlarm_CheckedChanged(object sender, EventArgs e)
+        {
+            this.nudAlarm.Enabled = this.chkAlarm.Checked;
         }
     }
 }

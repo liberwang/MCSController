@@ -1,0 +1,13 @@
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\AlarmSerivice.exe.config
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\AlarmSerivice.exe
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\AlarmSerivice.pdb
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\RejectDetailsLib.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\LibplctagWrapper.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\libplctag.NativeImport.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\RejectDetailsLib.pdb
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Release\libplctag.NativeImport.xml
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmSerivice.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmSerivice.csproj.CoreCompileInputs.cache
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmSerivice.csproj.CopyComplete
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmSerivice.exe
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmSerivice.pdb

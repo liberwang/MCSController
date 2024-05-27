@@ -563,3 +563,23 @@ IF NOT EXISTS(SELECT 1 FROM SYS.COLUMNS WHERE [name] = 'controller_ip' AND OBJEC
 	ALTER TABLE [dbo].[tblStatisticsContent] ALTER COLUMN controller_ip VARCHAR(256) NULL
 
 GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE NAME = 'isAlarm' AND OBJECT_NAME ( OBJECT_ID ) = 'tblController' )
+	ALTER TABLE tblController ADD isAlarm BIT NOT NULL DEFAULT (0);
+GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns WHERE NAME = 'parentTagId' AND OBJECT_NAME ( OBJECT_ID ) = 'tblFullTag' )
+	ALTER TABLE tblFullTag ADD parentTagId INT NULL;
+GO
+
+IF NOT EXISTS( SELECT 1 FROM sys.tables WHERE NAME = 'tblAlarmContent' ) 
+BEGIN 
+	CREATE TABLE [dbo].[tblAlarmContent](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[tag_cont] [varchar](max) NULL,
+		[tag_add_dt] [datetime] NULL DEFAULT getdate(),
+		[controller_ip] [varchar](15) NULL,
+		[tag_name] [varchar](512) NULL
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END 
+GO

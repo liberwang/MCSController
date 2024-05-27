@@ -31,6 +31,14 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddController = new System.Windows.Forms.Button();
             this.dgvIPAddress = new System.Windows.Forms.DataGridView();
+            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colStatistics = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colAlarm = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colEdit = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colDelete = new System.Windows.Forms.DataGridViewImageColumn();
             this.bindingSourceIPAddress = new System.Windows.Forms.BindingSource(this.components);
             this.tabPageTags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -57,6 +65,15 @@ namespace RejectDetailsWin {
             this.btnCleanUp = new System.Windows.Forms.Button();
             this.btnAddTag = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
+            this.tabPageAlarm = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.splitContainerAlarm = new System.Windows.Forms.SplitContainer();
+            this.treeviewAlarm = new System.Windows.Forms.TreeView();
+            this.imageListTree = new System.Windows.Forms.ImageList(this.components);
+            this.ucTag = new RejectDetailsWin.ucTags();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cboIPAddressAlarm = new System.Windows.Forms.ComboBox();
             this.tabPageOutput = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -75,13 +92,13 @@ namespace RejectDetailsWin {
             this.btnClose = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colStatistics = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colEdit = new System.Windows.Forms.DataGridViewImageColumn();
-            this.colDelete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.contextMenuTreeview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemLoad = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageIPAddress.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -93,6 +110,13 @@ namespace RejectDetailsWin {
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
+            this.tabPageAlarm.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerAlarm)).BeginInit();
+            this.splitContainerAlarm.Panel1.SuspendLayout();
+            this.splitContainerAlarm.Panel2.SuspendLayout();
+            this.splitContainerAlarm.SuspendLayout();
+            this.tableLayoutPanel12.SuspendLayout();
             this.tabPageOutput.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -100,19 +124,21 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.contextMenuTreeview.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.tabPageIPAddress);
             this.tabControl.Controls.Add(this.tabPageTags);
+            this.tabControl.Controls.Add(this.tabPageAlarm);
             this.tabControl.Controls.Add(this.tabPageOutput);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(4, 6);
             this.tabControl.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1810, 1105);
+            this.tabControl.Size = new System.Drawing.Size(1975, 1139);
             this.tabControl.TabIndex = 0;
             // 
             // tabPageIPAddress
@@ -122,7 +148,7 @@ namespace RejectDetailsWin {
             this.tabPageIPAddress.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.tabPageIPAddress.Name = "tabPageIPAddress";
             this.tabPageIPAddress.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.tabPageIPAddress.Size = new System.Drawing.Size(1794, 1058);
+            this.tabPageIPAddress.Size = new System.Drawing.Size(1868, 1111);
             this.tabPageIPAddress.TabIndex = 0;
             this.tabPageIPAddress.Text = "IP Address";
             this.tabPageIPAddress.UseVisualStyleBackColor = true;
@@ -140,13 +166,13 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1786, 1046);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1860, 1099);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // btnAddController
             // 
             this.btnAddController.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnAddController.Location = new System.Drawing.Point(1602, 19);
+            this.btnAddController.Location = new System.Drawing.Point(1676, 19);
             this.btnAddController.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAddController.Name = "btnAddController";
             this.btnAddController.Size = new System.Drawing.Size(180, 62);
@@ -168,6 +194,7 @@ namespace RejectDetailsWin {
             this.colDescription,
             this.colEnabled,
             this.colStatistics,
+            this.colAlarm,
             this.colEdit,
             this.colDelete});
             this.dgvIPAddress.DataSource = this.bindingSourceIPAddress;
@@ -177,9 +204,90 @@ namespace RejectDetailsWin {
             this.dgvIPAddress.Name = "dgvIPAddress";
             this.dgvIPAddress.RowHeadersWidth = 25;
             this.dgvIPAddress.RowTemplate.Height = 24;
-            this.dgvIPAddress.Size = new System.Drawing.Size(1778, 934);
+            this.dgvIPAddress.Size = new System.Drawing.Size(1852, 987);
             this.dgvIPAddress.TabIndex = 0;
             this.dgvIPAddress.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvIPAddress_CellClick);
+            // 
+            // colID
+            // 
+            this.colID.DataPropertyName = "id";
+            this.colID.HeaderText = "ID";
+            this.colID.MinimumWidth = 6;
+            this.colID.Name = "colID";
+            this.colID.ReadOnly = true;
+            this.colID.Visible = false;
+            this.colID.Width = 125;
+            // 
+            // colIP
+            // 
+            this.colIP.DataPropertyName = "ip_address";
+            this.colIP.HeaderText = "IP Address";
+            this.colIP.MinimumWidth = 6;
+            this.colIP.Name = "colIP";
+            this.colIP.ReadOnly = true;
+            this.colIP.Width = 125;
+            // 
+            // colDescription
+            // 
+            this.colDescription.DataPropertyName = "description";
+            this.colDescription.HeaderText = "Description";
+            this.colDescription.MinimumWidth = 6;
+            this.colDescription.Name = "colDescription";
+            this.colDescription.ReadOnly = true;
+            this.colDescription.Width = 250;
+            // 
+            // colEnabled
+            // 
+            this.colEnabled.DataPropertyName = "isEnabled";
+            this.colEnabled.HeaderText = "Enabled";
+            this.colEnabled.MinimumWidth = 6;
+            this.colEnabled.Name = "colEnabled";
+            this.colEnabled.ReadOnly = true;
+            this.colEnabled.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colEnabled.Width = 50;
+            // 
+            // colStatistics
+            // 
+            this.colStatistics.DataPropertyName = "isStatistics";
+            this.colStatistics.HeaderText = "Statistics";
+            this.colStatistics.MinimumWidth = 10;
+            this.colStatistics.Name = "colStatistics";
+            this.colStatistics.ReadOnly = true;
+            this.colStatistics.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colStatistics.Width = 50;
+            // 
+            // colAlarm
+            // 
+            this.colAlarm.DataPropertyName = "isAlarm";
+            this.colAlarm.HeaderText = "Alarm";
+            this.colAlarm.MinimumWidth = 10;
+            this.colAlarm.Name = "colAlarm";
+            this.colAlarm.ReadOnly = true;
+            this.colAlarm.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colAlarm.Width = 50;
+            // 
+            // colEdit
+            // 
+            this.colEdit.HeaderText = "Edit";
+            this.colEdit.Image = ((System.Drawing.Image)(resources.GetObject("colEdit.Image")));
+            this.colEdit.MinimumWidth = 6;
+            this.colEdit.Name = "colEdit";
+            this.colEdit.ReadOnly = true;
+            this.colEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colEdit.ToolTipText = "Edit current IP address";
+            this.colEdit.Width = 40;
+            // 
+            // colDelete
+            // 
+            this.colDelete.HeaderText = "Delete";
+            this.colDelete.Image = ((System.Drawing.Image)(resources.GetObject("colDelete.Image")));
+            this.colDelete.MinimumWidth = 6;
+            this.colDelete.Name = "colDelete";
+            this.colDelete.ReadOnly = true;
+            this.colDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colDelete.ToolTipText = "Delete current IP address";
+            this.colDelete.Width = 40;
             // 
             // tabPageTags
             // 
@@ -188,7 +296,7 @@ namespace RejectDetailsWin {
             this.tabPageTags.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.tabPageTags.Name = "tabPageTags";
             this.tabPageTags.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.tabPageTags.Size = new System.Drawing.Size(1794, 1058);
+            this.tabPageTags.Size = new System.Drawing.Size(1959, 1092);
             this.tabPageTags.TabIndex = 1;
             this.tabPageTags.Text = "Tags";
             this.tabPageTags.UseVisualStyleBackColor = true;
@@ -206,7 +314,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1786, 1046);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1951, 1080);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // dgvTags
@@ -238,7 +346,7 @@ namespace RejectDetailsWin {
             this.dgvTags.Name = "dgvTags";
             this.dgvTags.RowHeadersWidth = 25;
             this.dgvTags.RowTemplate.Height = 24;
-            this.dgvTags.Size = new System.Drawing.Size(1778, 934);
+            this.dgvTags.Size = new System.Drawing.Size(1943, 968);
             this.dgvTags.TabIndex = 2;
             this.dgvTags.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTags_CellClick);
             // 
@@ -391,7 +499,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1778, 92);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1943, 92);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
             // cboIPAddress
@@ -431,19 +539,19 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel10.Controls.Add(this.btnCleanUp, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnAddTag, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnImport, 2, 0);
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(993, 4);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(1075, 4);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(781, 84);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(864, 84);
             this.tableLayoutPanel10.TabIndex = 4;
             // 
             // btnCleanUp
             // 
             this.btnCleanUp.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnCleanUp.Location = new System.Drawing.Point(310, 12);
+            this.btnCleanUp.Location = new System.Drawing.Point(366, 12);
             this.btnCleanUp.Margin = new System.Windows.Forms.Padding(4);
             this.btnCleanUp.Name = "btnCleanUp";
             this.btnCleanUp.Size = new System.Drawing.Size(200, 60);
@@ -455,7 +563,7 @@ namespace RejectDetailsWin {
             // btnAddTag
             // 
             this.btnAddTag.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnAddTag.Location = new System.Drawing.Point(53, 12);
+            this.btnAddTag.Location = new System.Drawing.Point(81, 12);
             this.btnAddTag.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAddTag.Name = "btnAddTag";
             this.btnAddTag.Size = new System.Drawing.Size(200, 60);
@@ -467,7 +575,7 @@ namespace RejectDetailsWin {
             // btnImport
             // 
             this.btnImport.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnImport.Location = new System.Drawing.Point(577, 12);
+            this.btnImport.Location = new System.Drawing.Point(660, 12);
             this.btnImport.Margin = new System.Windows.Forms.Padding(4);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(200, 60);
@@ -476,13 +584,135 @@ namespace RejectDetailsWin {
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
+            // tabPageAlarm
+            // 
+            this.tabPageAlarm.Controls.Add(this.tableLayoutPanel11);
+            this.tabPageAlarm.Location = new System.Drawing.Point(8, 39);
+            this.tabPageAlarm.Name = "tabPageAlarm";
+            this.tabPageAlarm.Size = new System.Drawing.Size(1959, 1092);
+            this.tabPageAlarm.TabIndex = 3;
+            this.tabPageAlarm.Text = "Alarm";
+            this.tabPageAlarm.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.ColumnCount = 1;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel11.Controls.Add(this.splitContainerAlarm, 0, 1);
+            this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel12, 0, 0);
+            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 2;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(1959, 1092);
+            this.tableLayoutPanel11.TabIndex = 0;
+            // 
+            // splitContainerAlarm
+            // 
+            this.splitContainerAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerAlarm.Location = new System.Drawing.Point(3, 103);
+            this.splitContainerAlarm.Name = "splitContainerAlarm";
+            // 
+            // splitContainerAlarm.Panel1
+            // 
+            this.splitContainerAlarm.Panel1.Controls.Add(this.treeviewAlarm);
+            this.splitContainerAlarm.Panel1MinSize = 300;
+            // 
+            // splitContainerAlarm.Panel2
+            // 
+            this.splitContainerAlarm.Panel2.Controls.Add(this.ucTag);
+            this.splitContainerAlarm.Panel2MinSize = 300;
+            this.splitContainerAlarm.Size = new System.Drawing.Size(1953, 986);
+            this.splitContainerAlarm.SplitterDistance = 327;
+            this.splitContainerAlarm.TabIndex = 0;
+            // 
+            // treeviewAlarm
+            // 
+            this.treeviewAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeviewAlarm.HideSelection = false;
+            this.treeviewAlarm.ImageIndex = 0;
+            this.treeviewAlarm.ImageList = this.imageListTree;
+            this.treeviewAlarm.Location = new System.Drawing.Point(0, 0);
+            this.treeviewAlarm.Name = "treeviewAlarm";
+            this.treeviewAlarm.SelectedImageIndex = 0;
+            this.treeviewAlarm.ShowLines = false;
+            this.treeviewAlarm.Size = new System.Drawing.Size(327, 986);
+            this.treeviewAlarm.TabIndex = 0;
+            this.treeviewAlarm.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeviewAlarm_NodeMouseClick);
+            // 
+            // imageListTree
+            // 
+            this.imageListTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTree.ImageStream")));
+            this.imageListTree.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListTree.Images.SetKeyName(0, "green_tag_full.png");
+            this.imageListTree.Images.SetKeyName(1, "green_tag.png");
+            // 
+            // ucTag
+            // 
+            this.ucTag.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucTag.Location = new System.Drawing.Point(0, 0);
+            this.ucTag.Name = "ucTag";
+            this.ucTag.Size = new System.Drawing.Size(1622, 986);
+            this.ucTag.TabIndex = 0;
+            this.ucTag.tagDescription = "";
+            this.ucTag.tagName = "";
+            this.ucTag.tagParent = "";
+            this.ucTag.tagRead = 0;
+            this.ucTag.tagTitle = "";
+            this.ucTag.tagTypeId = -1;
+            this.ucTag.tagWrite = 0;
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.ColumnCount = 3;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.cboIPAddressAlarm, 1, 0);
+            this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 1;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1953, 94);
+            this.tableLayoutPanel12.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(74, 34);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(122, 25);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "IP Address:";
+            // 
+            // cboIPAddressAlarm
+            // 
+            this.cboIPAddressAlarm.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cboIPAddressAlarm.DisplayMember = "Description";
+            this.cboIPAddressAlarm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboIPAddressAlarm.FormattingEnabled = true;
+            this.cboIPAddressAlarm.Location = new System.Drawing.Point(204, 30);
+            this.cboIPAddressAlarm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.cboIPAddressAlarm.Name = "cboIPAddressAlarm";
+            this.cboIPAddressAlarm.Size = new System.Drawing.Size(332, 33);
+            this.cboIPAddressAlarm.TabIndex = 1;
+            this.cboIPAddressAlarm.ValueMember = "Id";
+            this.cboIPAddressAlarm.TextChanged += new System.EventHandler(this.cboIPAddressAlarm_TextChanged);
+            // 
             // tabPageOutput
             // 
             this.tabPageOutput.Controls.Add(this.tableLayoutPanel8);
             this.tabPageOutput.Location = new System.Drawing.Point(8, 39);
             this.tabPageOutput.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageOutput.Name = "tabPageOutput";
-            this.tabPageOutput.Size = new System.Drawing.Size(1794, 1058);
+            this.tabPageOutput.Size = new System.Drawing.Size(1868, 1111);
             this.tabPageOutput.TabIndex = 2;
             this.tabPageOutput.Text = "Output";
             this.tabPageOutput.UseVisualStyleBackColor = true;
@@ -500,7 +730,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(1794, 1058);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1868, 1111);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
             // tableLayoutPanel5
@@ -522,7 +752,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1786, 950);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1860, 1003);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // tableLayoutPanel6
@@ -532,7 +762,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel6.Controls.Add(this.btnRight, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.btnLeft, 0, 2);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(746, 4);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(783, 4);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 4;
@@ -540,7 +770,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.00001F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(192, 842);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(192, 895);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // btnRight
@@ -550,7 +780,7 @@ namespace RejectDetailsWin {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRight.Location = new System.Drawing.Point(10, 330);
+            this.btnRight.Location = new System.Drawing.Point(10, 357);
             this.btnRight.Margin = new System.Windows.Forms.Padding(10);
             this.btnRight.Name = "btnRight";
             this.btnRight.Size = new System.Drawing.Size(172, 80);
@@ -564,7 +794,7 @@ namespace RejectDetailsWin {
             this.btnLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLeft.Location = new System.Drawing.Point(10, 430);
+            this.btnLeft.Location = new System.Drawing.Point(10, 457);
             this.btnLeft.Margin = new System.Windows.Forms.Padding(10);
             this.btnLeft.Name = "btnLeft";
             this.btnLeft.Size = new System.Drawing.Size(172, 80);
@@ -584,7 +814,7 @@ namespace RejectDetailsWin {
             this.lstTags.Margin = new System.Windows.Forms.Padding(30, 31, 30, 31);
             this.lstTags.Name = "lstTags";
             this.lstTags.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstTags.Size = new System.Drawing.Size(682, 788);
+            this.lstTags.Size = new System.Drawing.Size(719, 841);
             this.lstTags.TabIndex = 1;
             this.lstTags.ValueMember = "TagId";
             this.lstTags.DoubleClick += new System.EventHandler(this.lstTags_DoubleClick);
@@ -595,7 +825,7 @@ namespace RejectDetailsWin {
             // btnSaveOutput
             // 
             this.btnSaveOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveOutput.Location = new System.Drawing.Point(1500, 886);
+            this.btnSaveOutput.Location = new System.Drawing.Point(1574, 939);
             this.btnSaveOutput.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveOutput.Name = "btnSaveOutput";
             this.btnSaveOutput.Size = new System.Drawing.Size(180, 60);
@@ -611,11 +841,11 @@ namespace RejectDetailsWin {
             this.lstOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstOutput.FormattingEnabled = true;
             this.lstOutput.ItemHeight = 25;
-            this.lstOutput.Location = new System.Drawing.Point(972, 31);
+            this.lstOutput.Location = new System.Drawing.Point(1009, 31);
             this.lstOutput.Margin = new System.Windows.Forms.Padding(30, 31, 30, 31);
             this.lstOutput.Name = "lstOutput";
             this.lstOutput.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstOutput.Size = new System.Drawing.Size(682, 788);
+            this.lstOutput.Size = new System.Drawing.Size(719, 841);
             this.lstOutput.TabIndex = 3;
             this.lstOutput.ValueMember = "TagName";
             this.lstOutput.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstOutput_DragDrop);
@@ -628,14 +858,14 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel7.Controls.Add(this.btnUp, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.btnDown, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(1688, 31);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(1762, 31);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(4, 31, 4, 4);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 3;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(94, 815);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(94, 868);
             this.tableLayoutPanel7.TabIndex = 4;
             // 
             // btnUp
@@ -677,14 +907,14 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1786, 92);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1860, 92);
             this.tableLayoutPanel9.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(194, 33);
+            this.label2.Location = new System.Drawing.Point(207, 33);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 25);
@@ -697,7 +927,7 @@ namespace RejectDetailsWin {
             this.cboOutputIP.DisplayMember = "Description";
             this.cboOutputIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboOutputIP.FormattingEnabled = true;
-            this.cboOutputIP.Location = new System.Drawing.Point(324, 29);
+            this.cboOutputIP.Location = new System.Drawing.Point(337, 29);
             this.cboOutputIP.Margin = new System.Windows.Forms.Padding(4);
             this.cboOutputIP.Name = "cboOutputIP";
             this.cboOutputIP.Size = new System.Drawing.Size(344, 33);
@@ -709,7 +939,7 @@ namespace RejectDetailsWin {
             // 
             this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(1634, 1136);
+            this.btnClose.Location = new System.Drawing.Point(1799, 1170);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(180, 62);
@@ -730,90 +960,67 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1818, 1217);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1983, 1251);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // colID
+            // contextMenuTreeview
             // 
-            this.colID.DataPropertyName = "id";
-            this.colID.HeaderText = "ID";
-            this.colID.MinimumWidth = 6;
-            this.colID.Name = "colID";
-            this.colID.ReadOnly = true;
-            this.colID.Visible = false;
-            this.colID.Width = 125;
+            this.contextMenuTreeview.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.contextMenuTreeview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemAdd,
+            this.toolStripMenuItemEdit,
+            this.toolStripSeparator2,
+            this.toolStripMenuItemDelete,
+            this.toolStripSeparator1,
+            this.toolStripMenuItemLoad});
+            this.contextMenuTreeview.Name = "contextMenuTreeview";
+            this.contextMenuTreeview.Size = new System.Drawing.Size(159, 168);
+            this.contextMenuTreeview.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuTreeview_ItemClicked);
             // 
-            // colIP
+            // toolStripMenuItemAdd
             // 
-            this.colIP.DataPropertyName = "ip_address";
-            this.colIP.HeaderText = "IP Address";
-            this.colIP.MinimumWidth = 6;
-            this.colIP.Name = "colIP";
-            this.colIP.ReadOnly = true;
-            this.colIP.Width = 125;
+            this.toolStripMenuItemAdd.Name = "toolStripMenuItemAdd";
+            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(158, 38);
+            this.toolStripMenuItemAdd.Text = "Add";
             // 
-            // colDescription
+            // toolStripMenuItemEdit
             // 
-            this.colDescription.DataPropertyName = "description";
-            this.colDescription.HeaderText = "Description";
-            this.colDescription.MinimumWidth = 6;
-            this.colDescription.Name = "colDescription";
-            this.colDescription.ReadOnly = true;
-            this.colDescription.Width = 250;
+            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
+            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(158, 38);
+            this.toolStripMenuItemEdit.Text = "Edit";
             // 
-            // colEnabled
+            // toolStripSeparator2
             // 
-            this.colEnabled.DataPropertyName = "isEnabled";
-            this.colEnabled.HeaderText = "Enabled";
-            this.colEnabled.MinimumWidth = 6;
-            this.colEnabled.Name = "colEnabled";
-            this.colEnabled.ReadOnly = true;
-            this.colEnabled.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colEnabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.colEnabled.Width = 50;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(155, 6);
             // 
-            // colStatistics
+            // toolStripMenuItemDelete
             // 
-            this.colStatistics.DataPropertyName = "isStatistics";
-            this.colStatistics.HeaderText = "Statistics";
-            this.colStatistics.MinimumWidth = 10;
-            this.colStatistics.Name = "colStatistics";
-            this.colStatistics.ReadOnly = true;
-            this.colStatistics.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colStatistics.Width = 50;
+            this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
+            this.toolStripMenuItemDelete.Size = new System.Drawing.Size(158, 38);
+            this.toolStripMenuItemDelete.Text = "Delete";
             // 
-            // colEdit
+            // toolStripSeparator1
             // 
-            this.colEdit.HeaderText = "Edit";
-            this.colEdit.Image = ((System.Drawing.Image)(resources.GetObject("colEdit.Image")));
-            this.colEdit.MinimumWidth = 6;
-            this.colEdit.Name = "colEdit";
-            this.colEdit.ReadOnly = true;
-            this.colEdit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colEdit.ToolTipText = "Edit current IP address";
-            this.colEdit.Width = 40;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
             // 
-            // colDelete
+            // toolStripMenuItemLoad
             // 
-            this.colDelete.HeaderText = "Delete";
-            this.colDelete.Image = ((System.Drawing.Image)(resources.GetObject("colDelete.Image")));
-            this.colDelete.MinimumWidth = 6;
-            this.colDelete.Name = "colDelete";
-            this.colDelete.ReadOnly = true;
-            this.colDelete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colDelete.ToolTipText = "Delete current IP address";
-            this.colDelete.Width = 40;
+            this.toolStripMenuItemLoad.Name = "toolStripMenuItemLoad";
+            this.toolStripMenuItemLoad.Size = new System.Drawing.Size(158, 38);
+            this.toolStripMenuItemLoad.Text = "Load";
             // 
             // frmTags
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(1818, 1217);
+            this.ClientSize = new System.Drawing.Size(1983, 1251);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.MinimizeBox = false;
@@ -833,6 +1040,14 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel10.ResumeLayout(false);
+            this.tabPageAlarm.ResumeLayout(false);
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.splitContainerAlarm.Panel1.ResumeLayout(false);
+            this.splitContainerAlarm.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerAlarm)).EndInit();
+            this.splitContainerAlarm.ResumeLayout(false);
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.tableLayoutPanel12.PerformLayout();
             this.tabPageOutput.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -841,6 +1056,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.contextMenuTreeview.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -901,7 +1117,24 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.DataGridViewTextBoxColumn colDescription;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colEnabled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colStatistics;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colAlarm;
         private System.Windows.Forms.DataGridViewImageColumn colEdit;
         private System.Windows.Forms.DataGridViewImageColumn colDelete;
+        private System.Windows.Forms.TabPage tabPageAlarm;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.SplitContainer splitContainerAlarm;
+        private System.Windows.Forms.TreeView treeviewAlarm;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cboIPAddressAlarm;
+        private System.Windows.Forms.ImageList imageListTree;
+        private System.Windows.Forms.ContextMenuStrip contextMenuTreeview;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAdd;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLoad;
+        private ucTags ucTag;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

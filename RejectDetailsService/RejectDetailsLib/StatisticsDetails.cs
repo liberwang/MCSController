@@ -80,7 +80,7 @@ namespace RejectDetailsLib
 
         private void initialize()
         {
-            listController = clsController.GetControllerList().Where(x => x.IsStatistics).ToList();
+            listController = clsController.GetControllerStatisticsList();
 
             if (listController == null || listController.Count == 0)
             {
@@ -151,7 +151,7 @@ namespace RejectDetailsLib
                                     MaxDegreeOfParallelism = System.Environment.ProcessorCount,
                                 };
 
-                                object lockObj = new object();
+                                //object lockObj = new object();
                                 try
                                 {
                                     Parallel.ForEach<clsTag>(tagGroup.listTags, po, (tagClass) =>
@@ -222,7 +222,8 @@ namespace RejectDetailsLib
                                 }
                                 catch (OperationCanceledException e)
                                 {
-                                    Console.WriteLine(e.Message);
+                                    //Console.WriteLine(e.Message);
+                                    clsLog.addLog($"StatisticsDetails.Process MultiThread Error: {e.Message}");
                                     isOK = false;
                                 }
 

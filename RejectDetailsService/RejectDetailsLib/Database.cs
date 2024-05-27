@@ -61,6 +61,24 @@ namespace RejectDetailsLib
             }
         }
 
+        public void SetAlarmContent(List<(string, string)> tagValue, string ipAddress)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string sScript = $@"INSERT INTO dbo.tblAlarmContent (tag_cont, tag_name, controller_ip) VALUES";
+                    foreach ((string, string) tv in tagValue)
+                    {
+                        sScript += $"('{tv.Item1}', '{tv.Item2}','{ipAddress}'),";
+                    }
+                    com.CommandText = sScript.Substring(0, sScript.Length - 1);
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
         public DataSet GetContent(string startTime, string endTime, string ipAddress, string tagName, string tagValue, string serialNo)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -118,79 +136,7 @@ namespace RejectDetailsLib
 
         #region Controller
         /*  ----  controller/ip adress -------------- */
-        public List<clsController> GetControllerList(bool OnlyEnabled)
-        {
-            List<clsController> listCont = new List<clsController>();
-
-            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
-            {
-                using (SqlCommand com = conn.CreateCommand())
-                {
-                    conn.Open();
-                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK) WHERE isStatistics = 0";
-                    if (OnlyEnabled)
-                    {
-                        sqlString += " AND isEnabled = 1";
-                    }
-                    sqlString += $" ORDER BY description";
-
-                    com.CommandText = sqlString;
-                    SqlDataReader dr = com.ExecuteReader();
-
-                    while (dr.Read())
-                    {
-                        clsController clsCon = new clsController()
-                        {
-                            Id = dr.GetInt32(0),
-                            IpAddress = dr.GetString(1),
-                            Description = dr.GetString(2),
-                            CpuTypeId = dr.GetInt32(3),
-                            IsEnabled = dr.GetBoolean(4),
-                        };
-                        listCont.Add(clsCon);
-                    }
-                    dr.Close();
-                }
-            }
-
-            return listCont;
-        }
-
-        public List<clsController> GetAllControllerList()
-        {
-            List<clsController> listCont = new List<clsController>();
-
-            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
-            {
-                using (SqlCommand com = conn.CreateCommand())
-                {
-                    conn.Open();
-                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK) ORDER BY description";
-
-                    com.CommandText = sqlString;
-                    SqlDataReader dr = com.ExecuteReader();
-
-                    while (dr.Read())
-                    {
-                        clsController clsCon = new clsController()
-                        {
-                            Id = dr.GetInt32(0),
-                            IpAddress = dr.GetString(1),
-                            Description = dr.GetString(2),
-                            CpuTypeId = dr.GetInt32(3),
-                            IsEnabled = dr.GetBoolean(4),
-                            IsStatistics = dr.GetBoolean(5)
-                        };
-                        listCont.Add(clsCon);
-                    }
-                    dr.Close();
-                }
-            }
-
-            return listCont;
-        }
-
-        //public List<clsController> GetStatisticsControllerList(bool OnlyEnabled)
+        //public List<clsController> GetControllerList(bool OnlyEnabled)
         //{
         //    List<clsController> listCont = new List<clsController>();
 
@@ -199,7 +145,7 @@ namespace RejectDetailsLib
         //        using (SqlCommand com = conn.CreateCommand())
         //        {
         //            conn.Open();
-        //            string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK) WHERE isStatistics = 1";
+        //            string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled FROM tblController WITH(NOLOCK) WHERE isStatistics = 0";
         //            if (OnlyEnabled)
         //            {
         //                sqlString += " AND isEnabled = 1";
@@ -218,7 +164,6 @@ namespace RejectDetailsLib
         //                    Description = dr.GetString(2),
         //                    CpuTypeId = dr.GetInt32(3),
         //                    IsEnabled = dr.GetBoolean(4),
-        //                    IsStatistics = dr.GetBoolean(5)
         //                };
         //                listCont.Add(clsCon);
         //            }
@@ -229,6 +174,41 @@ namespace RejectDetailsLib
         //    return listCont;
         //}
 
+        public List<clsController> GetAllControllerList()
+        {
+            List<clsController> listCont = new List<clsController>();
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    string sqlString = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics, isAlarm FROM tblController WITH(NOLOCK) ORDER BY description";
+
+                    com.CommandText = sqlString;
+                    SqlDataReader dr = com.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        clsController clsCon = new clsController()
+                        {
+                            Id = dr.GetInt32(0),
+                            IpAddress = dr.GetString(1),
+                            Description = dr.GetString(2),
+                            CpuTypeId = dr.GetInt32(3),
+                            IsEnabled = dr.GetBoolean(4),
+                            IsStatistics = dr.GetBoolean(5),
+                            IsAlarm = dr.GetBoolean(6),
+                        };
+                        listCont.Add(clsCon);
+                    }
+                    dr.Close();
+                }
+            }
+
+            return listCont;
+        }
+
         public DataSet GetControllerDataSet()
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
@@ -236,7 +216,7 @@ namespace RejectDetailsLib
                 using (SqlCommand com = conn.CreateCommand())
                 {
                     conn.Open();
-                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics FROM tblController WITH(NOLOCK)";
+                    com.CommandText = $@"SELECT id, ip_address, description, cpuTypeId, isEnabled, isStatistics, isAlarm FROM tblController WITH(NOLOCK)";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(com);
                     DataSet controller = new DataSet();
@@ -256,6 +236,7 @@ namespace RejectDetailsLib
                     conn.Open();
                     com.CommandText = $@"
 BEGIN TRANSACTION
+    DELETE FROM tblOutput WHERE tagId IN ( SELECT tagId FROM tblFullTag WHERE controllerId = {id} );
     DELETE FROM tblFullTag WHERE controllerId = {id}
     DELETE FROM tblController WHERE ID = {id} 
 COMMIT TRANSACTION;
@@ -285,7 +266,7 @@ COMMIT TRANSACTION;
             }
         }
 
-        public void SetIPAddress(int id, string ipAddress, string description, int cupTypeId, int isEnabled, int isStatistics)
+        public void SetIPAddress(int id, string ipAddress, string description, int cupTypeId, int isEnabled, int isStatistics, int isAlarm)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
             {
@@ -294,9 +275,9 @@ COMMIT TRANSACTION;
                     conn.Open();
                     com.CommandText = $@"
 IF EXISTS( SELECT 1 FROM tblController WITH(NOLOCK) WHERE id = '{id}' ) 
-    UPDATE tblController SET ip_address = '{ipAddress}', description = '{description}', isEnabled = {isEnabled}, isStatistics = {isStatistics} WHERE id = {id}
+    UPDATE tblController SET ip_address = '{ipAddress}', description = '{description}', isEnabled = {isEnabled}, isStatistics = {isStatistics}, isAlarm = {isAlarm} WHERE id = {id}
 ELSE 
-    INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled, isStatistics) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled}, {isStatistics} );
+    INSERT INTO tblController (ip_address, description, cpuTypeId, isEnabled, isStatistics, isAlarm) VALUES ( '{ipAddress}', '{description}',{cupTypeId}, {isEnabled}, {isStatistics}, {isAlarm} );
 ";
                     com.ExecuteNonQuery();
                 }
@@ -315,7 +296,7 @@ ELSE
                 {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle, ft.tagType
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
@@ -349,6 +330,7 @@ AND controllerId = {ControllerID}
                             Write = System.Convert.ToInt32(dr.GetValue(5)),
                             Output = System.Convert.ToInt32(dr.GetValue(6)),
                             TagTitle = dr.GetString(7),
+                            TagTypeId = dr.GetInt32(8),
                         };
                         listTags.Add(tag);
                     }
@@ -368,7 +350,7 @@ AND controllerId = {ControllerID}
                 {
                     conn.Open();
                     string strSql = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0 ) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle, ft.tagType 
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
@@ -392,6 +374,7 @@ AND controllerId = {ControllerID}
                             Write = System.Convert.ToInt32(dr.GetValue(5)),
                             Output = System.Convert.ToInt32(dr.GetValue(6)),
                             TagTitle = dr.GetString(7),
+                            TagTypeId = dr.GetInt32(8),
                         };
                         listTags.Add(tag);
                     }
@@ -462,7 +445,7 @@ ORDER BY 1 ";
                 {
                     conn.Open();
                     com.CommandText = $@"
-SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle
+SELECT ft.tagId, ft.tagName, tt.typeName, ft.tagRead, ft.tagDescription, ISNULL(ft.tagWrite, 0) AS tagWrite, CASE WHEN op.id IS NULL THEN 0 ELSE 1 END AS tagOutput, tagTitle, ft.tagType
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
 LEFT JOIN dbo.tblOutput op WITH(NOLOCK) ON ft.tagId = op.tagId
@@ -482,6 +465,7 @@ WHERE ft.tagRead = 1 AND controllerId = {ControllerID}";
                             Write = System.Convert.ToInt32(dr.GetValue(5)),
                             Output = System.Convert.ToInt32(dr.GetValue(6)),
                             TagTitle = dr.GetString(7),
+                            TagTypeId = dr.GetInt32(8),
                         };
                         listTags.Add(tag);
                     }
@@ -520,7 +504,77 @@ WHERE controllerId = {ControllerID}";
             }
         }
 
-        public void SetFullTags(int ControllerId, int tagId, string tagName, int tagType, int tagRead, int tagWrite, string description, int tagOutput, string tagTitle)
+        public List<clsHierarchyTag> GetAlarmFullTags(int controllerID)
+        {
+            List<clsHierarchyTag> result = new List<clsHierarchyTag>();
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, tagTitle, ISNULL(parentTagId, -1) AS parentTagId 
+FROM dbo.tblFullTag ft WITH(NOLOCK) 
+JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+WHERE controllerId = {controllerID}
+ORDER BY tagId";
+                    
+                    SqlDataReader dr = com.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        clsHierarchyTag tag = new clsHierarchyTag();
+                        tag.TagId = (int)dr["tagId"];
+                        tag.TagName = dr["tagName"].ToString();
+                        tag.TagTitle = dr["tagTitle"].ToString();
+                        tag.Description = dr["tagDescription"].ToString();
+                        tag.TagType = dr["typeName"].ToString();
+                        tag.Read = System.Convert.ToInt32(dr["tagRead"]);
+                        tag.Write = System.Convert.ToInt32(dr["tagWrite"]);
+                        tag.ParentTagId = System.Convert.ToInt32(dr["parentTagId"]);
+                        tag.TagTypeId = (int)dr["tagType"];
+                        result.Add(tag);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public List<clsHierarchyTag> GetChildrenTags(int parentTagId) 
+        {
+            List<clsHierarchyTag> result = new List<clsHierarchyTag>();
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, tagTitle
+FROM dbo.tblFullTag ft WITH(NOLOCK) 
+JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+WHERE parentTagId = {parentTagId}
+ORDER BY tagId";
+
+                    SqlDataReader dr = com.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        clsHierarchyTag tag = new clsHierarchyTag();
+                        tag.TagId = (int)dr["tagId"];
+                        tag.TagName = dr["tagName"].ToString();
+                        tag.TagTitle = dr["tagTitle"].ToString();
+                        tag.Description = dr["tagDescription"].ToString();
+                        tag.TagType = dr["typeName"].ToString();
+                        tag.Read = System.Convert.ToInt32(dr["tagRead"]);
+                        tag.Write = System.Convert.ToInt32(dr["tagWrite"]);
+                        tag.ParentTagId = parentTagId;
+                        tag.TagTypeId = (int)dr["tagType"];
+                        result.Add(tag);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public void SetFullTags(int ControllerId, int tagId, string tagName, int tagType, int tagRead, int tagWrite, string description, int tagOutput, string tagTitle, int parentTagId = -1)
         {
             using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
             {
@@ -533,9 +587,8 @@ IF EXISTS( SELECT 1 FROM tblFullTag WHERE controllerId = {ControllerId} AND tagI
     SET tagName = '{tagName}', tagType = {tagType}, tagDescription = '{description}', tagRead = {tagRead}, tagWrite = {tagWrite}, tagOutput = {tagOutput}, tagTitle = '{tagTitle}'
     WHERE controllerId = {ControllerId} AND tagId = {tagId}
 ELSE 
-    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite, tagOutput, tagTitle) VALUES 
-    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite}, {tagOutput}, '{tagTitle}' )
-";
+    INSERT INTO tblFullTag (controllerId, tagName, tagDescription, tagType, tagRead, tagWrite, tagOutput, tagTitle, parentTagId) VALUES 
+    ({ControllerId}, '{tagName}', '{description}', {tagType}, {tagRead}, {tagWrite}, {tagOutput}, '{tagTitle}', " + (parentTagId < 0 ? "NULL" : parentTagId.ToString()) + ")";
                     com.ExecuteNonQuery();
                 }
             }
@@ -567,15 +620,17 @@ ELSE
             }
         }
 
-        public string UploadFullTag(int ipAddressID, List<string[]> insertList)
+        public string UploadFullTag(int ipAddressID, List<string[]> insertList, int parentTagId = -1)
         {
             string returnStr = "";
             try
             {
                 string insertStr = string.Empty;
+                string parentTagIdString = parentTagId < 0 ? "NULL" : parentTagId.ToString();
+
                 foreach (string[] il in insertList)
                 {
-                    insertStr += $"({ipAddressID}," + string.Join(",", il) + "),";
+                    insertStr += $"({ipAddressID}," + string.Join(",", il) + $",{parentTagIdString}),";
                 }
 
                 insertStr = insertStr.Substring(0, insertStr.Length - 1);
@@ -585,7 +640,7 @@ ELSE
                     using (SqlCommand com = conn.CreateCommand())
                     {
                         conn.Open();
-                        com.CommandText = $@"INSERT INTO [dbo].[tblFullTag] ([controllerId],[tagName],[tagType],[tagDescription],[tagRead],[tagWrite],[tagTitle]) VALUES {insertStr}";
+                        com.CommandText = $@"INSERT INTO [dbo].[tblFullTag] ([controllerId],[tagName],[tagType],[tagDescription],[tagRead],[tagWrite],[tagTitle],[parentTagId]) VALUES {insertStr}";
                         com.ExecuteNonQuery();
                     }
                 }

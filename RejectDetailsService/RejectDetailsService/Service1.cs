@@ -27,6 +27,7 @@ namespace RejectDetailsService {
             } catch(Exception e) {
                 clsLog.addLog(e.Message);
             }
+
             if (SystemKeys.SAVE_TO_FILE)
             {
                 try
@@ -41,27 +42,35 @@ namespace RejectDetailsService {
                     clsLog.addLog(e.Message);
                 }
             }
-            try
+
+            if (SystemKeys.HEARTBEAT_SERVICE_ENABLE)
             {
-                Timer timer = new Timer();
-                timer.Interval = SystemKeys.HEARTBEAT_INTERVAL; //  31000; // 60 seconds
-                timer.Elapsed += new ElapsedEventHandler(this.OnTimerHeartBeat);
-                timer.Start();
+                try
+                {
+                    Timer timer = new Timer();
+                    timer.Interval = SystemKeys.HEARTBEAT_SERVICE_INTERVAL; //  31000; // 60 seconds
+                    timer.Elapsed += new ElapsedEventHandler(this.OnTimerHeartBeat);
+                    timer.Start();
+                }
+                catch (Exception e)
+                {
+                    clsLog.addLog(e.Message);
+                }
             }
-            catch (Exception e)
+
+            if (SystemKeys.STATISTICS_SERVICE_ENABLE)
             {
-                clsLog.addLog(e.Message);
-            }
-            try
-            {
-                Timer timer = new Timer();
-                timer.Interval = SystemKeys.VISIT_INTERVAL; // 500; // 0.5 seconds
-                timer.Elapsed += new ElapsedEventHandler(this.OnTimerStatistics);
-                timer.Start();
-            }
-            catch (Exception e)
-            {
-                clsLog.addLog(e.Message);
+                try
+                {
+                    Timer timer = new Timer();
+                    timer.Interval = SystemKeys.STATISTICS_SERVICE_INTERVAL; // 500; // 0.5 seconds
+                    timer.Elapsed += new ElapsedEventHandler(this.OnTimerStatistics);
+                    timer.Start();
+                }
+                catch (Exception e)
+                {
+                    clsLog.addLog(e.Message);
+                }
             }
         }
 

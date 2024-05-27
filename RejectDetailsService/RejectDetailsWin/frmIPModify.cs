@@ -18,12 +18,13 @@ namespace RejectDetailsWin {
             InitializeComponent();
         }
 
-        public frmIPModify(int id, string ipAddress, string desc, bool enabled, bool statistics) : this() {
+        public frmIPModify(int id, string ipAddress, string desc, bool enabled, bool statistics, bool alarm) : this() {
             this.id = id;
             this.txtIPAddress.Text = ipAddress;
             this.txtDescription.Text = desc;
             this.chkEnable.Checked = enabled;
             this.chkStatistics.Checked = statistics;
+            this.chkAlarm.Checked = alarm;  
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
@@ -32,6 +33,7 @@ namespace RejectDetailsWin {
             string sDescription = this.txtDescription.Text.Trim();
             bool isEnabled = this.chkEnable.Checked;
             bool isStatistics = this.chkStatistics.Checked;
+            bool isAlarm = this.chkAlarm.Checked;
 
             if ( string.IsNullOrWhiteSpace(sIPAddress)) {
                 MessageBox.Show("Please input IP Address.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -57,7 +59,8 @@ namespace RejectDetailsWin {
                 IpAddress = sIPAddress, 
                 Description = sDescription,
                 IsEnabled = isEnabled,
-                IsStatistics = isStatistics
+                IsStatistics = isStatistics,
+                IsAlarm = isAlarm
             };
             if (con.IsDuplicate())
             {
@@ -68,6 +71,18 @@ namespace RejectDetailsWin {
 
             this.DialogResult = DialogResult.OK;
             this.Visible = false;
+        }
+
+        private void chkStatistics_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkStatistics.Checked)
+                this.chkAlarm.Checked = false;
+        }
+
+        private void chkAlarm_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAlarm.Checked)
+                this.chkStatistics.Checked = false;
         }
     }
 }

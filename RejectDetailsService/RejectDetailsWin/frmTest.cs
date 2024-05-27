@@ -20,19 +20,10 @@ namespace RejectDetailsWin {
         }
 
         private void btnStart_Click(object sender, EventArgs e) {
-            //try {
-            //    timer.Interval = 500;
-            //    timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
-            //    timer.Start();
-            //} catch(Exception ex) {
-            //    clsLog.addLog(ex.ToString());
-            //    MessageBox.Show(ex.ToString(), "MCS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-
             try
             {
                 //Timer timer = new Timer();
-                timer.Interval = SystemKeys.HEARTBEAT_INTERVAL; //  31000; // 60 seconds
+                timer.Interval = SystemKeys.HEARTBEAT_SERVICE_INTERVAL; //  31000; // 60 seconds
                 timer.Elapsed += new ElapsedEventHandler(this.OnTimerHeartBeat);
                 timer.Start();
             } catch (Exception ex)
@@ -51,7 +42,30 @@ namespace RejectDetailsWin {
         }
 
         private void btnSingle_Click(object sender, EventArgs e) {
-            RejectDetails.Instance.Start();
+            if (this.cboService.SelectedItem == null )
+            {
+                MessageBox.Show("Please choose type of service first!", "Service Test", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            switch (this.cboService.SelectedItem.ToString())
+            {
+                case "Reject Service":
+                    RejectDetails.Instance.Start();
+                    break;
+                case "Statistics Service":
+                    StatisticsDetails.Instance.Start();
+                    break;
+                case "Alarm Service":
+                    AlarmDetails.Instance.Start();
+                    break;
+                case "HeartBeat Service":
+                    HeartBeat.Instance.Start();
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
         public void OnTimerHeartBeat(object sender, ElapsedEventArgs args)
@@ -64,11 +78,6 @@ namespace RejectDetailsWin {
             {
                 clsLog.addLog(e.Message);
             }
-        }
-
-        private void btnStatistics_Click(object sender, EventArgs e)
-        {
-            StatisticsDetails.Instance.Start();
         }
     }
 }

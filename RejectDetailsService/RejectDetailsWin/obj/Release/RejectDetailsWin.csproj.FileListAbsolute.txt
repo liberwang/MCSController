@@ -20,3 +20,4 @@ C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Release\RejectD
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Release\RejectDetailsWin.csproj.CopyComplete
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Release\RejectDetailsWin.exe
 C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Release\RejectDetailsWin.pdb
+C:\Repos\MCSController\RejectDetailsService\RejectDetailsWin\obj\Release\RejectDetailsWin.ucTags.resources

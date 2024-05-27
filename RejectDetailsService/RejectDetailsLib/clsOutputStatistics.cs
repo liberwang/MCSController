@@ -19,8 +19,14 @@ namespace RejectDetailsLib
                     clsTagValue tv = m_tagValueDictionary[key];
                     list.Add((tv.ToString(), tv.GetTagName()));
                 }
-                new Database().SetStatisticsContent(list, m_ipAddress);
+                //new Database().SetStatisticsContent(list, m_ipAddress);
+                SaveContentToDatabase(list);
             }
+        }
+
+        protected virtual void SaveContentToDatabase(List<(string, string)> list)
+        {
+            new Database().SetStatisticsContent(list, m_ipAddress);
         }
     }
 }

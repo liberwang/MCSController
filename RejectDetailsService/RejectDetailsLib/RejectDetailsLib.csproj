@@ -48,9 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlarmDetails.cs" />
     <Compile Include="Clients\clsHBHOutput.cs" />
     <Compile Include="clsController.cs" />
+    <Compile Include="clsHierarchyTag.cs" />
     <Compile Include="clsLog.cs" />
+    <Compile Include="clsOutputAlarm.cs" />
     <Compile Include="clsOutputStatistics.cs" />
     <Compile Include="clsStation.cs" />
     <Compile Include="clsTag.cs" />

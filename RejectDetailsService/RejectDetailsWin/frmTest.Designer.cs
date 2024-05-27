@@ -30,7 +30,7 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSingle = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.btnStatistics = new System.Windows.Forms.Button();
+            this.cboService = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -82,10 +82,10 @@ namespace RejectDetailsWin {
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 225F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 225F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.btnStatistics, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnStart, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnClose, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnSingle, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cboService, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 773);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -98,7 +98,7 @@ namespace RejectDetailsWin {
             // btnSingle
             // 
             this.btnSingle.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnSingle.Location = new System.Drawing.Point(472, 11);
+            this.btnSingle.Location = new System.Drawing.Point(247, 11);
             this.btnSingle.Margin = new System.Windows.Forms.Padding(22, 5, 4, 5);
             this.btnSingle.Name = "btnSingle";
             this.btnSingle.Size = new System.Drawing.Size(180, 62);
@@ -119,17 +119,20 @@ namespace RejectDetailsWin {
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
-            // btnStatistics
+            // cboService
             // 
-            this.btnStatistics.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnStatistics.Location = new System.Drawing.Point(247, 11);
-            this.btnStatistics.Margin = new System.Windows.Forms.Padding(22, 5, 4, 5);
-            this.btnStatistics.Name = "btnStatistics";
-            this.btnStatistics.Size = new System.Drawing.Size(180, 62);
-            this.btnStatistics.TabIndex = 3;
-            this.btnStatistics.Text = "Test Statistics";
-            this.btnStatistics.UseVisualStyleBackColor = true;
-            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
+            this.cboService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboService.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboService.FormattingEnabled = true;
+            this.cboService.Items.AddRange(new object[] {
+            "Reject Service",
+            "Statistics Service",
+            "Alarm Service",
+            "HeartBeat Service"});
+            this.cboService.Location = new System.Drawing.Point(453, 25);
+            this.cboService.Name = "cboService";
+            this.cboService.Size = new System.Drawing.Size(219, 33);
+            this.cboService.TabIndex = 3;
             // 
             // frmTest
             // 
@@ -156,6 +159,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button btnSingle;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button btnStatistics;
+        private System.Windows.Forms.ComboBox cboService;
     }
 }

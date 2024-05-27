@@ -34,6 +34,8 @@ namespace RejectDetailsWin {
             this.btnCancel = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.chkStatistics = new System.Windows.Forms.CheckBox();
+            this.chkAlarm = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtIPAddress
@@ -96,7 +98,7 @@ namespace RejectDetailsWin {
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(551, 360);
+            this.btnSave.Location = new System.Drawing.Point(556, 418);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(180, 62);
@@ -108,7 +110,7 @@ namespace RejectDetailsWin {
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(739, 360);
+            this.btnCancel.Location = new System.Drawing.Point(744, 418);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(180, 62);
@@ -133,13 +135,35 @@ namespace RejectDetailsWin {
             this.chkStatistics.Size = new System.Drawing.Size(28, 27);
             this.chkStatistics.TabIndex = 9;
             this.chkStatistics.UseVisualStyleBackColor = true;
+            this.chkStatistics.CheckedChanged += new System.EventHandler(this.chkStatistics_CheckedChanged);
+            // 
+            // chkAlarm
+            // 
+            this.chkAlarm.AutoSize = true;
+            this.chkAlarm.Location = new System.Drawing.Point(222, 343);
+            this.chkAlarm.Name = "chkAlarm";
+            this.chkAlarm.Size = new System.Drawing.Size(28, 27);
+            this.chkAlarm.TabIndex = 11;
+            this.chkAlarm.UseVisualStyleBackColor = true;
+            this.chkAlarm.CheckedChanged += new System.EventHandler(this.chkAlarm_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(132, 343);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 25);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Alarm:";
             // 
             // frmIPModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(951, 452);
+            this.ClientSize = new System.Drawing.Size(951, 494);
+            this.Controls.Add(this.chkAlarm);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.chkStatistics);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
@@ -174,5 +198,7 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkStatistics;
+        private System.Windows.Forms.CheckBox chkAlarm;
+        private System.Windows.Forms.Label label5;
     }
 }

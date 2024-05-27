@@ -35,6 +35,8 @@ namespace RejectDetailsLib
 
         public string TagType { get; set; }
 
+        public int TagTypeId { get; set; }
+
         public string Description { get; set; }
 
         public int Read { get; set; }
@@ -47,9 +49,11 @@ namespace RejectDetailsLib
 
         public string TagTitle { get; set; }
 
+        //public int ParentTagId { get; set; } = -1;
+
         public Tag plcTag { get; set; }
 
-        public void GenerateTag(string IpAddress)
+        public void GenerateTag(string ipAddress)
         {
             int dataType = DataType.INT;
             switch (TagType)
@@ -93,9 +97,9 @@ namespace RejectDetailsLib
             //    dataType = DataType.INT;
             //}
 
-            this.IPAddress = IpAddress;
+            this.IPAddress = ipAddress;
 
-            this.plcTag = new Tag(IpAddress, "1,0", CpuType.LGX, TagName, dataType, 1);
+            this.plcTag = new Tag(ipAddress, "1,0", CpuType.LGX, TagName, dataType, 1);
         }
 
         public static Dictionary<string, string> GetTagNameTitlePair()

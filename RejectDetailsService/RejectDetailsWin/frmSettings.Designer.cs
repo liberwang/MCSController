@@ -37,13 +37,11 @@ namespace RejectDetailsWin {
             this.btnOutputFileFolder = new System.Windows.Forms.Button();
             this.txtOutputFileName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.txtOutputFileExt = new System.Windows.Forms.TextBox();
             this.txtCopyFileFolder = new System.Windows.Forms.TextBox();
             this.txtRejectFilePrefix = new System.Windows.Forms.TextBox();
             this.nudVisitInterval = new System.Windows.Forms.NumericUpDown();
-            this.nudCopyInterval = new System.Windows.Forms.NumericUpDown();
             this.btnCopyFileFolder = new System.Windows.Forms.Button();
             this.chkSaveToFile = new System.Windows.Forms.CheckBox();
             this.chkSaveToDB = new System.Windows.Forms.CheckBox();
@@ -55,8 +53,8 @@ namespace RejectDetailsWin {
             this.txtProductName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tabPageService = new System.Windows.Forms.TabPage();
+            this.chkDebug = new System.Windows.Forms.CheckBox();
             this.chkMultithread = new System.Windows.Forms.CheckBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPageSaveFile = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
@@ -66,20 +64,36 @@ namespace RejectDetailsWin {
             this.cboTimeOfOutputFile = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.chkDebug = new System.Windows.Forms.CheckBox();
+            this.chkHeartBeat = new System.Windows.Forms.CheckBox();
+            this.chkStatistics = new System.Windows.Forms.CheckBox();
+            this.nudStatistics = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.nudHeartBeat = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.nudCopyInterval = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.nudAlarm = new System.Windows.Forms.NumericUpDown();
+            this.chkAlarm = new System.Windows.Forms.CheckBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtHeartBeatTag = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudVisitInterval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCopyInterval)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPageProd.SuspendLayout();
             this.tabPageService.SuspendLayout();
             this.tabPageSaveFile.SuspendLayout();
             this.tabPageLog.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStatistics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHeartBeat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCopyInterval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAlarm)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(1180, 806);
+            this.btnClose.Location = new System.Drawing.Point(1180, 817);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(180, 62);
@@ -89,7 +103,7 @@ namespace RejectDetailsWin {
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(989, 806);
+            this.btnSave.Location = new System.Drawing.Point(989, 817);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(180, 62);
@@ -196,22 +210,12 @@ namespace RejectDetailsWin {
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(56, 61);
+            this.label8.Location = new System.Drawing.Point(56, 59);
             this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(135, 25);
+            this.label8.Size = new System.Drawing.Size(275, 25);
             this.label8.TabIndex = 13;
-            this.label8.Text = "Visit Interval:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(56, 124);
-            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(144, 25);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "Copy Interval:";
+            this.label8.Text = "Production Service Interval:";
             // 
             // label10
             // 
@@ -250,7 +254,7 @@ namespace RejectDetailsWin {
             // 
             // nudVisitInterval
             // 
-            this.nudVisitInterval.Location = new System.Drawing.Point(212, 59);
+            this.nudVisitInterval.Location = new System.Drawing.Point(381, 57);
             this.nudVisitInterval.Margin = new System.Windows.Forms.Padding(6);
             this.nudVisitInterval.Maximum = new decimal(new int[] {
             100000,
@@ -267,29 +271,6 @@ namespace RejectDetailsWin {
             this.nudVisitInterval.TabIndex = 23;
             this.nudVisitInterval.Value = new decimal(new int[] {
             1500,
-            0,
-            0,
-            0});
-            // 
-            // nudCopyInterval
-            // 
-            this.nudCopyInterval.Location = new System.Drawing.Point(212, 122);
-            this.nudCopyInterval.Margin = new System.Windows.Forms.Padding(6);
-            this.nudCopyInterval.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudCopyInterval.Minimum = new decimal(new int[] {
-            31000,
-            0,
-            0,
-            0});
-            this.nudCopyInterval.Name = "nudCopyInterval";
-            this.nudCopyInterval.Size = new System.Drawing.Size(164, 31);
-            this.nudCopyInterval.TabIndex = 24;
-            this.nudCopyInterval.Value = new decimal(new int[] {
-            31000,
             0,
             0,
             0});
@@ -322,7 +303,7 @@ namespace RejectDetailsWin {
             this.chkSaveToDB.AutoSize = true;
             this.chkSaveToDB.Checked = true;
             this.chkSaveToDB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveToDB.Location = new System.Drawing.Point(40, 550);
+            this.chkSaveToDB.Location = new System.Drawing.Point(34, 600);
             this.chkSaveToDB.Margin = new System.Windows.Forms.Padding(6);
             this.chkSaveToDB.Name = "chkSaveToDB";
             this.chkSaveToDB.Size = new System.Drawing.Size(152, 29);
@@ -358,7 +339,7 @@ namespace RejectDetailsWin {
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1356, 759);
+            this.tabControl.Size = new System.Drawing.Size(1356, 778);
             this.tabControl.TabIndex = 30;
             // 
             // tabPageProd
@@ -367,7 +348,7 @@ namespace RejectDetailsWin {
             this.tabPageProd.Controls.Add(this.label12);
             this.tabPageProd.Location = new System.Drawing.Point(8, 39);
             this.tabPageProd.Name = "tabPageProd";
-            this.tabPageProd.Size = new System.Drawing.Size(1340, 712);
+            this.tabPageProd.Size = new System.Drawing.Size(1340, 731);
             this.tabPageProd.TabIndex = 3;
             this.tabPageProd.Text = "Product";
             this.tabPageProd.UseVisualStyleBackColor = true;
@@ -390,45 +371,54 @@ namespace RejectDetailsWin {
             // 
             // tabPageService
             // 
+            this.tabPageService.Controls.Add(this.txtHeartBeatTag);
+            this.tabPageService.Controls.Add(this.label19);
+            this.tabPageService.Controls.Add(this.label18);
+            this.tabPageService.Controls.Add(this.nudAlarm);
+            this.tabPageService.Controls.Add(this.chkAlarm);
+            this.tabPageService.Controls.Add(this.label17);
+            this.tabPageService.Controls.Add(this.nudHeartBeat);
+            this.tabPageService.Controls.Add(this.label16);
+            this.tabPageService.Controls.Add(this.nudStatistics);
+            this.tabPageService.Controls.Add(this.chkStatistics);
+            this.tabPageService.Controls.Add(this.chkHeartBeat);
             this.tabPageService.Controls.Add(this.chkDebug);
             this.tabPageService.Controls.Add(this.chkMultithread);
-            this.tabPageService.Controls.Add(this.label11);
             this.tabPageService.Controls.Add(this.label7);
             this.tabPageService.Controls.Add(this.label8);
-            this.tabPageService.Controls.Add(this.label9);
             this.tabPageService.Controls.Add(this.nudVisitInterval);
-            this.tabPageService.Controls.Add(this.nudCopyInterval);
             this.tabPageService.Location = new System.Drawing.Point(8, 39);
             this.tabPageService.Name = "tabPageService";
             this.tabPageService.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageService.Size = new System.Drawing.Size(1340, 712);
+            this.tabPageService.Size = new System.Drawing.Size(1340, 731);
             this.tabPageService.TabIndex = 0;
             this.tabPageService.Text = "Service";
             this.tabPageService.UseVisualStyleBackColor = true;
             // 
+            // chkDebug
+            // 
+            this.chkDebug.AutoSize = true;
+            this.chkDebug.Location = new System.Drawing.Point(61, 496);
+            this.chkDebug.Name = "chkDebug";
+            this.chkDebug.Size = new System.Drawing.Size(245, 29);
+            this.chkDebug.TabIndex = 28;
+            this.chkDebug.Text = "Set to Debug status. ";
+            this.chkDebug.UseVisualStyleBackColor = true;
+            // 
             // chkMultithread
             // 
             this.chkMultithread.AutoSize = true;
-            this.chkMultithread.Location = new System.Drawing.Point(61, 198);
+            this.chkMultithread.Location = new System.Drawing.Point(61, 441);
             this.chkMultithread.Name = "chkMultithread";
             this.chkMultithread.Size = new System.Drawing.Size(404, 29);
             this.chkMultithread.TabIndex = 27;
             this.chkMultithread.Text = "Use multithreading method in service.";
             this.chkMultithread.UseVisualStyleBackColor = true;
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(386, 124);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(130, 25);
-            this.label11.TabIndex = 26;
-            this.label11.Text = "milliseconds";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(386, 61);
+            this.label7.Location = new System.Drawing.Point(555, 59);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(130, 25);
             this.label7.TabIndex = 25;
@@ -436,6 +426,9 @@ namespace RejectDetailsWin {
             // 
             // tabPageSaveFile
             // 
+            this.tabPageSaveFile.Controls.Add(this.label11);
+            this.tabPageSaveFile.Controls.Add(this.label9);
+            this.tabPageSaveFile.Controls.Add(this.nudCopyInterval);
             this.tabPageSaveFile.Controls.Add(this.label15);
             this.tabPageSaveFile.Controls.Add(this.opnExcel);
             this.tabPageSaveFile.Controls.Add(this.opnCSV);
@@ -461,7 +454,7 @@ namespace RejectDetailsWin {
             this.tabPageSaveFile.Location = new System.Drawing.Point(8, 39);
             this.tabPageSaveFile.Name = "tabPageSaveFile";
             this.tabPageSaveFile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSaveFile.Size = new System.Drawing.Size(1340, 712);
+            this.tabPageSaveFile.Size = new System.Drawing.Size(1340, 731);
             this.tabPageSaveFile.TabIndex = 1;
             this.tabPageSaveFile.Text = "Output";
             this.tabPageSaveFile.UseVisualStyleBackColor = true;
@@ -469,7 +462,7 @@ namespace RejectDetailsWin {
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(203, 476);
+            this.label15.Location = new System.Drawing.Point(201, 466);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(107, 25);
             this.label15.TabIndex = 34;
@@ -478,7 +471,7 @@ namespace RejectDetailsWin {
             // opnExcel
             // 
             this.opnExcel.AutoSize = true;
-            this.opnExcel.Location = new System.Drawing.Point(454, 476);
+            this.opnExcel.Location = new System.Drawing.Point(442, 466);
             this.opnExcel.Name = "opnExcel";
             this.opnExcel.Size = new System.Drawing.Size(96, 29);
             this.opnExcel.TabIndex = 33;
@@ -490,7 +483,7 @@ namespace RejectDetailsWin {
             // 
             this.opnCSV.AutoSize = true;
             this.opnCSV.Checked = true;
-            this.opnCSV.Location = new System.Drawing.Point(326, 476);
+            this.opnCSV.Location = new System.Drawing.Point(323, 466);
             this.opnCSV.Name = "opnCSV";
             this.opnCSV.Size = new System.Drawing.Size(86, 29);
             this.opnCSV.TabIndex = 32;
@@ -501,7 +494,7 @@ namespace RejectDetailsWin {
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(511, 628);
+            this.label14.Location = new System.Drawing.Point(500, 666);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(72, 25);
             this.label14.TabIndex = 31;
@@ -536,7 +529,7 @@ namespace RejectDetailsWin {
             "21",
             "22",
             "23"});
-            this.cboTimeOfOutputFile.Location = new System.Drawing.Point(397, 625);
+            this.cboTimeOfOutputFile.Location = new System.Drawing.Point(386, 663);
             this.cboTimeOfOutputFile.Name = "cboTimeOfOutputFile";
             this.cboTimeOfOutputFile.Size = new System.Drawing.Size(107, 33);
             this.cboTimeOfOutputFile.TabIndex = 30;
@@ -544,7 +537,7 @@ namespace RejectDetailsWin {
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(40, 628);
+            this.label13.Location = new System.Drawing.Point(29, 666);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(318, 25);
             this.label13.TabIndex = 29;
@@ -557,20 +550,197 @@ namespace RejectDetailsWin {
             this.tabPageLog.Controls.Add(this.txtLogFolder);
             this.tabPageLog.Location = new System.Drawing.Point(8, 39);
             this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Size = new System.Drawing.Size(1340, 712);
+            this.tabPageLog.Size = new System.Drawing.Size(1340, 731);
             this.tabPageLog.TabIndex = 2;
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
-            // chkDebug
+            // chkHeartBeat
             // 
-            this.chkDebug.AutoSize = true;
-            this.chkDebug.Location = new System.Drawing.Point(61, 256);
-            this.chkDebug.Name = "chkDebug";
-            this.chkDebug.Size = new System.Drawing.Size(245, 29);
-            this.chkDebug.TabIndex = 28;
-            this.chkDebug.Text = "Set to Debug status. ";
-            this.chkDebug.UseVisualStyleBackColor = true;
+            this.chkHeartBeat.AutoSize = true;
+            this.chkHeartBeat.Location = new System.Drawing.Point(61, 187);
+            this.chkHeartBeat.Name = "chkHeartBeat";
+            this.chkHeartBeat.Size = new System.Drawing.Size(306, 29);
+            this.chkHeartBeat.TabIndex = 29;
+            this.chkHeartBeat.Text = "Heart Beat Service Interval:";
+            this.chkHeartBeat.UseVisualStyleBackColor = true;
+            this.chkHeartBeat.CheckedChanged += new System.EventHandler(this.chkHeartBeat_CheckedChanged);
+            // 
+            // chkStatistics
+            // 
+            this.chkStatistics.AutoSize = true;
+            this.chkStatistics.Location = new System.Drawing.Point(61, 124);
+            this.chkStatistics.Name = "chkStatistics";
+            this.chkStatistics.Size = new System.Drawing.Size(291, 29);
+            this.chkStatistics.TabIndex = 30;
+            this.chkStatistics.Text = "Statistics Service Interval:";
+            this.chkStatistics.UseVisualStyleBackColor = true;
+            this.chkStatistics.CheckedChanged += new System.EventHandler(this.chkStatistics_CheckedChanged);
+            // 
+            // nudStatistics
+            // 
+            this.nudStatistics.Location = new System.Drawing.Point(381, 124);
+            this.nudStatistics.Margin = new System.Windows.Forms.Padding(6);
+            this.nudStatistics.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudStatistics.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nudStatistics.Name = "nudStatistics";
+            this.nudStatistics.Size = new System.Drawing.Size(164, 31);
+            this.nudStatistics.TabIndex = 31;
+            this.nudStatistics.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(554, 126);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(130, 25);
+            this.label16.TabIndex = 32;
+            this.label16.Text = "milliseconds";
+            // 
+            // nudHeartBeat
+            // 
+            this.nudHeartBeat.Location = new System.Drawing.Point(381, 187);
+            this.nudHeartBeat.Margin = new System.Windows.Forms.Padding(6);
+            this.nudHeartBeat.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudHeartBeat.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nudHeartBeat.Name = "nudHeartBeat";
+            this.nudHeartBeat.Size = new System.Drawing.Size(164, 31);
+            this.nudHeartBeat.TabIndex = 33;
+            this.nudHeartBeat.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(554, 188);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(130, 25);
+            this.label17.TabIndex = 34;
+            this.label17.Text = "milliseconds";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(500, 529);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(130, 25);
+            this.label11.TabIndex = 37;
+            this.label11.Text = "milliseconds";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(164, 529);
+            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(144, 25);
+            this.label9.TabIndex = 35;
+            this.label9.Text = "Copy Interval:";
+            // 
+            // nudCopyInterval
+            // 
+            this.nudCopyInterval.Location = new System.Drawing.Point(323, 527);
+            this.nudCopyInterval.Margin = new System.Windows.Forms.Padding(6);
+            this.nudCopyInterval.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudCopyInterval.Minimum = new decimal(new int[] {
+            31000,
+            0,
+            0,
+            0});
+            this.nudCopyInterval.Name = "nudCopyInterval";
+            this.nudCopyInterval.Size = new System.Drawing.Size(164, 31);
+            this.nudCopyInterval.TabIndex = 36;
+            this.nudCopyInterval.Value = new decimal(new int[] {
+            31000,
+            0,
+            0,
+            0});
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(554, 304);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(130, 25);
+            this.label18.TabIndex = 37;
+            this.label18.Text = "milliseconds";
+            // 
+            // nudAlarm
+            // 
+            this.nudAlarm.Location = new System.Drawing.Point(381, 304);
+            this.nudAlarm.Margin = new System.Windows.Forms.Padding(6);
+            this.nudAlarm.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudAlarm.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nudAlarm.Name = "nudAlarm";
+            this.nudAlarm.Size = new System.Drawing.Size(164, 31);
+            this.nudAlarm.TabIndex = 36;
+            this.nudAlarm.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // chkAlarm
+            // 
+            this.chkAlarm.AutoSize = true;
+            this.chkAlarm.Location = new System.Drawing.Point(61, 303);
+            this.chkAlarm.Name = "chkAlarm";
+            this.chkAlarm.Size = new System.Drawing.Size(259, 29);
+            this.chkAlarm.TabIndex = 35;
+            this.chkAlarm.Text = "Alarm Service Interval:";
+            this.chkAlarm.UseVisualStyleBackColor = true;
+            this.chkAlarm.CheckedChanged += new System.EventHandler(this.chkAlarm_CheckedChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(210, 246);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(157, 25);
+            this.label19.TabIndex = 38;
+            this.label19.Text = "HeartBeat Tag:";
+            // 
+            // txtHeartBeatTag
+            // 
+            this.txtHeartBeatTag.Location = new System.Drawing.Point(381, 246);
+            this.txtHeartBeatTag.Name = "txtHeartBeatTag";
+            this.txtHeartBeatTag.Size = new System.Drawing.Size(436, 31);
+            this.txtHeartBeatTag.TabIndex = 39;
             // 
             // frmSettings
             // 
@@ -590,7 +760,6 @@ namespace RejectDetailsWin {
             this.Text = "System Settings";
             this.Load += new System.EventHandler(this.frmSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudVisitInterval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCopyInterval)).EndInit();
             this.tabControl.ResumeLayout(false);
             this.tabPageProd.ResumeLayout(false);
             this.tabPageProd.PerformLayout();
@@ -600,6 +769,10 @@ namespace RejectDetailsWin {
             this.tabPageSaveFile.PerformLayout();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStatistics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHeartBeat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCopyInterval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAlarm)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -619,13 +792,11 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.Button btnOutputFileFolder;
         private System.Windows.Forms.TextBox txtOutputFileName;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtOutputFileExt;
         private System.Windows.Forms.TextBox txtCopyFileFolder;
         private System.Windows.Forms.TextBox txtRejectFilePrefix;
         private System.Windows.Forms.NumericUpDown nudVisitInterval;
-        private System.Windows.Forms.NumericUpDown nudCopyInterval;
         private System.Windows.Forms.Button btnCopyFileFolder;
         private System.Windows.Forms.CheckBox chkSaveToFile;
         private System.Windows.Forms.CheckBox chkSaveToDB;
@@ -635,7 +806,6 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPageService;
         private System.Windows.Forms.TabPage tabPageSaveFile;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabPageLog;
         private System.Windows.Forms.TabPage tabPageProd;
@@ -649,6 +819,20 @@ namespace RejectDetailsWin {
         private System.Windows.Forms.RadioButton opnExcel;
         private System.Windows.Forms.RadioButton opnCSV;
         private System.Windows.Forms.CheckBox chkDebug;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown nudHeartBeat;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown nudStatistics;
+        private System.Windows.Forms.CheckBox chkStatistics;
+        private System.Windows.Forms.CheckBox chkHeartBeat;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown nudCopyInterval;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.NumericUpDown nudAlarm;
+        private System.Windows.Forms.CheckBox chkAlarm;
+        private System.Windows.Forms.TextBox txtHeartBeatTag;
+        private System.Windows.Forms.Label label19;
     }
 }
 
