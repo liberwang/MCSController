@@ -14,6 +14,7 @@ namespace RejectDetailsService {
             } catch (Exception ex)
             {
                 clsLog.addLog( ex.Message );
+                throw ex;
             }
         }
 

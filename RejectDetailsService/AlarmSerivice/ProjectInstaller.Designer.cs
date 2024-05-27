@@ -1,5 +1,4 @@
-﻿
-namespace RejectDetailsService
+﻿namespace AlarmSerivice
 {
     partial class ProjectInstaller
     {
@@ -41,9 +40,9 @@ namespace RejectDetailsService
             // serviceInstaller1
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
-            this.serviceInstaller1.Description = "MachineControlSolution Reject Service";
-            this.serviceInstaller1.DisplayName = "MCS_RejectService";
-            this.serviceInstaller1.ServiceName = "MCRejectService";
+            this.serviceInstaller1.Description = "MachineControlSolutionAlarm Service";
+            this.serviceInstaller1.DisplayName = "MCS_AlarmService";
+            this.serviceInstaller1.ServiceName = "MCSAlarmService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

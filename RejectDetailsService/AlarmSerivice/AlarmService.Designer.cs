@@ -1,4 +1,4 @@
-﻿namespace AlarmSerivice
+﻿namespace AlarmService
 {
     partial class AlarmService
     {

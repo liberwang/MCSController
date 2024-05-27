@@ -1,0 +1,42 @@
+﻿Installing assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Installing service MCSAlarmService...
+Service MCSAlarmService has been successfully installed.
+Creating EventLog source MCSAlarmService in log Application...
+Committing assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Uninstalling assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Removing EventLog source MCSAlarmService.
+Service MCSAlarmService is being removed from the system...
+Service MCSAlarmService was successfully removed from the system.
+Installing assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Installing service MCSAlarmService...
+Service MCSAlarmService has been successfully installed.
+Creating EventLog source MCSAlarmService in log Application...
+Committing assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Uninstalling assembly 'C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+   logfile = C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.InstallLog
+Removing EventLog source MCSAlarmService.
+Service MCSAlarmService is being removed from the system...
+Service MCSAlarmService was successfully removed from the system.

@@ -1,0 +1,15 @@
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe.config
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.exe
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\AlarmService.pdb
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\RejectDetailsLib.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\LibplctagWrapper.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\libplctag.NativeImport.dll
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\RejectDetailsLib.pdb
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\bin\Debug\libplctag.NativeImport.xml
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.csproj.AssemblyReference.cache
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmSerivice.ProjectInstaller.resources
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.csproj.GenerateResource.cache
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.csproj.CoreCompileInputs.cache
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.csproj.CopyComplete
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.exe
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Debug\AlarmService.pdb
