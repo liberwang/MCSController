@@ -159,7 +159,7 @@ namespace RejectDetailsLib
         private bool ReadTag(clsHierarchyTag tag, Libplctag client, ConcurrentDictionary<int, clsTagValue> ReadValuesDictionary)
         {
             client.AddTag(tag.plcTag);
-            bool isOK = false;
+            bool isOK = true;
             if (tag.Read == 1)
             {
                 if (client.GetStatus(tag.plcTag) == Libplctag.PLCTAG_STATUS_OK)
@@ -184,11 +184,11 @@ namespace RejectDetailsLib
                             {
                                 Parallel.ForEach(tag.ChildrenTags, po, (tagClass) =>
                                 {
-                                    if (ReadTag(tagClass, client, ReadValuesDictionary))
+                                    if (!ReadTag(tagClass, client, ReadValuesDictionary))
                                     {
                                         lock (UpdateOK)
                                         {
-                                            isOK = true;
+                                            isOK = false;
                                         }
                                     }
 
