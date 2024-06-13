@@ -27,6 +27,7 @@ namespace RejectDetailsLib
             TagName = name;
         }
 
+        public int ControllerId { get; set; }
         public string IPAddress { get; set; }
 
         public int TagId { get; set; }

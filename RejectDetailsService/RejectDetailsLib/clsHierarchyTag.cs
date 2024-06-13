@@ -35,7 +35,7 @@ namespace RejectDetailsLib
         /// <returns></returns>
         public List<clsHierarchyTag> AddChildren()
         {
-            List<clsHierarchyTag > children = new Database().GetChildrenTags( this.TagId );
+            List<clsHierarchyTag > children = new Database().GetChildrenTags( this.TagId, this.ControllerId );
             List<clsHierarchyTag> result = new List<clsHierarchyTag> ();
             if (this.ChildrenTags.Any())
             {
@@ -53,6 +53,19 @@ namespace RejectDetailsLib
                 result = children;
             }
             return result;
+        }
+
+        public bool RemoveOneChild( int tagId )
+        {
+            for( int i = 0; i < ChildrenTags.Count; i++ )
+            {
+                if (ChildrenTags[i].TagId == tagId )
+                {
+                    ChildrenTags.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static List<clsHierarchyTag> GenerateHierarchyTags(int controllerId, string ipAddress = "")

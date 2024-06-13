@@ -68,21 +68,20 @@ namespace RejectDetailsWin {
 
             db.SetFullTags(this.ControllerId, this.TagId, sName, iType, iRead, iWrite, sDescription, 0, sTitle, this.ParentTagId);
 
-            if ( ParentTagId >= 0 )
+            if (this.TagClass is null)
             {
-                if (this.TagClass is null)
-                {
-                    this.TagClass = new clsHierarchyTag(ParentTagId);
-                 }
+                this.TagClass = db.GetOneTag(this.ControllerId, sName);
             }
-
-            this.TagClass.TagName = sName;
-            this.TagClass.Description = sDescription;
-            this.TagClass.TagTypeId = iType;
-            this.TagClass.TagType = TypeName;
-            this.TagClass.Read = iRead;
-            this.TagClass.Write = iWrite;
-
+            else
+            {
+                this.TagClass.TagName = sName;
+                this.TagClass.Description = sDescription;
+                this.TagClass.TagTypeId = iType;
+                this.TagClass.TagType = TypeName;
+                this.TagClass.Read = iRead;
+                this.TagClass.Write = iWrite;
+                this.TagClass.TagTitle = sTitle;
+            }
             this.DialogResult = DialogResult.OK;
             this.Hide();
         }

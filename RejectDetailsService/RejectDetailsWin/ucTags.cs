@@ -93,7 +93,7 @@ namespace RejectDetailsWin
 
             this.lblParent.Text = "Parent:";
 
-            if (tag == null)
+            if (tag == null || tag.TagId == -1)
             {
                 CleanUp();
             }

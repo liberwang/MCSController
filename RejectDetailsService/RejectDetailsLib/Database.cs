@@ -504,6 +504,43 @@ WHERE controllerId = {ControllerID}";
             }
         }
 
+        public clsTag GetOneTag(int controllerId, string tagName)
+        {
+            List<clsHierarchyTag> result = new List<clsHierarchyTag>();
+
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, tagTitle, ISNULL(parentTagId, -1) AS parentTagId 
+FROM dbo.tblFullTag ft WITH(NOLOCK) 
+JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
+WHERE controllerId = {controllerId}
+AND tagName = '{tagName}'
+ORDER BY tagId";
+
+                    SqlDataReader dr = com.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        clsHierarchyTag tag = new clsHierarchyTag();
+                        tag.TagId = (int)dr["tagId"];
+                        tag.TagName = dr["tagName"].ToString();
+                        tag.TagTitle = dr["tagTitle"].ToString();
+                        tag.Description = dr["tagDescription"].ToString();
+                        tag.TagType = dr["typeName"].ToString();
+                        tag.Read = System.Convert.ToInt32(dr["tagRead"]);
+                        tag.Write = System.Convert.ToInt32(dr["tagWrite"]);
+                        tag.ParentTagId = System.Convert.ToInt32(dr["parentTagId"]);
+                        tag.TagTypeId = (int)dr["tagType"];
+                        tag.ControllerId = controllerId;
+                        return (clsTag)tag;
+                    }
+                }
+            }
+            return null;
+        }
+
         public List<clsHierarchyTag> GetAlarmFullTags(int controllerID)
         {
             List<clsHierarchyTag> result = new List<clsHierarchyTag>();
@@ -532,6 +569,7 @@ ORDER BY tagId";
                         tag.Write = System.Convert.ToInt32(dr["tagWrite"]);
                         tag.ParentTagId = System.Convert.ToInt32(dr["parentTagId"]);
                         tag.TagTypeId = (int)dr["tagType"];
+                        tag.ControllerId = controllerID;
                         result.Add(tag);
                     }
                 }
@@ -539,7 +577,7 @@ ORDER BY tagId";
             return result;
         }
 
-        public List<clsHierarchyTag> GetChildrenTags(int parentTagId) 
+        public List<clsHierarchyTag> GetChildrenTags(int parentTagId, int controllerId) 
         {
             List<clsHierarchyTag> result = new List<clsHierarchyTag>();
 
@@ -551,7 +589,8 @@ ORDER BY tagId";
                     com.CommandText = $@"SELECT ft.tagId, ft.tagName, ft.tagType, tt.typeName, ISNULL(ft.tagRead, 0) tagRead, ISNULL(ft.tagWrite, 0) AS tagWrite, ft.tagDescription, tagTitle
 FROM dbo.tblFullTag ft WITH(NOLOCK) 
 JOIN dbo.tblTagType tt WITH(NOLOCK) ON ft.tagType = tt.typeId
-WHERE parentTagId = {parentTagId}
+WHERE ISNULL(parentTagId, -1) = {parentTagId}
+AND ControllerId = {controllerId}
 ORDER BY tagId";
 
                     SqlDataReader dr = com.ExecuteReader();
@@ -567,6 +606,7 @@ ORDER BY tagId";
                         tag.Write = System.Convert.ToInt32(dr["tagWrite"]);
                         tag.ParentTagId = parentTagId;
                         tag.TagTypeId = (int)dr["tagType"];
+                        tag.ControllerId = controllerId;
                         result.Add(tag);
                     }
                 }
@@ -602,6 +642,21 @@ ELSE
                 {
                     conn.Open();
                     com.CommandText = $@"DELETE FROM tblOutput WHERE tagId = {tagId}; DELETE FROM tblFullTag WHERE tagId = {tagId}";
+                    com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteFullTagWithChild(int tagId)
+        {
+            using (SqlConnection conn = new SqlConnection(SystemKeys.DB_CONNECT))
+            {
+                using (SqlCommand com = conn.CreateCommand())
+                {
+                    conn.Open();
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.CommandText = "spDeleteFullTagWithChildren";
+                    com.Parameters.Add(new SqlParameter("@tagId", tagId));
                     com.ExecuteNonQuery();
                 }
             }

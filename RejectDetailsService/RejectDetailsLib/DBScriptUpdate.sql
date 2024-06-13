@@ -583,3 +583,31 @@ BEGIN
 	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END 
 GO
+
+CREATE OR ALTER PROCEDURE dbo.spDeleteFullTagWithChildren
+	@tagId int 
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	BEGIN TRANSACTION;
+
+	WITH taglist AS ( 
+		SELECT tagid, parentTagid 
+		FROM tblFullTag ft WITH(NOLOCK) 
+		WHERE tagId = @tagId
+		UNION ALL 
+		SELECT ft.tagid, ft.parentTagid  
+		FROM tblFullTag ft WITH(NOLOCK) 
+		JOIN taglist tl 
+			ON ft.parentTagId = tl.tagid 
+	)
+
+	SELECT * INTO #tmp FROM taglist;
+
+	DELETE op FROM tblOutput op JOIN #tmp tl ON op.tagId = tl.Tagid 
+	DELETE ft FROM tblFullTag ft JOIN #tmp tl ON ft.tagId = tl.Tagid 
+
+	COMMIT;
+END
+GO

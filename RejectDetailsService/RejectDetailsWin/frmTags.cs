@@ -607,15 +607,24 @@ namespace RejectDetailsWin
             this.treeviewAlarm.Nodes.Clear();
 
             TreeNode root = new TreeNode(controllerName);
+            clsHierarchyTag tag = new clsHierarchyTag()
+            {
+                ParentTagId = -1,
+                TagId = -1,
+                TagName = controllerName,
+                ControllerId = controllerId,
+            };
+            root.Tag = tag;
             this.treeviewAlarm.Nodes.Add(root);
             root.ContextMenuStrip = this.contextMenuTreeview;
             root.ImageIndex = 0;
             root.SelectedImageIndex = 0;
 
             List<clsHierarchyTag> list = clsHierarchyTag.GenerateHierarchyTags(controllerId);
-
+            // load first level tags, and add into root.children list
             foreach (clsHierarchyTag htag in list)
             {
+                tag.ChildrenTags.Add(htag);
                 LoadTreeNode(root, htag);
             }
             root.ExpandAll();
@@ -632,6 +641,8 @@ namespace RejectDetailsWin
                 newNode.SelectedImageIndex = 1;
 
                 root.Nodes.Add(newNode);
+                root.Expand();
+
                 if (htag.ChildrenTags != null && htag.ChildrenTags.Any())
                 {
                     foreach (clsHierarchyTag tag in htag.ChildrenTags)
@@ -649,7 +660,7 @@ namespace RejectDetailsWin
             int controllerId = (int)cboIPAddressAlarm.SelectedValue;
             clsTag selectedTag = (clsTag)selectedNode.Tag;
             TreeNode parentNode = selectedNode.Parent;
-            clsTag parentTag = parentNode?.Tag as clsTag;
+            clsHierarchyTag parentTag = parentNode?.Tag as clsHierarchyTag;
 
             this.contextMenuTreeview.Close();
 
@@ -668,19 +679,21 @@ namespace RejectDetailsWin
                     }
                 case "toolStripMenuItemDelete":
                     {
-                        if (selectedNode.Tag == null)
+                        if (parentNode == null && selectedTag.TagId == -1)
                         {
                             if (MessageBox.Show($"Are you sure to clean up all nodes?", "Alarm Setting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             {
                                 db.CleanUpFallTag(controllerId);
-                                selectedNode.Remove();
+                                ((clsHierarchyTag) selectedNode.Tag).ChildrenTags.Clear();
+                                selectedNode.Nodes.Clear();
                             }
                         }
                         else
                         {
                             if (MessageBox.Show($"Are you sure to delete node [{selectedNode.Text}] and all of its children?", "Alarm Setting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             {
-                                db.DeleteFullTag(selectedTag.TagId);
+                                db.DeleteFullTagWithChild(selectedTag.TagId);
+                                parentTag.RemoveOneChild(selectedTag.TagId);
                                 selectedNode.Remove();
                             }
                         }
@@ -688,14 +701,17 @@ namespace RejectDetailsWin
                     }
                 case "toolStripMenuItemEdit":
                     {
-                        frmTagModify frmTagModify = new frmTagModify(controllerId, parentTag == null ? "" : parentTag.TagName, parentTag == null ? -1 : parentTag.TagId, selectedTag);
-
-                        if (frmTagModify.ShowDialog() == DialogResult.OK)
+                        if (selectedTag != null && selectedTag.TagId >= 0)
                         {
-                            clsTag newTag = frmTagModify.TagClass;
-                            selectedNode.Text = newTag.TagName;
-                            selectedNode.Tag = newTag;
-                            RefreshTagUserControl(selectedNode);
+                            frmTagModify frmTagModify = new frmTagModify(controllerId, selectedTag.TagName, selectedTag.TagId, selectedTag);
+
+                            if (frmTagModify.ShowDialog() == DialogResult.OK)
+                            {
+                                clsTag newTag = frmTagModify.TagClass;
+                                selectedNode.Text = newTag.TagName;
+                                selectedNode.Tag = newTag;
+                                RefreshTagUserControl(selectedNode);
+                            }
                         }
                         break;
                     }
@@ -748,13 +764,18 @@ namespace RejectDetailsWin
         {
             treeviewAlarm.SelectedNode = e.Node;
 
-            RefreshTagUserControl(e.Node);
+            //RefreshTagUserControl(e.Node);
         }
 
         private void RefreshTagUserControl(TreeNode node)
         {
             this.ucTag.EditStatus = false;
             this.ucTag.LoadTag((clsTag)node.Tag, node.Parent != null ? node.Parent.Text : "");
+        }
+
+        private void treeviewAlarm_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            RefreshTagUserControl(e.Node);
         }
     }
 }
