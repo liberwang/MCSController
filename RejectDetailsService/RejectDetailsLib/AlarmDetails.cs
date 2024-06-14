@@ -137,10 +137,10 @@ namespace RejectDetailsLib
                 int controllerId = listController[i].Id;
                 foreach (clsHierarchyTag clsTag in listTagGroup[i])
                 {
-                    new Thread(() =>
-                    {
+                   // new Thread(() =>
+                   //{
                         ProcessChildren(clsTag, new Libplctag(), controllerId);
-                    }).Start();
+                    //}).Start();
                 }
 
 
@@ -152,7 +152,10 @@ namespace RejectDetailsLib
             ConcurrentDictionary<int, clsTagValue> ReadValuesDictionary = new ConcurrentDictionary<int, clsTagValue>();
             if (ReadTag(tag, client, ReadValuesDictionary))
             {
-                SaveToFile(ReadValuesDictionary, controllerId);
+                new Thread(() =>
+                {
+                    SaveToFile(ReadValuesDictionary, controllerId);
+                }).Start();
             }
         }
 
