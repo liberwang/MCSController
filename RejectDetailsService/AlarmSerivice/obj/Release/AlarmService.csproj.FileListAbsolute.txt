@@ -13,3 +13,4 @@ C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmServi
 C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmService.csproj.CopyComplete
 C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmService.exe
 C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmService.pdb
+C:\Repos\MCSController\RejectDetailsService\AlarmSerivice\obj\Release\AlarmService.AlarmService.resources

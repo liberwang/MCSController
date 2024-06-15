@@ -165,6 +165,12 @@ namespace RejectDetailsLib
             bool isOK = true;
             if (tag.Read == 1)
             {
+                int counter = 0;
+                while (client.GetStatus(tag.plcTag) == Libplctag.PLCTAG_STATUS_PENDING && counter ++ < 100)
+                {
+                    Thread.Sleep(100);
+                }
+
                 if (client.GetStatus(tag.plcTag) == Libplctag.PLCTAG_STATUS_OK)
                 {
                     bool DBRequest = client.GetBitValue(tag.plcTag, -1, DataTimeout);
@@ -217,7 +223,7 @@ namespace RejectDetailsLib
                 {
                     if (SystemKeys.IN_DEBUGING)
                     {
-                        clsLog.addLog($@"{tag.TagName} is not ready.");
+                        clsLog.addLog($@"{tag.TagName} is in Pending status and not ready.");
                     }
                     return false;
                 }
@@ -249,6 +255,12 @@ namespace RejectDetailsLib
         private clsTagValue RetrieveTagValue(Libplctag client, clsHierarchyTag tagClass)
         {
             Tag tag = tagClass.plcTag;
+
+            int counter = 0;
+            while (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING && counter ++ < 100)
+            {
+                Thread.Sleep(100);
+            }
 
             if (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING)
             {

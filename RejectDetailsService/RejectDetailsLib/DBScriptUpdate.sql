@@ -611,3 +611,6 @@ BEGIN
 	COMMIT;
 END
 GO
+
+ALTER TABLE [tblAlarmContent] ALTER COLUMN [controller_ip] VARCHAR(256) NULL;
+GO 

@@ -275,3 +275,16 @@ Affected parameters are:
 Removing EventLog source MCSservice.
 Service MCSservice is being removed from the system...
 Service MCSservice was successfully removed from the system.
+Installing assembly 'C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.InstallLog
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.exe
+Installing service MCRejectService...
+Service MCRejectService has been successfully installed.
+Creating EventLog source MCRejectService in log Application...
+Committing assembly 'C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.InstallLog
+   assemblypath = C:\Repos\MCSController\RejectDetailsService\RejectDetailsService\bin\Debug\RejectDetailsService.exe
