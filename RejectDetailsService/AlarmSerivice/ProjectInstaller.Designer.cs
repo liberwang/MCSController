@@ -40,9 +40,11 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
-            this.serviceInstaller1.Description = "MachineControlSolutionAlarm Service";
+            this.serviceInstaller1.Description = "MachineControlSolution Alarm Service";
             this.serviceInstaller1.DisplayName = "MCS_AlarmService";
             this.serviceInstaller1.ServiceName = "MCSAlarmService";
+            this.serviceInstaller1.ServicesDependedOn = new string[] {
+        "MSSQLSERVER"};
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

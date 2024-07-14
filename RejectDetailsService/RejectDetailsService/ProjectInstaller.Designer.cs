@@ -41,9 +41,11 @@ namespace RejectDetailsService
             // serviceInstaller1
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
-            this.serviceInstaller1.Description = "MachineControlSolution Reject Service";
-            this.serviceInstaller1.DisplayName = "MCS_RejectService";
-            this.serviceInstaller1.ServiceName = "MCRejectService";
+            this.serviceInstaller1.Description = "MachineControlSolution Tag Service";
+            this.serviceInstaller1.DisplayName = "MCS_TagService";
+            this.serviceInstaller1.ServiceName = "MCSTagService";
+            this.serviceInstaller1.ServicesDependedOn = new string[] {
+        "MSSQLSERVER"};
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
