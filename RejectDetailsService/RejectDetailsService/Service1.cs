@@ -46,6 +46,7 @@ namespace RejectDetailsService {
 
             if (SystemKeys.HEARTBEAT_SERVICE_ENABLE)
             {
+                clsLog.addLog("HartBeat service is starting...");
                 try
                 {
                     Timer timer = new Timer();
@@ -61,6 +62,7 @@ namespace RejectDetailsService {
 
             if (SystemKeys.STATISTICS_SERVICE_ENABLE)
             {
+                clsLog.addLog("Statistics service is starting...");
                 try
                 {
                     Timer timer = new Timer();

@@ -85,7 +85,7 @@ namespace RejectDetailsLib
 
             if (listController == null || listController.Count == 0)
             {
-                throw new Exception("Can not find enabled ip address for alarm..........");
+                clsLog.addLog("Can not find enabled ip address for alarm..........");
             }
             else
             {
@@ -127,23 +127,24 @@ namespace RejectDetailsLib
 
         private void Process()
         {
-            for (int i = 0; i < listTagGroup.Length; ++i)
+            if (listTagGroup != null)
             {
-                if (listTagGroup[i].Count == 0)
+                for (int i = 0; i < listTagGroup.Length; ++i)
                 {
-                    continue;
-                }
+                    if (listTagGroup[i].Count == 0)
+                    {
+                        continue;
+                    }
 
-                int controllerId = listController[i].Id;
-                foreach (clsHierarchyTag clsTag in listTagGroup[i])
-                {
-                   // new Thread(() =>
-                   //{
+                    int controllerId = listController[i].Id;
+                    foreach (clsHierarchyTag clsTag in listTagGroup[i])
+                    {
+                        // new Thread(() =>
+                        //{
                         ProcessChildren(clsTag, new Libplctag(), controllerId);
-                    //}).Start();
+                        //}).Start();
+                    }
                 }
-
-
             }
         }
 

@@ -23,17 +23,23 @@ namespace AlarmService
 
         protected override void OnStart(string[] args)
         {
-            clsLog.addLog("Alarm Service Start..."); 
-            try
+            if (SystemKeys.ALARM_SERVICE_ENABLE)
             {
-                Timer timer = new Timer();
-                timer.Interval = SystemKeys.ALARM_SERVICE_INTERVAL; // 500; // 0.5 seconds
-                timer.Elapsed += new ElapsedEventHandler(this.OnTimerAlarm);
-                timer.Start();
-            }
-            catch (Exception e)
+                clsLog.addLog("Alarm Service Start...");
+                try
+                {
+                    Timer timer = new Timer();
+                    timer.Interval = SystemKeys.ALARM_SERVICE_INTERVAL; // 500; // 0.5 seconds
+                    timer.Elapsed += new ElapsedEventHandler(this.OnTimerAlarm);
+                    timer.Start();
+                }
+                catch (Exception e)
+                {
+                    clsLog.addLog(e.Message);
+                }
+            } else
             {
-                clsLog.addLog(e.Message);
+                clsLog.addLog("Alarm service is disabled...");
             }
         }
 
