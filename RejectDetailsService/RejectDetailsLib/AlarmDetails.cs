@@ -308,7 +308,11 @@ namespace RejectDetailsLib
             {
                 readValue = client.GetInt32Value(tag, 0 * tag.ElementSize);
             }
-            else  // short int
+            else if (tagClass.TagType == clsTag.SINT_TYPE_STR) // 8 int 
+            {
+                readValue = client.GetInt8Value(tag, 0 * tag.ElementSize);
+            }
+            else  // int
             {
                 readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
             }

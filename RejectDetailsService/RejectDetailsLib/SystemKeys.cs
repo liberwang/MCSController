@@ -241,13 +241,13 @@ namespace RejectDetailsLib {
 
             DateTime dt = new DateTime(now.Year, now.Month, now.Day, hoursDelimt, 0, 0);
 
-            if (now >= dt)
+            if (now < dt)
             {
                 return now.ToString(FILE_NAME);
             }
             else
             {
-                return dt.AddDays(-1).ToString(FILE_NAME);
+                return dt.AddDays(1).ToString(FILE_NAME);
             }
         }
         #endregion
