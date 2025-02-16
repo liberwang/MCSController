@@ -10,9 +10,9 @@ namespace RejectDetailsLib.Clients
     internal class clsHBHOutput : clsOutput
     {
         private const string fileNamePre = "RejectDetails-";
-        private string[] titles = new string[] { "DATE", "TIME", "REJECT#", "MODEL", "CAVITY", "STN#", "NUT#", "LIMITS", "HI/LOW", "VALUE" };
+        private string[] titles = new string[] { "DATE", "TIME", "REJECT#", "PARTTYPE", "CAVITY", "STN#", "NUT#", "LIMITS", "HI/LOW", "VALUE" };
 
-        private string[] partType = new string[] { "", "CIVIC", "ILX", "ILX-S" };
+        private string[] partType = new string[] { "", "CIVIC-HYB", "ILX", "ILX-S", "CIVIC", "CIVIC" };
         private HashSet<string> rejectFields = new HashSet<string>(new string[] { "RejectDetail1", "RejectDetail2", "RejectDetail3", "RejectDetail4", "RejectDetail5", "RejectDetail6", "RejectDetail7", "RejectDetail8", "RejectDetail9", "RejectDetail10" });
         private const char DELIMITER = ';';
         private const int PARTTYPE_POS = 3;
@@ -111,10 +111,10 @@ namespace RejectDetailsLib.Clients
             }
         }
 
-        protected override List<int> GetOutputTagListByOrder()
-        {
-            return new Database().GetSelectedTagIdOutputOriginal(this.m_controllerId);
-        }
+        //protected override List<int> GetOutputTagListByOrder()
+        //{
+        //    return new Database().GetSelectedTagIdOutputOriginal(this.m_controllerId);
+        //}
 
         //protected override string GetOutputTagName(string sTagName)
         //{
