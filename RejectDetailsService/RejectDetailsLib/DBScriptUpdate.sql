@@ -397,7 +397,7 @@ BEGIN
 	DECLARE	@tag_reject INT;
 
 	IF @prodName = 'BOXSTEP'
-	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != ''  AND  tag_name LIKE 'Station60_Data.Header.Status' and tag_cont = '2' );
+	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE tag_name LIKE 'Station60_Data.Header.Status' and tag_cont = '2' );
     ELSE
 	SET @tag_pass = (SELECT COUNT(DISTINCT serial_number) FROM #tag_temp WHERE serial_number != '' AND LEFT(serial_number,7) != 'Reject:' );
 
