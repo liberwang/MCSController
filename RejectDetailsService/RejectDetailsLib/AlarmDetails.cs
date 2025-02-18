@@ -206,7 +206,7 @@ namespace RejectDetailsLib
                             }
                             catch (Exception ex)
                             {
-                                clsLog.addLog($"AlarmDetails.ReadTag MultiThread Error: {ex.Message}");
+                                clsLog.addLog($"AlarmDetails.ReadTag MultiThread Error: {ex.Message}; {ex.StackTrace}");
                                 isOK = false;
                             }
                         }
