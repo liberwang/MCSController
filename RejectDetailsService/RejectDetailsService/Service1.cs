@@ -19,7 +19,7 @@ namespace RejectDetailsService {
         }
 
         protected override void OnStart(string[] args) {
-            clsLog.addLog("Start...");
+            clsLog.addLog("Tag Service Start...");
             try {
                 Timer timer = new Timer();
                 timer.Interval = SystemKeys.VISIT_INTERVAL; // 500; // 0.5 seconds
@@ -78,7 +78,7 @@ namespace RejectDetailsService {
         }
 
         protected override void OnStop() {
-            clsLog.addLog("Stop...");
+            clsLog.addLog("Tag Service Stop...");
         }
 
         public void OnTimer(object sender, ElapsedEventArgs args) {
@@ -89,7 +89,7 @@ namespace RejectDetailsService {
             }
         }
 
-        public void OnTimerCopy(object sender, ElapsedEventArgs args) {
+        private void OnTimerCopy(object sender, ElapsedEventArgs args) {
             try {
                 clsOutput op = clsOutput.GetOutputByProduceName();
                 if (op != null)
@@ -105,7 +105,7 @@ namespace RejectDetailsService {
             }
         }
 
-        public void OnTimerHeartBeat(object sender, ElapsedEventArgs args )
+        private void OnTimerHeartBeat(object sender, ElapsedEventArgs args )
         {
             try
             {
@@ -117,7 +117,7 @@ namespace RejectDetailsService {
             }
         }
 
-        public void OnTimerStatistics(object sender, ElapsedEventArgs args)
+        private void OnTimerStatistics(object sender, ElapsedEventArgs args)
         {
             try
             {

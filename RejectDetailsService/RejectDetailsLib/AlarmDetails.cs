@@ -139,10 +139,9 @@ namespace RejectDetailsLib
                     int controllerId = listController[i].Id;
                     foreach (clsHierarchyTag clsTag in listTagGroup[i])
                     {
-                        // new Thread(() =>
-                        //{
-                        ProcessChildren(clsTag, new Libplctag(), controllerId);
-                        //}).Start();
+                        Libplctag plcTagClass = new Libplctag();
+                        ProcessChildren(clsTag, plcTagClass, controllerId);
+                        plcTagClass.Dispose();
                     }
                 }
             }
