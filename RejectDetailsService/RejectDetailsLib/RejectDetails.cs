@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -142,6 +143,8 @@ namespace RejectDetailsLib
                         }
                         catch (Exception e)
                         {
+                            clsLog.addLog($@"RejectDetails Start: {e.Message}, 
+{e.StackTrace}");
                             throw e;
                         }
                         finally
@@ -176,10 +179,9 @@ namespace RejectDetailsLib
 
                         // check read tag first, every group has one read tag only.
                         int counter = 0;
-                        while (counter < 100 && client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_PENDING)
+                        while (counter++ < 100 && client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_PENDING)
                         {
                             Thread.Sleep(100);
-                            ++counter;
                         }
 
                         if (counter >= 100)
@@ -211,8 +213,9 @@ namespace RejectDetailsLib
                                 foreach (clsTag tagClass in tagGroup.listTags)
                                 {
                                     Tag tag = tagClass.plcTag;
+                                    int localCounter = 0;
 
-                                    while (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING)
+                                    while (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING && localCounter++ < 100)
                                     {
                                         Thread.Sleep(100);
                                     }
@@ -320,152 +323,203 @@ namespace RejectDetailsLib
             {
                 if (this.dicTagGroup.ContainsKey(clsCon.Id))
                 {
-                    Parallel.ForEach(this.dicTagGroup[clsCon.Id], (tagGroup) =>
+                    try
                     {
-                        // no tag for this ip address 
-                        if (tagGroup.listTags.Count > 0)
+                        Parallel.ForEach(this.dicTagGroup[clsCon.Id], (tagGroup) =>
                         {
-                            Libplctag client = tagGroup.tagClass;
-
-                            // if read tag is ready, read all tags
-                            if (client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_OK)
+                            // no tag for this ip address 
+                            if (tagGroup.listTags.Count > 0)
                             {
-                                bool DBRequest = client.GetBitValue(tagGroup.tagRead.plcTag, -1, DataTimeout);
+                                Libplctag client = tagGroup.tagClass;
 
-                                if (DBRequest)
+                                // if read tag is ready, read all tags
+                                int counter = 0;
+
+                                while (counter++ < 100 && client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_PENDING)
                                 {
-                                    ConcurrentDictionary<int, clsTagValue> ReadValuesDictionary = new ConcurrentDictionary<int, clsTagValue>();
-                                    //string tagSerialNoValue = string.Empty;
-                                    //clsTagValue tagSerialNoClass = null;
-                                    int SerialNoTagId = -99;
-                                    bool isOK = true;
+                                    Thread.Sleep(100);
+                                }
 
-                                    CancellationTokenSource cts = new CancellationTokenSource();
-                                    ParallelOptions po = new ParallelOptions
-                                    {
-                                        CancellationToken = cts.Token,
-                                        MaxDegreeOfParallelism = System.Environment.ProcessorCount,
-                                    };
+                                if (client.GetStatus(tagGroup.tagRead.plcTag) == Libplctag.PLCTAG_STATUS_OK)
+                                {
+                                    bool DBRequest = client.GetBitValue(tagGroup.tagRead.plcTag, -1, DataTimeout);
 
-                                    object lockObj = new object();
-                                    try
+                                    if (DBRequest)
                                     {
-                                        Parallel.ForEach<clsTag>(tagGroup.listTags, po, (tagClass) =>
+                                        ConcurrentDictionary<int, clsTagValue> ReadValuesDictionary = new ConcurrentDictionary<int, clsTagValue>();
+                                        //string tagSerialNoValue = string.Empty;
+                                        //clsTagValue tagSerialNoClass = null;
+                                        int SerialNoTagId = -99;
+                                        //bool isOK = true;
+
+                                        //CancellationTokenSource cts = new CancellationTokenSource();
+                                        ParallelOptions po = new ParallelOptions
                                         {
-                                            Tag tag = tagClass.plcTag;
+                                            //CancellationToken = cts.Token,
+                                            MaxDegreeOfParallelism = System.Environment.ProcessorCount,
+                                        };
 
-                                            if (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING)
+                                        object lockObj = new object();
+                                        try
+                                        {
+                                            Parallel.ForEach<clsTag>(tagGroup.listTags, po, (tagClass) =>
+                                            {
+                                                Tag tag = tagClass.plcTag;
+
+                                                int localCounter = 0;
+                                                while (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING && localCounter++ < 100)
+                                                {
+                                                    Thread.Sleep(100);
+                                                }
+
+                                                int tagStatus = client.GetStatus(tag);
+                                                //if (tagStatus == Libplctag.PLCTAG_STATUS_PENDING)
+                                                //{
+                                                //    if (SystemKeys.IN_DEBUGING)
+                                                //    {
+                                                //        clsLog.addLog($@"{tagClass.TagName} is Pending status.");
+                                                //    }
+                                                //    cts.Cancel(true);
+                                                //}
+
+                                                if (tagStatus == Libplctag.PLCTAG_STATUS_OK)
+                                                {
+
+                                                    //    cts.Cancel(true);
+                                                    //}
+                                                    //else
+                                                    //{
+
+                                                    var tagValue = client.ReadTag(tag, DataTimeout);
+
+                                                    if (tagValue == Libplctag.PLCTAG_STATUS_OK)
+                                                    {
+                                                        object readValue;
+                                                        if (tagClass.TagType == clsTag.BOOL_TYPE_STR) // "Bool"
+                                                        {
+                                                            readValue = client.GetBitValue(tag, -1, DataTimeout);
+                                                        }
+                                                        else if (tagClass.TagType == clsTag.STRING_TYPE_STR) //"String"
+                                                        {
+                                                            readValue = GetStringValue(tag, client);
+                                                        }
+                                                        else if (tagClass.TagType == clsTag.REAL_TYPE_STR) //"Real"
+                                                        {
+                                                            readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
+                                                        }
+                                                        else if (tagClass.TagType == clsTag.LINT_TYPE_STR)  // long int
+                                                        {
+                                                            readValue = client.GetInt64Value(tag, 0 * tag.ElementSize);
+                                                        }
+                                                        else if (tagClass.TagType == clsTag.DINT_TYPE_STR) // 32 int 
+                                                        {
+                                                            readValue = client.GetInt32Value(tag, 0 * tag.ElementSize);
+                                                        }
+                                                        else if (tagClass.TagType == clsTag.SINT_TYPE_STR) // 8 int 
+                                                        {
+                                                            readValue = client.GetInt8Value(tag, 0 * tag.ElementSize);
+                                                        }
+                                                        else  // int
+                                                        {
+                                                            readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
+                                                        }
+
+                                                        ReadValuesDictionary.TryAdd(tagClass.TagId, new clsTagValue(tagClass, readValue));
+
+                                                        // remember serial number tag 
+                                                        if (tag.Name.EndsWith(clsTag.SERIAL_NUMBER_STR))
+                                                        {
+                                                            lock (lockObj)
+                                                            {
+                                                                SerialNoTagId = tagClass.TagId;
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        clsLog.addLog($"[{tagClass.TagName}] error: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    clsLog.addLog($"[{tagClass.TagName}] error: setting up tag internal state: {client.DecodeError(tagStatus)}");
+                                                }
+                                            });
+                                        }
+                                        catch (OperationCanceledException e)
+                                        {
+                                            clsLog.addLog($"{tagGroup.tagRead.TagName} OperationCanceledException: {e.Message}");
+                                            //isOK = false;
+                                        }
+                                        catch (AggregateException ex)
+                                        {
+                                            foreach (var aex in ex.InnerExceptions)
+                                            {
+                                                clsLog.addLog($"{tagGroup.tagRead.TagName} ReadTag AggregateException: {aex.Message}; {aex.StackTrace}");
+                                            }
+                                            //isOK = false;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            clsLog.addLog($"{tagGroup.tagRead.TagName} Regular Exception: {ex.Message}");
+                                        }
+                                        finally
+                                        {
+                                            //if (isOK)
+                                            //{
+                                            //    if (SystemKeys.IN_DEBUGING)
+                                            //    {
+                                            //        clsLog.addLog($@"{tagGroup.tagRead.TagName} group is OK.");
+                                            //    }
+                                            //} else
+                                            //{
+                                            //    if (SystemKeys.IN_DEBUGING)
+                                            //    {
+                                            //        clsLog.addLog($@"{tagGroup.tagRead.TagName} group gets error.");
+                                            //    }
+                                            //}
+
+                                            // set read flag back first;
+                                            if (tagGroup.tagRead.Write == 1)
                                             {
                                                 if (SystemKeys.IN_DEBUGING)
                                                 {
-                                                    clsLog.addLog($@"{tagClass.TagName} is Pending status.");
+                                                    clsLog.addLog($@"{tagGroup.tagRead.TagName} is writing back.");
                                                 }
-                                                cts.Cancel(true);
+
+                                                client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
                                             }
 
-                                            int tagStatus = client.GetStatus(tag);
-                                            if (tagStatus != Libplctag.PLCTAG_STATUS_OK)
+                                            // set back to write tags. 
+                                            foreach (clsTag tagWrite in tagGroup.tagWrite)
                                             {
-                                                clsLog.addLog($"[{tagClass.TagName}] error: setting up tag internal state: {client.DecodeError(tagStatus)}");
-                                                cts.Cancel(true);
-                                            }
-
-                                            var tagValue = client.ReadTag(tag, DataTimeout);
-
-                                            if (tagValue != Libplctag.PLCTAG_STATUS_OK)
-                                            {
-                                                clsLog.addLog($"[{tagClass.TagName}] error: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
-                                                cts.Cancel(true);
-                                            }
-
-                                            object readValue;
-                                            if (tagClass.TagType == clsTag.BOOL_TYPE_STR) // "Bool"
-                                            {
-                                                readValue = client.GetBitValue(tag, -1, DataTimeout);
-                                            }
-                                            else if (tagClass.TagType == clsTag.STRING_TYPE_STR) //"String"
-                                            {
-                                                readValue = GetStringValue(tag, client);
-                                            }
-                                            else if (tagClass.TagType == clsTag.REAL_TYPE_STR) //"Real"
-                                            {
-                                                readValue = client.GetFloat32Value(tag, 0 * tag.ElementSize);
-                                            }
-                                            else if (tagClass.TagType == clsTag.LINT_TYPE_STR)  // long int
-                                            {
-                                                readValue = client.GetInt64Value(tag, 0 * tag.ElementSize);
-                                            }
-                                            else if (tagClass.TagType == clsTag.DINT_TYPE_STR) // 32 int 
-                                            {
-                                                readValue = client.GetInt32Value(tag, 0 * tag.ElementSize);
-                                            }
-                                            else if (tagClass.TagType == clsTag.SINT_TYPE_STR) // 8 int 
-                                            {
-                                                readValue = client.GetInt8Value(tag, 0 * tag.ElementSize);
-                                            }
-                                            else  // int
-                                            {
-                                                readValue = client.GetInt16Value(tag, 0 * tag.ElementSize);
-                                            }
-
-                                            ReadValuesDictionary.TryAdd(tagClass.TagId, new clsTagValue(tagClass, readValue));
-
-                                            // remember serial number tag 
-                                            if (tag.Name.EndsWith(clsTag.SERIAL_NUMBER_STR))
-                                            {
-                                                lock (lockObj)
+                                                if (SystemKeys.IN_DEBUGING)
                                                 {
-                                                    SerialNoTagId = tagClass.TagId;
+                                                    clsLog.addLog($@"{tagWrite.plcTag.Name} is writing back.");
                                                 }
-                                            }
-                                        });
-                                    }
-                                    catch (OperationCanceledException e)
-                                    {
-                                        Console.WriteLine(e.Message);
-                                        isOK = false;
-                                    }
 
-                                    if (isOK)
+                                                client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
+                                            }
+
+                                            new Thread(() =>
+                                            {
+                                                SaveToFile(ReadValuesDictionary, SerialNoTagId, clsCon.IpAddress, clsCon.Id);
+                                            }).Start();
+                                        }
+                                    }
+                                    else
                                     {
                                         if (SystemKeys.IN_DEBUGING)
                                         {
-                                            clsLog.addLog($@"{tagGroup.tagRead.TagName} group is OK.");
+                                            clsLog.addLog($@"{tagGroup.tagRead.TagName} does not get request value: {DBRequest}.");
                                         }
-
-                                        // set read flag back first;
-                                        if (tagGroup.tagRead.Write == 1)
-                                        {
-                                            if (SystemKeys.IN_DEBUGING)
-                                            {
-                                                clsLog.addLog($@"{tagGroup.tagRead.TagName} is writing back.");
-                                            }
-
-                                            client.SetBitValue(tagGroup.tagRead.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
-                                        }
-
-                                        // set back to write tags. 
-                                        foreach (clsTag tagWrite in tagGroup.tagWrite)
-                                        {
-                                            if (SystemKeys.IN_DEBUGING)
-                                            {
-                                                clsLog.addLog($@"{tagWrite.plcTag.Name} is writing back.");
-                                            }
-
-                                            client.SetBitValue(tagWrite.plcTag, 0, Convert.ToBoolean(1), DataTimeout);
-                                        }
-
-                                        new Thread(() =>
-                                        {
-                                            SaveToFile(ReadValuesDictionary, SerialNoTagId, clsCon.IpAddress, clsCon.Id);
-                                        }).Start();
                                     }
                                 }
                                 else
                                 {
                                     if (SystemKeys.IN_DEBUGING)
                                     {
-                                        clsLog.addLog($@"{tagGroup.tagRead.TagName} does not get request value: {DBRequest}.");
+                                        clsLog.addLog($@"{tagGroup.tagRead.TagName} is not ready.");
                                     }
                                 }
                             }
@@ -473,17 +527,22 @@ namespace RejectDetailsLib
                             {
                                 if (SystemKeys.IN_DEBUGING)
                                 {
-                                    clsLog.addLog($@"{tagGroup.tagRead.TagName} is not ready.");
+                                    clsLog.addLog($@"{clsCon.IpAddress} does not have tags.");
                                 }
                             }
-                        } else
+                        });
+                    } 
+                    catch (AggregateException ex)
+                    {
+                        foreach (var aex in ex.InnerExceptions)
                         {
-                            if (SystemKeys.IN_DEBUGING)
-                            {
-                                clsLog.addLog($@"{clsCon.IpAddress} does not have tags.");
-                            }
+                            clsLog.addLog($"{clsCon.IpAddress} AggregateException: {aex.Message}; {aex.StackTrace}");
                         }
-                    });
+                    }
+                    catch (Exception ex)
+                    {
+                        clsLog.addLog($"{clsCon.IpAddress} exception: {ex.Message}");
+                    }
                 }
             }
         }

@@ -47,7 +47,7 @@ namespace RejectDetailsLib
             }
             catch (Exception ex)
             {
-                clsLog.addLog(ex.ToString());
+                clsLog.addAlarmLog(ex.ToString());
                 throw;
             }
         }
@@ -72,7 +72,7 @@ namespace RejectDetailsLib
                 }
                 catch (Exception ex)
                 {
-                    clsLog.addLog(ex.Message);
+                    clsLog.addAlarmLog(ex.Message);
                     throw;
                 }
                 return instance;
@@ -85,7 +85,7 @@ namespace RejectDetailsLib
 
             if (listController == null || listController.Count == 0)
             {
-                clsLog.addLog("Can not find enabled ip address for alarm..........");
+                clsLog.addAlarmLog("Can not find enabled ip address for alarm..........");
             }
             else
             {
@@ -166,7 +166,7 @@ namespace RejectDetailsLib
             if (tag.Read == 1)
             {
                 int counter = 0;
-                while (client.GetStatus(tag.plcTag) == Libplctag.PLCTAG_STATUS_PENDING && counter ++ < 100)
+                while (client.GetStatus(tag.plcTag) == Libplctag.PLCTAG_STATUS_PENDING && counter++ < 100)
                 {
                     Thread.Sleep(100);
                 }
@@ -182,10 +182,10 @@ namespace RejectDetailsLib
 
                             object UpdateOK = new object();
 
-                            CancellationTokenSource cts = new CancellationTokenSource();
+                            //CancellationTokenSource cts = new CancellationTokenSource();
                             ParallelOptions po = new ParallelOptions
                             {
-                                CancellationToken = cts.Token,
+                                //CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = System.Environment.ProcessorCount,
                             };
 
@@ -195,18 +195,26 @@ namespace RejectDetailsLib
                                 {
                                     if (!ReadTag(tagClass, client, ReadValuesDictionary))
                                     {
-                                        lock (UpdateOK)
-                                        {
-                                            isOK = false;
-                                        }
+                                        //lock (UpdateOK)
+                                        //{
+                                        //    isOK = false;
+                                        //}
                                     }
 
                                 });
                             }
+                            catch (AggregateException ex)
+                            {
+                                foreach (var aex in ex.InnerExceptions)
+                                {
+                                    clsLog.addAlarmLog($"AlarmDetails.ReadTag AggregateException: {aex.Message}; {aex.StackTrace}");
+                                }
+                                //isOK = false;
+                            }
                             catch (Exception ex)
                             {
-                                clsLog.addLog($"AlarmDetails.ReadTag MultiThread Error: {ex.Message}; {ex.StackTrace}");
-                                isOK = false;
+                                clsLog.addAlarmLog($"AlarmDetails.ReadTag MultiThread Error: {ex.Message}; {ex.StackTrace}");
+                                //isOK = false;
                             }
                         }
                     }
@@ -214,7 +222,7 @@ namespace RejectDetailsLib
                     {
                         if (SystemKeys.IN_DEBUGING)
                         {
-                            clsLog.addLog($@"{tag.TagName} does not get request value: {DBRequest}.");
+                            clsLog.addAlarmLog($@"{tag.TagName} does not get request value: {DBRequest}.");
                         }
                         return false;
                     }
@@ -223,7 +231,7 @@ namespace RejectDetailsLib
                 {
                     if (SystemKeys.IN_DEBUGING)
                     {
-                        clsLog.addLog($@"{tag.TagName} is in Pending status and not ready.");
+                        clsLog.addAlarmLog($@"{tag.TagName} is in Pending status and not ready.");
                     }
                     return false;
                 }
@@ -240,11 +248,12 @@ namespace RejectDetailsLib
                 }
             }
 
-            if (isOK && tag.Write == 1)
+            if (tag.Write == 1)
+            //if (isOK && tag.Write == 1)
             {
                 if (SystemKeys.IN_DEBUGING)
                 {
-                    clsLog.addLog($@"{tag.TagName} is writing back.");
+                    clsLog.addAlarmLog($@"{tag.TagName} is writing back.");
                 }
 
                 client.SetBitValue(tag.plcTag, 0, Convert.ToBoolean(0), DataTimeout);
@@ -255,26 +264,53 @@ namespace RejectDetailsLib
         private clsTagValue RetrieveTagValue(Libplctag client, clsHierarchyTag tagClass)
         {
             Tag tag = tagClass.plcTag;
+            int retryCounter = 2;
+            int tagStatus = -1; // client.GetStatus(tag);
 
-            int counter = 0;
-            while (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING && counter ++ < 100)
+            while (retryCounter > 0)
             {
-                Thread.Sleep(100);
+                try
+                {
+                    int counter = 0;
+                    tagStatus = client.GetStatus(tag);
+                    while (tagStatus == Libplctag.PLCTAG_STATUS_PENDING && counter++ < 100)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    retryCounter = 0;
+                }
+                catch (Exception ex)
+                {
+                    clsLog.addAlarmLog($"Can not get status of [{tag.Name}] : {ex.Message}");
+
+                    if (ex.Message.StartsWith( "The given key was not present in the dictionary", StringComparison.OrdinalIgnoreCase))
+                    {
+                        client.AddTag(tagClass.plcTag);
+                        if (retryCounter-- == 0)
+                        {
+                            throw;
+                        }
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
 
-            if (client.GetStatus(tag) == Libplctag.PLCTAG_STATUS_PENDING)
+            if (tagStatus == Libplctag.PLCTAG_STATUS_PENDING)
             {
                 if (SystemKeys.IN_DEBUGING)
                 {
-                    clsLog.addLog($@"{tagClass.TagName} is Pending status.");
+                    clsLog.addAlarmLog($@"{tagClass.TagName} is Pending status.");
                 }
                 return null;
             }
 
-            int tagStatus = client.GetStatus(tag);
+            
             if (tagStatus != Libplctag.PLCTAG_STATUS_OK)
             {
-                clsLog.addLog($"[{tagClass.TagName}] error: setting up tag internal state: {client.DecodeError(tagStatus)}");
+                clsLog.addAlarmLog($"[{tagClass.TagName}] error: setting up tag internal state: {client.DecodeError(tagStatus)}");
                 return null;
             }
 
@@ -282,7 +318,7 @@ namespace RejectDetailsLib
 
             if (tagValue != Libplctag.PLCTAG_STATUS_OK)
             {
-                clsLog.addLog($"[{tagClass.TagName}] error: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
+                clsLog.addAlarmLog($"[{tagClass.TagName}] error: Unable to read the data! Got error code {tagValue}: {client.DecodeError(tagValue)}");
                 return null;
             }
 
@@ -333,7 +369,7 @@ namespace RejectDetailsLib
             }
             if (string.IsNullOrWhiteSpace(ipAddress))
             {
-                clsLog.addLog($"AlarmDetails.SaveToFile: Cannot find ipAddress of {controllerId}");
+                clsLog.addAlarmLog($"AlarmDetails.SaveToFile: Cannot find ipAddress of {controllerId}");
             }
             else
             {

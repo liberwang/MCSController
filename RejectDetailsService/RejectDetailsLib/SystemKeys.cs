@@ -205,13 +205,18 @@ namespace RejectDetailsLib {
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        public static string getLogName() {
+        public static string getLogName(string prefix = "") {
             if ( ! Directory.Exists(LOG_FILE))
             {
                 Directory.CreateDirectory(LOG_FILE);
             }
 
-            return Path.Combine(LOG_FILE, getLogFileNameDateString() + ".txt");
+            if (! string.IsNullOrWhiteSpace(prefix) && ! prefix.EndsWith("."))
+            {
+                prefix += ".";
+            }
+
+            return Path.Combine(LOG_FILE, prefix + getLogFileNameDateString() + ".txt");
             /*if(String.IsNullOrWhiteSpace(Path.GetExtension(LOG_FILE))) {
                 return LOG_FILE + getLogFileNameDateString() + ".txt";
             } else {

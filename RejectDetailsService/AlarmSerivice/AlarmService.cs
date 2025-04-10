@@ -16,7 +16,7 @@ namespace AlarmService
             }
             catch (Exception ex)
             {
-                clsLog.addLog(ex.Message);
+                clsLog.addAlarmLog(ex.Message);
                 throw ex;
             }
         }
@@ -25,7 +25,7 @@ namespace AlarmService
         {
             if (SystemKeys.ALARM_SERVICE_ENABLE)
             {
-                clsLog.addLog("Alarm Service Start...");
+                clsLog.addAlarmLog("Alarm Service Start...");
                 try
                 {
                     Timer timer = new Timer();
@@ -35,17 +35,18 @@ namespace AlarmService
                 }
                 catch (Exception e)
                 {
-                    clsLog.addLog(e.Message);
+                    clsLog.addAlarmLog(e.Message);
+                    throw;
                 }
             } else
             {
-                clsLog.addLog("Alarm service is disabled...");
+                clsLog.addAlarmLog("Alarm service is disabled...");
             }
         }
 
         protected override void OnStop()
         {
-            clsLog.addLog("Alarm Service Stop...");
+            clsLog.addAlarmLog("Alarm Service Stop...");
         }
 
         public void OnTimerAlarm(object sender, EventArgs e)
@@ -56,7 +57,8 @@ namespace AlarmService
             }
             catch (Exception ex)
             {
-                clsLog.addLog(ex.Message);
+                clsLog.addAlarmLog(ex.Message);
+                throw;
             }
         }
     }

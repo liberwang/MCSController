@@ -26,7 +26,8 @@ namespace RejectDetailsService {
                 timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
                 timer.Start();
             } catch(Exception e) {
-                clsLog.addLog(e.Message);
+                clsLog.addLog($"Onstart Error: {e.Message}, {e.StackTrace}");
+                throw e;
             }
 
             if (SystemKeys.SAVE_TO_FILE)
@@ -41,6 +42,7 @@ namespace RejectDetailsService {
                 catch (Exception e)
                 {
                     clsLog.addLog(e.Message);
+                    throw e;
                 }
             }
 
@@ -57,6 +59,7 @@ namespace RejectDetailsService {
                 catch (Exception e)
                 {
                     clsLog.addLog(e.Message);
+                    throw e;
                 }
             }
 
@@ -73,6 +76,7 @@ namespace RejectDetailsService {
                 catch (Exception e)
                 {
                     clsLog.addLog(e.Message);
+                    throw e;
                 }
             }
         }
